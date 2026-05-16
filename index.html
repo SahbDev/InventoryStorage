@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>MMC Personal Inventory</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -20,8 +22,8 @@
     --text:#f3f3f3;
     --soft:#a1a1a1;
     --dim:#666;
-    --danger:#ff4b4b;
-    --green:#67ff9c;
+    --green:#7dffb2;
+    --danger:#ff5b5b;
     --transition:all .22s ease;
 }
 
@@ -29,12 +31,17 @@
     box-sizing:border-box;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     margin:0;
     padding:40px 18px;
     background:
-        radial-gradient(circle at top, rgba(255,255,255,.03), transparent 30%),
-        #060606;
+    radial-gradient(circle at top, rgba(255,255,255,.03), transparent 30%),
+    #060606;
+
     font-family:'Inter',sans-serif;
     color:var(--text);
     display:flex;
@@ -46,16 +53,93 @@ body{
 .container{
     width:100%;
     max-width:760px;
+
     background:linear-gradient(180deg,#111111,#0a0a0a);
+
     border:1px solid var(--line);
+
     border-radius:34px;
+
     padding:34px;
-    box-shadow:0 30px 80px rgba(0,0,0,.65);
+
+    box-shadow:
+    0 30px 80px rgba(0,0,0,.65);
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:14px;
+    margin-bottom:24px;
+}
+
+.status-pill{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    background:#0f0f0f;
+    border:1px solid #232323;
+
+    padding:12px 16px;
+
+    border-radius:999px;
+
+    font-size:.7rem;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+.status-dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--green);
+
+    box-shadow:
+    0 0 10px rgba(125,255,178,.7);
+}
+
+.top-actions{
+    display:flex;
+    gap:10px;
+}
+
+.mini-btn{
+    background:#101010;
+    border:1px solid #262626;
+    color:#fff;
+
+    width:46px;
+    height:46px;
+
+    border-radius:16px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:var(--transition);
+}
+
+.mini-btn:hover{
+    transform:translateY(-2px);
+    border-color:#4a4a4a;
+}
+
+.mini-btn svg{
+    width:17px;
+    height:17px;
+    fill:#fff;
 }
 
 header{
     text-align:center;
-    padding-bottom:24px;
+    padding-bottom:26px;
     border-bottom:1px solid #1b1b1b;
 }
 
@@ -74,12 +158,42 @@ h1{
     letter-spacing:1px;
 }
 
+.stats{
+    margin-top:22px;
+
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+}
+
+.stat-card{
+    background:#0d0d0d;
+    border:1px solid #202020;
+    border-radius:22px;
+
+    padding:18px;
+    text-align:center;
+}
+
+.stat-value{
+    font-size:1.15rem;
+    font-weight:800;
+}
+
+.stat-label{
+    margin-top:8px;
+    color:#777;
+    font-size:.65rem;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
 .tabs{
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
     gap:12px;
-    margin:26px 0;
+    margin:28px 0;
 }
 
 .tab-btn{
@@ -146,7 +260,7 @@ h1{
     accent-color:#fff;
 }
 
-.btn-bulk-deliver{
+.btn-bulk{
     background:#fff;
     color:#000;
     border:none;
@@ -159,61 +273,29 @@ h1{
     letter-spacing:1px;
 }
 
-.btn-bulk-deliver:hover{
+.btn-bulk:hover{
     transform:translateY(-1px);
 }
 
-.cat-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(105px,1fr));
-    gap:24px;
+.search-box{
+    width:100%;
+    padding:18px 18px;
+
+    background:#0d0d0d;
+    border:1px solid #222;
+
+    border-radius:20px;
+
+    color:#fff;
+    outline:none;
+
+    margin-bottom:20px;
+
+    font-size:.9rem;
 }
 
-.cat-circle{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:14px;
-    cursor:pointer;
-    transition:var(--transition);
-}
-
-.cat-circle:hover{
-    transform:translateY(-4px);
-}
-
-.cat-icon-bg{
-    width:88px;
-    height:88px;
-    border-radius:26px;
-    background:linear-gradient(180deg,#181818,#0d0d0d);
-    border:1px solid #262626;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    transition:var(--transition);
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.03),
-        0 18px 35px rgba(0,0,0,.45);
-}
-
-.cat-circle:hover .cat-icon-bg{
+.search-box:focus{
     border-color:#4e4e4e;
-}
-
-.cat-icon-bg svg{
-    width:42px;
-    height:42px;
-    fill:#f3f3f3;
-}
-
-.cat-label{
-    font-size:.65rem;
-    letter-spacing:1.4px;
-    font-weight:700;
-    text-transform:uppercase;
-    color:#9c9c9c;
-    text-align:center;
 }
 
 .item-list{
@@ -245,9 +327,29 @@ h1{
     word-break:break-word;
 }
 
+.item-tags{
+    margin-top:8px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.tag{
+    background:#111;
+    border:1px solid #2a2a2a;
+    color:#aaa;
+
+    padding:5px 8px;
+
+    border-radius:999px;
+
+    font-size:.56rem;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+}
+
 .item-actions{
     display:flex;
-    align-items:center;
     gap:10px;
 }
 
@@ -268,70 +370,106 @@ h1{
 }
 
 .action-btn.delete{
-    border-color:#3a1515;
-    color:#ff9090;
+    color:#ff8d8d;
+    border-color:#3a1d1d;
 }
 
 .action-btn.delete:hover{
-    background:#220d0d;
+    background:#1a0d0d;
 }
 
-.empty-watermark{
-    padding:80px 20px;
-    text-align:center;
+.cat-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:20px;
 }
 
-.empty-watermark-title{
-    font-size:1rem;
-    font-weight:700;
-    letter-spacing:2px;
-    margin-bottom:10px;
+.cat-card{
+    background:#0d0d0d;
+    border:1px solid #222;
+    border-radius:28px;
+    padding:26px 18px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+
+    cursor:pointer;
+    transition:var(--transition);
 }
 
-.empty-watermark-sub{
-    color:#666;
+.cat-card:hover{
+    transform:translateY(-4px);
+    border-color:#444;
 }
 
-.footer-status{
-    margin-top:24px;
-    text-align:center;
-    font-size:.75rem;
-    color:#666;
-}
+.cat-icon{
+    width:58px;
+    height:58px;
 
-.search-box{
-    width:100%;
-    padding:16px 18px;
-    background:#0c0c0c;
-    border:1px solid #232323;
     border-radius:18px;
-    color:#fff;
-    outline:none;
-    margin-bottom:18px;
-    font-size:.9rem;
+
+    background:#111;
+    border:1px solid #262626;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-.search-box:focus{
-    border-color:#4e4e4e;
+.cat-icon svg{
+    width:24px;
+    height:24px;
+    fill:#fff;
 }
 
-.status-online{
-    color:var(--green);
+.cat-name{
+    font-size:.66rem;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:#a0a0a0;
+    font-weight:700;
 }
 
-.status-error{
-    color:#ff7676;
+.empty{
+    padding:70px 20px;
+    text-align:center;
+    color:#666;
 }
 
 .back-btn{
     margin-bottom:18px;
-    background:#111;
+
+    background:#101010;
     border:1px solid #262626;
+
     color:#fff;
-    padding:12px 16px;
+
+    padding:12px 18px;
+
     border-radius:14px;
+
     cursor:pointer;
-    font-weight:700;
+}
+
+@media(max-width:680px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .item{
+        grid-template-columns:1fr;
+    }
+
+    .item-actions{
+        width:100%;
+    }
+
+    .action-btn{
+        flex:1;
+    }
 }
 
 </style>
@@ -340,9 +478,62 @@ h1{
 
 <div class="container">
 
+<div class="topbar">
+
+<div class="status-pill">
+<div class="status-dot"></div>
+CONNECTED
+</div>
+
+<div class="top-actions">
+
+<div class="mini-btn" onclick="refreshInventory()" title="Refresh">
+
+<svg viewBox="0 0 24 24">
+<path d="M17.65 6.35A7.95 7.95 0 0012 4V1L7 6l5 5V7a5 5 0 11-5 5H5a7 7 0 107.75-6.95z"/>
+</svg>
+
+</div>
+
+<div class="mini-btn" onclick="resetScript()" title="Reset Script">
+
+<svg viewBox="0 0 24 24">
+<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6a6 6 0 11-6-6z"/>
+</svg>
+
+</div>
+
+</div>
+
+</div>
+
 <header>
+
 <h1>✦ PERSONAL INVENTORY</h1>
-<div class="subtitle">powered by Saori Suki</div>
+
+<div class="subtitle">
+powered by Saori Suki
+</div>
+
+<div class="stats">
+
+<div class="stat-card">
+<div class="stat-value" id="totalItems">0</div>
+<div class="stat-label">Folders</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-value" id="selectedCount">0</div>
+<div class="stat-label">Selected</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-value" id="fatpackCount">0</div>
+<div class="stat-label">Fatpacks</div>
+</div>
+
+</div>
+
 </header>
 
 <div class="tabs">
@@ -366,11 +557,14 @@ Search
 <div class="bulk-actions">
 
 <label class="checkbox-label">
+
 <input type="checkbox" id="selectAll" class="item-cb">
+
 Select All
+
 </label>
 
-<button class="btn-bulk-deliver" onclick="deliverSelected()">
+<button class="btn-bulk" onclick="deliverSelected()">
 Deliver Selected
 </button>
 
@@ -382,61 +576,101 @@ Deliver Selected
 
 <div id="tab-categories" class="tab-content">
 
-<div id="categories-view">
+<div id="categoryGrid" class="cat-grid">
 
-<div class="cat-grid">
+<div class="cat-card" onclick="filterCategory('hair')">
 
-<div class="cat-circle" onclick="openCategory('hair')">
-<div class="cat-icon-bg">💇</div>
-<div class="cat-label">Hair</div>
-</div>
+<div class="cat-icon">
 
-<div class="cat-circle" onclick="openCategory('skin')">
-<div class="cat-icon-bg">✨</div>
-<div class="cat-label">Skin</div>
-</div>
-
-<div class="cat-circle" onclick="openCategory('mesh')">
-<div class="cat-icon-bg">🧍</div>
-<div class="cat-label">Mesh</div>
-</div>
-
-<div class="cat-circle" onclick="openCategory('clothing')">
-<div class="cat-icon-bg">👕</div>
-<div class="cat-label">Clothing</div>
-</div>
-
-<div class="cat-circle" onclick="openCategory('accessories')">
-<div class="cat-icon-bg">💎</div>
-<div class="cat-label">Accessories</div>
-</div>
-
-<div class="cat-circle" onclick="openCategory('decor')">
-<div class="cat-icon-bg">🪑</div>
-<div class="cat-label">Decor</div>
-</div>
-
-<div class="cat-circle" onclick="openCategory('houses')">
-<div class="cat-icon-bg">🏠</div>
-<div class="cat-label">Houses</div>
-</div>
-
-<div class="cat-circle" onclick="openCategory('textures')">
-<div class="cat-icon-bg">🧩</div>
-<div class="cat-label">Textures</div>
-</div>
+<svg viewBox="0 0 24 24">
+<path d="M12 2C7 2 4 6 4 11v2c0 5 3 9 8 9s8-4 8-9v-2c0-5-3-9-8-9z"/>
+</svg>
 
 </div>
 
+<div class="cat-name">Hair</div>
+
 </div>
 
-<div id="category-items-view" style="display:none;">
+<div class="cat-card" onclick="filterCategory('skin')">
+
+<div class="cat-icon">
+
+<svg viewBox="0 0 24 24">
+<path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/>
+</svg>
+
+</div>
+
+<div class="cat-name">Skin</div>
+
+</div>
+
+<div class="cat-card" onclick="filterCategory('mesh')">
+
+<div class="cat-icon">
+
+<svg viewBox="0 0 24 24">
+<path d="M12 2l7 4v12l-7 4-7-4V6z"/>
+</svg>
+
+</div>
+
+<div class="cat-name">Mesh</div>
+
+</div>
+
+<div class="cat-card" onclick="filterCategory('clothing')">
+
+<div class="cat-icon">
+
+<svg viewBox="0 0 24 24">
+<path d="M12 3l4 3 3-1 2 4-3 2v8H6v-8L3 9l2-4 3 1z"/>
+</svg>
+
+</div>
+
+<div class="cat-name">Clothing</div>
+
+</div>
+
+<div class="cat-card" onclick="filterCategory('accessories')">
+
+<div class="cat-icon">
+
+<svg viewBox="0 0 24 24">
+<path d="M12 2l9 7-9 13L3 9l9-7z"/>
+</svg>
+
+</div>
+
+<div class="cat-name">Accessories</div>
+
+</div>
+
+<div class="cat-card" onclick="filterCategory('decor')">
+
+<div class="cat-icon">
+
+<svg viewBox="0 0 24 24">
+<path d="M4 10h16v8H4z"/>
+</svg>
+
+</div>
+
+<div class="cat-name">Decor</div>
+
+</div>
+
+</div>
+
+<div id="categoryView" style="display:none;">
 
 <button class="back-btn" onclick="closeCategory()">
 ← Back
 </button>
 
-<ul class="item-list" id="category-list"></ul>
+<ul class="item-list" id="categoryList"></ul>
 
 </div>
 
@@ -451,12 +685,8 @@ placeholder="Search inventory..."
 oninput="searchInventory(this.value)"
 >
 
-<ul class="item-list" id="search-results"></ul>
+<ul class="item-list" id="searchResults"></ul>
 
-</div>
-
-<div class="footer-status" id="statusText">
-Connecting...
 </div>
 
 </div>
@@ -464,15 +694,12 @@ Connecting...
 <script>
 
 const params = new URLSearchParams(location.search);
+
 const api = params.get("api");
 
 let inventory = [];
 
-if(!api){
-    document.getElementById("statusText").innerHTML =
-    '<span class="status-error">Missing SL API.</span>';
-}
-else{
+if(api){
     loadInventory();
 }
 
@@ -488,16 +715,28 @@ async function loadInventory(){
 
         renderInventory(inventory);
 
-        document.getElementById("statusText").innerHTML =
-        '<span class="status-online">Inventory connected successfully.</span>';
+        updateStats();
 
     }catch(err){
 
         console.error(err);
 
-        document.getElementById("statusText").innerHTML =
-        '<span class="status-error">Connection failed.</span>';
+        document.querySelector(".status-pill").innerHTML = `
+        <div class="status-dot" style="background:#ff5b5b;box-shadow:none;"></div>
+        OFFLINE
+        `;
     }
+}
+
+function updateStats(){
+
+    document.getElementById("totalItems").innerText =
+    inventory.length;
+
+    document.getElementById("fatpackCount").innerText =
+    inventory.filter(v=>
+        v.toLowerCase().includes("fatpack")
+    ).length;
 }
 
 function renderInventory(items){
@@ -509,13 +748,8 @@ function renderInventory(items){
     if(!items.length){
 
         list.innerHTML = `
-        <div class="empty-watermark">
-            <div class="empty-watermark-title">
-            Empty
-            </div>
-            <div class="empty-watermark-sub">
-            No folders detected.
-            </div>
+        <div class="empty">
+        No folders detected.
         </div>
         `;
 
@@ -529,17 +763,33 @@ function renderInventory(items){
         li.className = "item";
 
         li.innerHTML = `
-        <input type="checkbox" class="item-cb itemCheck" value="${escapeHtml(item)}">
 
-        <div class="item-name">${escapeHtml(item)}</div>
+        <input type="checkbox"
+        class="item-cb itemCheck"
+        value="${escapeHtml(item)}"
+        onchange="updateSelectedCount()">
+
+        <div>
+
+            <div class="item-name">
+            ${escapeHtml(item)}
+            </div>
+
+            <div class="item-tags">
+            ${generateTags(item)}
+            </div>
+
+        </div>
 
         <div class="item-actions">
 
-            <button class="action-btn" onclick="deliverItem(this,'${escapeJs(item)}')">
+            <button class="action-btn"
+            onclick="deliverItem(this,'${escapeJs(item)}')">
             Deliver
             </button>
 
-            <button class="action-btn delete" onclick="deleteItem(this,'${escapeJs(item)}')">
+            <button class="action-btn delete"
+            onclick="deleteItem(this,'${escapeJs(item)}')">
             Delete
             </button>
 
@@ -547,13 +797,38 @@ function renderInventory(items){
         `;
 
         list.appendChild(li);
-
     });
+}
+
+function generateTags(name){
+
+    const lower = name.toLowerCase();
+
+    let tags = "";
+
+    if(lower.includes("fatpack"))
+    tags += `<div class="tag">fatpack</div>`;
+
+    if(lower.includes("demo"))
+    tags += `<div class="tag">demo</div>`;
+
+    if(lower.includes("reborn"))
+    tags += `<div class="tag">reborn</div>`;
+
+    if(lower.includes("legacy"))
+    tags += `<div class="tag">legacy</div>`;
+
+    const year = name.match(/\[(\d{4})-/);
+
+    if(year)
+    tags += `<div class="tag">${year[1]}</div>`;
+
+    return tags;
 }
 
 async function deliverItem(btn,item){
 
-    const original = btn.innerText;
+    const old = btn.innerText;
 
     btn.innerText = "Wait...";
 
@@ -573,13 +848,13 @@ async function deliverItem(btn,item){
     }
 
     setTimeout(()=>{
-        btn.innerText = original;
+        btn.innerText = old;
     },2000);
 }
 
 async function deleteItem(btn,item){
 
-    const original = btn.innerText;
+    const old = btn.innerText;
 
     btn.innerText = "Wait...";
 
@@ -599,19 +874,24 @@ async function deleteItem(btn,item){
     }
 
     setTimeout(()=>{
-        btn.innerText = original;
+        btn.innerText = old;
     },2500);
 }
 
 async function deliverSelected(){
 
-    const checked = [...document.querySelectorAll(".itemCheck:checked")];
+    const checked = [
+        ...document.querySelectorAll(".itemCheck:checked")
+    ];
 
-    if(!checked.length) return;
+    if(!checked.length)
+    return;
 
-    const payload = checked.map(cb=>cb.value).join("\n");
+    const payload =
+    checked.map(cb=>cb.value).join("\n");
 
-    const btn = document.querySelector(".btn-bulk-deliver");
+    const btn =
+    document.querySelector(".btn-bulk");
 
     const old = btn.innerText;
 
@@ -637,43 +917,66 @@ async function deliverSelected(){
     },2200);
 }
 
-document.getElementById("selectAll").addEventListener("change",e=>{
+function updateSelectedCount(){
 
-    document.querySelectorAll(".itemCheck").forEach(cb=>{
+    document.getElementById("selectedCount").innerText =
+    document.querySelectorAll(".itemCheck:checked").length;
+}
+
+document.getElementById("selectAll")
+.addEventListener("change",e=>{
+
+    document.querySelectorAll(".itemCheck")
+    .forEach(cb=>{
         cb.checked = e.target.checked;
     });
 
+    updateSelectedCount();
 });
 
 function searchInventory(query){
 
     query = query.toLowerCase();
 
-    const results = inventory.filter(v=>
+    const filtered =
+    inventory.filter(v=>
         v.toLowerCase().includes(query)
     );
 
-    renderSearch(results);
+    renderSearch(filtered);
 }
 
-function renderSearch(results){
+function renderSearch(items){
 
-    const list = document.getElementById("search-results");
+    const list =
+    document.getElementById("searchResults");
 
     list.innerHTML = "";
 
-    results.forEach(item=>{
+    items.forEach(item=>{
 
         const li = document.createElement("li");
 
         li.className = "item";
 
         li.innerHTML = `
-        <div class="item-name">${escapeHtml(item)}</div>
+
+        <div>
+
+            <div class="item-name">
+            ${escapeHtml(item)}
+            </div>
+
+            <div class="item-tags">
+            ${generateTags(item)}
+            </div>
+
+        </div>
 
         <div class="item-actions">
 
-            <button class="action-btn" onclick="deliverItem(this,'${escapeJs(item)}')">
+            <button class="action-btn"
+            onclick="deliverItem(this,'${escapeJs(item)}')">
             Deliver
             </button>
 
@@ -681,32 +984,46 @@ function renderSearch(results){
         `;
 
         list.appendChild(li);
-
     });
 }
 
-function openCategory(cat){
+function filterCategory(type){
 
-    document.getElementById("categories-view").style.display = "none";
+    document.getElementById("categoryGrid").style.display = "none";
 
-    document.getElementById("category-items-view").style.display = "block";
+    document.getElementById("categoryView").style.display = "block";
 
-    const list = document.getElementById("category-list");
+    const list =
+    document.getElementById("categoryList");
 
     list.innerHTML = "";
 
-    const filtered = inventory.filter(v=>{
+    const filtered =
+    inventory.filter(item=>{
 
-        const lower = v.toLowerCase();
+        const n = item.toLowerCase();
 
-        if(cat==="hair") return lower.includes("hair");
-        if(cat==="skin") return lower.includes("skin");
-        if(cat==="mesh") return lower.includes("mesh");
-        if(cat==="clothing") return lower.includes("shirt") || lower.includes("pant") || lower.includes("outfit");
-        if(cat==="accessories") return lower.includes("access");
-        if(cat==="decor") return lower.includes("decor");
-        if(cat==="houses") return lower.includes("house");
-        if(cat==="textures") return lower.includes("texture");
+        if(type==="hair")
+        return n.includes("hair");
+
+        if(type==="skin")
+        return n.includes("skin");
+
+        if(type==="mesh")
+        return n.includes("mesh");
+
+        if(type==="clothing")
+        return n.includes("outfit") ||
+               n.includes("shirt") ||
+               n.includes("pant");
+
+        if(type==="accessories")
+        return n.includes("ring") ||
+               n.includes("chain") ||
+               n.includes("access");
+
+        if(type==="decor")
+        return n.includes("decor");
 
         return false;
     });
@@ -718,11 +1035,23 @@ function openCategory(cat){
         li.className = "item";
 
         li.innerHTML = `
-        <div class="item-name">${escapeHtml(item)}</div>
+
+        <div>
+
+            <div class="item-name">
+            ${escapeHtml(item)}
+            </div>
+
+            <div class="item-tags">
+            ${generateTags(item)}
+            </div>
+
+        </div>
 
         <div class="item-actions">
 
-            <button class="action-btn" onclick="deliverItem(this,'${escapeJs(item)}')">
+            <button class="action-btn"
+            onclick="deliverItem(this,'${escapeJs(item)}')">
             Deliver
             </button>
 
@@ -730,28 +1059,62 @@ function openCategory(cat){
         `;
 
         list.appendChild(li);
-
     });
 }
 
 function closeCategory(){
 
-    document.getElementById("categories-view").style.display = "block";
+    document.getElementById("categoryGrid").style.display = "grid";
 
-    document.getElementById("category-items-view").style.display = "none";
+    document.getElementById("categoryView").style.display = "none";
+}
+
+async function refreshInventory(){
+
+    document.querySelector(".status-pill").innerHTML = `
+    <div class="status-dot"></div>
+    SYNCING...
+    `;
+
+    await loadInventory();
+
+    setTimeout(()=>{
+
+        document.querySelector(".status-pill").innerHTML = `
+        <div class="status-dot"></div>
+        CONNECTED
+        `;
+
+    },800);
+}
+
+async function resetScript(){
+
+    if(!confirm("Reset script memory?"))
+    return;
+
+    await fetch(api,{
+        method:"POST",
+        body:"CMD:RESET"
+    });
+
+    alert("Reset command sent.");
 }
 
 function switchTab(tabId,btnElement){
 
-    document.querySelectorAll('.tab-btn').forEach(btn=>{
+    document.querySelectorAll('.tab-btn')
+    .forEach(btn=>{
         btn.classList.remove('active');
     });
 
-    document.querySelectorAll('.tab-content').forEach(tab=>{
+    document.querySelectorAll('.tab-content')
+    .forEach(tab=>{
         tab.classList.remove('active');
     });
 
-    document.getElementById(`tab-${tabId}`).classList.add('active');
+    document.getElementById(`tab-${tabId}`)
+    .classList.add('active');
 
     btnElement.classList.add('active');
 }
