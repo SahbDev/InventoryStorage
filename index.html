@@ -131,8 +131,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 #catListViewContainer { display: none; }
 
 .item-list{
-    list-style:none; margin:0; padding:0; border-radius:24px; overflow:hidden;
-    border:1px solid #202020; background:#0c0c0c; max-height:450px; overflow-y:auto;
+    list-style:none; margin:0; padding:0 0 40px 0; border-radius:24px; overflow:hidden;
+    border:1px solid #202020; background:#0c0c0c; max-height:450px; overflow-y:auto; overflow-x:hidden;
 }
 .item-list::-webkit-scrollbar { width: 6px; }
 .item-list::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
@@ -264,8 +264,9 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         <div class="bulk-actions" id="bulkInv" style="display: none;">
             <label class="checkbox-label"><input type="checkbox" class="item-cb" id="select-all" onchange="toggleSelectAll('inventory-list', this)"> Select All</label>
             <div style="display:flex; gap:8px;">
-                <button class="btn btn-white" onclick="deliverSelected('inventory-list')">Deliver Selected</button>
-                <button class="btn btn-dark" onclick="confirmBulkDelete('inventory-list')">Delete Selected</button>
+                <button class="btn btn-white" onclick="deliverSelected('inventory-list')">DELIVER SELECTED</button>
+                <button class="btn btn-dark" onclick="confirmBulkDelete('inventory-list')">DELETE SELECTED</button>
+                <button class="btn btn-white" onclick="rezzSelected('inventory-list')">REZZ SELECTED</button>
             </div>
         </div>
         <ul class="item-list" id="inventory-list"><div class="empty-watermark"><div class="empty-watermark-title">Loading</div><div class="empty-watermark-sub">Connecting to server...</div></div></ul>
@@ -286,8 +287,9 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             <div class="bulk-actions" id="bulkCat" style="display: none;">
                 <label class="checkbox-label"><input type="checkbox" id="selectAllCat" class="item-cb" onclick="toggleSelectAll('category-items', this)"> Select All</label>
                 <div style="display:flex; gap:8px;">
-                    <button class="btn btn-white" onclick="deliverSelected('category-items')">Deliver Selected</button>
-                    <button class="btn btn-dark" onclick="confirmBulkDelete('category-items')">Delete Selected</button>
+                    <button class="btn btn-white" onclick="deliverSelected('category-items')">DELIVER SELECTED</button>
+                    <button class="btn btn-dark" onclick="confirmBulkDelete('category-items')">DELETE SELECTED</button>
+                    <button class="btn btn-white" onclick="rezzSelected('category-items')">REZZ SELECTED</button>
                 </div>
             </div>
             <ul class="item-list" id="category-items"></ul>
@@ -303,7 +305,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             <div class="bulk-actions" id="bulkDup" style="display: none;">
                 <label class="checkbox-label"><input type="checkbox" id="selectAllDup" class="item-cb" onclick="toggleSelectAll('dup-list', this)"> Select All</label>
                 <div style="display:flex; gap:8px;">
-                    <button class="btn btn-dark" onclick="confirmBulkDelete('dup-list')">Delete Selected</button>
+                    <button class="btn btn-dark" onclick="confirmBulkDelete('dup-list')">DELETE SELECTED</button>
                 </div>
             </div>
             <ul class="item-list" id="dup-list"></ul>
@@ -359,7 +361,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     
     let deleteMode = "";
     let deleteTarget = null;
-    
     let duplicateOriginals = []; 
 
     const categories = {
@@ -450,14 +451,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             
             clearAllMasterCheckboxes();
 
-            // Zera o conteúdo das listas que estão escondidas para evitar que os checkboxes fantamas contem
             if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") {
                 openCategory(currentOpenCategoryViewId);
             } else {
                 document.getElementById("category-items").innerHTML = "";
             }
 
-            // Atualiza duplicatas automaticamente caso o painel delas já esteja aberto
             if(!document.getElementById('dupContainer').classList.contains('hidden')) {
                 findDuplicatesWeb();
             } else {
@@ -468,7 +467,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             if(searchVal) filterInventory(searchVal);
             else renderInventory(inventoryData, "inventory-list", "bulkInv");
             
-            updateSelectedCount(); // Força a recontagem oficial e zera os selecionados
+            updateSelectedCount(); 
             toast("Sync Complete");
         }catch(e){
             toast("Connection failed");
@@ -516,6 +515,10 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                         <svg><use href="#icon-trash"></use></svg>
                         <div class="cat-tooltip">DELETE</div>
                     </button>
+                    <button class="action-btn rezz-btn" onclick="rezzItem('${encodeURIComponent(item)}', this)">
+                        <svg><use href="#icon-objects"></use></svg>
+                        <div class="cat-tooltip">REZZ</div>
+                    </button>
                 </div>
             `;
             list.appendChild(li);
@@ -558,6 +561,34 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             toast("Bulk delivery sent ✔");
         } catch { toast("Delivery failed"); }
         
+        clearAllMasterCheckboxes();
+        checked.forEach(c => c.checked = false);
+        updateSelectedCount();
+    }
+
+    async function rezzItem(itemEncoded, btn){
+        const item = decodeURIComponent(itemEncoded);
+        btn.innerHTML = "..."; btn.disabled = true;
+        try{
+            const res = await fetch(API, { method:"POST", body:"WEB_REZZ:" + item });
+            if(res.ok) { btn.innerHTML = "✔"; toast("Rezzed"); } else { btn.innerHTML = "X"; }
+        }catch{ btn.innerHTML = "X"; }
+        setTimeout(()=>{ 
+            btn.innerHTML = `<svg><use href="#icon-objects"></use></svg><div class="cat-tooltip">REZZ</div>`; 
+            btn.disabled = false; 
+        }, 1800);
+    }
+
+    async function rezzSelected(containerId = "inventory-list"){
+        const checked = [...document.getElementById(containerId).querySelectorAll(".item-select:checked")];
+        if(!checked.length){ toast("Nothing selected"); return; }
+        const items = checked.map(c => c.value).join("\n");
+        toast("Rezzing...");
+        try {
+            await fetch(API, { method:"POST", body:"WEB_BULK_REZZ:" + items });
+            toast("Bulk rezz sent ✔");
+        } catch { toast("Rezz failed"); }
+
         clearAllMasterCheckboxes();
         checked.forEach(c => c.checked = false);
         updateSelectedCount();
@@ -675,6 +706,9 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 } else if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") {
                     openCategory(currentOpenCategoryViewId);
                 }
+                
+                if(!document.getElementById('dupContainer').classList.contains('hidden')) { findDuplicatesWeb(); }
+                
                 toast("Category Saved");
             };
             grid.appendChild(div);
