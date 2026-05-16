@@ -105,6 +105,11 @@
             outline: none;
             margin-bottom: 15px;
             font-family: 'Inter', sans-serif;
+            text-align: center; /* Centralizado para luxo extra */
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--text-dim);
         }
 
         /* Bulk Actions Bar */
@@ -149,53 +154,105 @@
         }
         .btn-bulk-deliver:hover { background: #e0e0e0; }
 
-        /* Categories Grid */
+        /* Modern Categories Grid (Bigger & Lit) */
         .cat-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            padding: 10px 0;
         }
 
         .cat-circle {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
             cursor: pointer;
             opacity: 0.6;
-            transition: all 0.2s;
-        }
-
-        .cat-circle:hover, .cat-circle.active {
-            opacity: 1;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 95px;
         }
 
         .cat-icon-bg {
-            width: 48px;
-            height: 48px;
-            background: #000;
-            border: 1px solid var(--border);
+            width: 80px;
+            height: 80px;
+            background: #050505;
+            border: 2px solid #333333;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #fff;
+            color: #888;
+            transition: all 0.3s;
         }
 
-        .cat-circle.active .cat-icon-bg {
-            border-color: #fff;
-            box-shadow: 0 0 10px rgba(255,255,255,0.1);
+        .cat-icon-bg svg {
+            width: 40px;
+            height: 40px;
+            fill: #888888; /* Cinza prateado padrão */
+            transition: fill 0.3s;
+        }
+
+        /* O efeito de "Aceso" (Glow) */
+        .cat-circle.active, .cat-circle:hover {
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+
+        .cat-circle.active .cat-icon-bg, .cat-circle:hover .cat-icon-bg {
+            border-color: #ffffff;
+            background: #111111;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+        }
+
+        .cat-circle.active .cat-icon-bg svg, .cat-circle:hover .cat-icon-bg svg {
+            fill: #ffffff; /* Branco puro quando ativo */
         }
 
         .cat-label {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: #888;
+            text-align: center;
+            transition: color 0.3s;
+        }
+
+        .cat-circle.active .cat-label {
+            color: #ffffff;
+        }
+
+        /* Perfectly Centered Empty State */
+        .empty-watermark {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .empty-watermark-title {
+            color: #f0f0f0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* Item List - CSS Grid to fix Layout */
+        .empty-watermark-sub {
+            color: #666666;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        /* Item List CSS Grid */
         .item-list {
             list-style: none;
             padding: 0;
@@ -218,6 +275,8 @@
             padding: 15px 20px;
             border-bottom: 1px solid #1a1a1a;
         }
+
+        .item:last-child { border-bottom: none; }
 
         .item-name {
             font-size: 0.9rem;
@@ -245,9 +304,7 @@
             transition: border-color 0.2s;
         }
 
-        .cat-badge:hover {
-            border-color: #fff;
-        }
+        .cat-badge:hover { border-color: #fff; }
 
         .cat-badge svg {
             width: 14px;
@@ -273,7 +330,66 @@
         .btn-delete { border-color: #4a2222; color: var(--accent-red); }
         .btn-delete:hover { border-color: var(--accent-red); }
 
-        /* Modals */
+        .footer-status {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: auto;
+            padding-top: 20px;
+        }
+        
+        .dup-list {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 10px;
+            background: #000;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .settings-group {
+            background: #0d0d0d;
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            text-align: center; /* Garantindo textos centrais nas configs */
+        }
+
+        .settings-label {
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            color: var(--text-dim);
+            line-height: 1.4;
+        }
+
+        .btn-panel {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+        .btn-panel:hover { border-color: var(--text-main); }
+        
+        /* Categoria Modal Grid */
+        .cat-selector-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        /* Modal Config */
         .modal {
             display: none;
             position: fixed;
@@ -283,7 +399,6 @@
             align-items: center;
             z-index: 1000;
         }
-
         .modal-content {
             background: var(--container-bg);
             border: 1px solid var(--border);
@@ -292,22 +407,6 @@
             width: 90%;
             border-radius: 6px;
             text-align: center;
-        }
-
-        .cat-selector-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 15px;
-        }
-
-        .footer-status {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            margin-top: auto;
-            padding-top: 20px;
         }
     </style>
 </head>
@@ -332,7 +431,7 @@
         <button type="button" class="tab-btn active" onclick="switchTab('inventory')">Inventory</button>
         <button type="button" class="tab-btn" onclick="switchTab('categories')">Categories</button>
         <button type="button" class="tab-btn" onclick="switchTab('search')">Search By</button>
-        <button type="button" class="tab-btn" onclick="switchTab('manage')">Manage</button>
+        <button type="button" class="tab-btn" onclick="switchTab('config')">Config</button>
     </div>
 
     <div id="tab-inventory" class="tab-content active">
@@ -348,27 +447,27 @@
     <div id="tab-categories" class="tab-content">
         <div class="cat-grid">
             <div class="cat-circle active" onclick="filterCategory('all', this)">
-                <div class="cat-icon-bg" style="font-size:12px; font-weight:bold;">ALL</div>
+                <div class="cat-icon-bg"><div style="font-size:16px; font-weight:700;">ALL</div></div>
                 <div class="cat-label">All Items</div>
             </div>
             <div class="cat-circle" onclick="filterCategory('clothing', this)">
-                <div class="cat-icon-bg"><svg width="24" height="24" fill="#fff"><use href="#icon-clothing"></use></svg></div>
+                <div class="cat-icon-bg"><svg><use href="#icon-clothing"></use></svg></div>
                 <div class="cat-label">Clothing</div>
             </div>
             <div class="cat-circle" onclick="filterCategory('hair', this)">
-                <div class="cat-icon-bg"><svg width="24" height="24" fill="#fff"><use href="#icon-hair"></use></svg></div>
+                <div class="cat-icon-bg"><svg><use href="#icon-hair"></use></svg></div>
                 <div class="cat-label">Hair</div>
             </div>
             <div class="cat-circle" onclick="filterCategory('accessories', this)">
-                <div class="cat-icon-bg"><svg width="24" height="24" fill="#fff"><use href="#icon-accessories"></use></svg></div>
+                <div class="cat-icon-bg"><svg><use href="#icon-accessories"></use></svg></div>
                 <div class="cat-label">Accessories</div>
             </div>
             <div class="cat-circle" onclick="filterCategory('home', this)">
-                <div class="cat-icon-bg"><svg width="24" height="24" fill="#fff"><use href="#icon-home"></use></svg></div>
+                <div class="cat-icon-bg"><svg><use href="#icon-home"></use></svg></div>
                 <div class="cat-label">Home Decor</div>
             </div>
             <div class="cat-circle" onclick="filterCategory('skybox', this)">
-                <div class="cat-icon-bg"><svg width="24" height="24" fill="#fff"><use href="#icon-skybox"></use></svg></div>
+                <div class="cat-icon-bg"><svg><use href="#icon-skybox"></use></svg></div>
                 <div class="cat-label">Skybox/Build</div>
             </div>
         </div>
@@ -383,7 +482,7 @@
     </div>
 
     <div id="tab-search" class="tab-content">
-        <input type="text" id="searchBar" placeholder="Search by name, year (e.g. 2026), or month (e.g. -05-)..." onkeyup="filterSearch()">
+        <input type="text" id="searchBar" placeholder="Type a keyword, year or month..." onkeyup="filterSearch()">
         <div class="bulk-actions" id="bulkSearch" style="display: none;">
             <label class="checkbox-label">
                 <input type="checkbox" id="selectAllSearch" class="item-cb" onclick="toggleSelectAll('searchList', this)"> Select All
@@ -393,11 +492,11 @@
         <ul class="item-list" id="searchList" style="border: none; background: transparent;"></ul>
     </div>
 
-    <div id="tab-manage" class="tab-content">
-        <div class="settings-group" style="text-align:center;">
-            <div class="settings-label">
-                <span style="color:var(--text-dim);">Future tools and management options will be placed here.</span>
-            </div>
+    <div id="tab-config" class="tab-content">
+        <div class="settings-group">
+            <div class="settings-label"><strong>Smart Duplicate Finder 🔧</strong><br><br>Scan your server for folders with identical names or SL numeric suffixes.</div>
+            <button type="button" class="btn-panel" onclick="findDuplicatesWeb()">Scan for Duplicates</button>
+            <div class="dup-list" id="dupDisplay"></div>
         </div>
     </div>
 
@@ -407,27 +506,16 @@
 <div class="modal" id="assignModal">
     <div class="modal-content">
         <div class="modal-title" style="color:var(--text-main);">Assign Category</div>
-        <div class="modal-text" id="assignModalText">Choose a category for this folder.</div>
+        <div class="modal-text" id="assignModalText" style="word-break: break-all;">Choose a category for this folder.</div>
         <div class="cat-selector-grid">
-            <div class="cat-badge" style="width:40px;height:40px;" onclick="setManualCategory('clothing')"><svg width="20" height="20"><use href="#icon-clothing"></use></svg></div>
-            <div class="cat-badge" style="width:40px;height:40px;" onclick="setManualCategory('hair')"><svg width="20" height="20"><use href="#icon-hair"></use></svg></div>
-            <div class="cat-badge" style="width:40px;height:40px;" onclick="setManualCategory('accessories')"><svg width="20" height="20"><use href="#icon-accessories"></use></svg></div>
-            <div class="cat-badge" style="width:40px;height:40px;" onclick="setManualCategory('home')"><svg width="20" height="20"><use href="#icon-home"></use></svg></div>
-            <div class="cat-badge" style="width:40px;height:40px;" onclick="setManualCategory('skybox')"><svg width="20" height="20"><use href="#icon-skybox"></use></svg></div>
-            <div class="cat-badge" style="width:40px;height:40px;" onclick="setManualCategory('none')"><svg width="20" height="20"><use href="#icon-none"></use></svg></div>
+            <div class="cat-badge" style="width:48px;height:48px;" onclick="setManualCategory('clothing')"><svg style="width:24px;height:24px;"><use href="#icon-clothing"></use></svg></div>
+            <div class="cat-badge" style="width:48px;height:48px;" onclick="setManualCategory('hair')"><svg style="width:24px;height:24px;"><use href="#icon-hair"></use></svg></div>
+            <div class="cat-badge" style="width:48px;height:48px;" onclick="setManualCategory('accessories')"><svg style="width:24px;height:24px;"><use href="#icon-accessories"></use></svg></div>
+            <div class="cat-badge" style="width:48px;height:48px;" onclick="setManualCategory('home')"><svg style="width:24px;height:24px;"><use href="#icon-home"></use></svg></div>
+            <div class="cat-badge" style="width:48px;height:48px;" onclick="setManualCategory('skybox')"><svg style="width:24px;height:24px;"><use href="#icon-skybox"></use></svg></div>
+            <div class="cat-badge" style="width:48px;height:48px;" onclick="setManualCategory('none')"><svg style="width:24px;height:24px;"><use href="#icon-none"></use></svg></div>
         </div>
-        <button type="button" class="btn-panel" style="margin-top:20px;" onclick="closeAssignModal()">Cancel</button>
-    </div>
-</div>
-
-<div class="modal" id="deleteModal">
-    <div class="modal-content">
-        <div class="modal-title">⚠️ CAUTION: Are you sure?</div>
-        <div class="modal-text" id="deleteModalText">This action will permanently remove the folder from the server's contents.</div>
-        <div class="modal-buttons">
-            <button type="button" class="btn-panel btn-delete" id="confirmDeleteBtn">Yes, Delete</button>
-            <button type="button" class="btn-panel" onclick="closeDeleteModal()">Cancel</button>
-        </div>
+        <button type="button" class="btn-panel" style="margin-top:25px;" onclick="closeAssignModal()">Cancel</button>
     </div>
 </div>
 
@@ -446,17 +534,26 @@
         'hair': ['hair', 'bangs', 'ponytail', 'braid', 'curls'],
         'accessories': ['shoes', 'boots', 'sneakers', 'heels', 'necklace', 'ring', 'piercing', 'bag', 'glasses', 'hat'],
         'home': ['decor', 'house', 'couch', 'bed', 'furniture', 'lamp', 'rug', 'plant', 'chair', 'table'],
-        'skybox': ['skybox', 'build', 'room', 'studio', 'backdrop']
+        'skybox': ['skybox', 'build', 'room', 'studio', 'backdrop', 'sky']
     };
 
     function detectCategory(name) {
-        if(savedCategories[name]) return savedCategories[name]; // Priority: Manual Save
+        if(savedCategories[name]) return savedCategories[name];
         
         const lowerName = name.toLowerCase();
         for (const [cat, words] of Object.entries(keywords)) {
             if (words.some(word => lowerName.includes(word))) return cat;
         }
         return 'none';
+    }
+
+    // Centered Empty State Generator
+    function getEmptyStateHTML(title, sub) {
+        return `
+            <div class="empty-watermark">
+                <div class="empty-watermark-title">${title}</div>
+                <div class="empty-watermark-sub">${sub}</div>
+            </div>`;
     }
 
     function switchTab(tabId) {
@@ -482,13 +579,16 @@
             
             renderList(allItems, 'inventoryList', 'bulkInv');
             
+            // Apply perfectly centered placeholders
             const searchListEl = document.getElementById('searchList');
-            searchListEl.innerHTML = `<li style="text-align:center; padding:50px 20px; color:var(--text-dim);">Type in the search bar to find folders.</li>`;
+            searchListEl.innerHTML = getEmptyStateHTML("Search Engine", "Type in the bar above to find specific folders.");
             searchListEl.style.border = "none";
             searchListEl.style.background = "transparent";
             
             const catListEl = document.getElementById('catList');
-            catListEl.innerHTML = `<li style="text-align:center; padding:50px 20px; color:var(--text-dim);">Select a category above to filter.</li>`;
+            catListEl.innerHTML = getEmptyStateHTML("Category Filter", "Select an icon above to view items.");
+            catListEl.style.border = "none";
+            catListEl.style.background = "transparent";
             
         } catch (error) {
             document.getElementById('countStatus').innerText = "Connection Lost: Generate a new secure session link via your terminal.";
@@ -508,11 +608,7 @@
             if(bulkEl) bulkEl.style.display = 'none';
             listEl.style.border = "none";
             listEl.style.background = "transparent";
-            listEl.innerHTML = `
-                <div class="empty-watermark">
-                    Server inventory empty.
-                    <span>No items to manage.</span>
-                </div>`;
+            listEl.innerHTML = getEmptyStateHTML("Server inventory empty", "No matching items to display.");
             if(containerId === 'inventoryList') updateTotal();
             return;
         }
@@ -539,7 +635,6 @@
             const actions = document.createElement('div');
             actions.className = 'item-actions';
             
-            // Category Icon Badge
             const catBadge = document.createElement('div');
             catBadge.className = 'cat-badge';
             catBadge.innerHTML = getCatIcon(catClass);
@@ -575,8 +670,10 @@
 
     // CATEGORY FILTERS
     function filterCategory(cat, element) {
-        document.querySelectorAll('.cat-circle').forEach(el => el.classList.remove('active'));
-        if(element) element.classList.add('active');
+        if(element) {
+            document.querySelectorAll('.cat-circle').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+        }
         
         currentCategoryFilter = cat;
         
@@ -590,10 +687,10 @@
         renderList(filtered, 'catList', 'bulkCat');
     }
 
-    // ASSIGN CATEGORY (Local Storage)
+    // ASSIGN CATEGORY
     function openAssignModal(itemName) {
         itemToAssign = itemName;
-        document.getElementById('assignModalText').innerText = `Select category for:\n${itemName}`;
+        document.getElementById('assignModalText').innerText = itemName;
         document.getElementById('assignModal').style.display = 'flex';
     }
 
@@ -607,11 +704,12 @@
             savedCategories[itemToAssign] = catName;
             localStorage.setItem('mmc_categories', JSON.stringify(savedCategories));
             
-            // Refresh visible lists
             if(document.getElementById('tab-inventory').classList.contains('active')) {
                 renderList(allItems, 'inventoryList', 'bulkInv');
             } else if(document.getElementById('tab-categories').classList.contains('active')) {
-                filterCategory(currentCategoryFilter, null); // refresh current view
+                filterCategory(currentCategoryFilter, null);
+            } else if(document.getElementById('tab-search').classList.contains('active')) {
+                filterSearch();
             }
         }
         closeAssignModal();
@@ -625,7 +723,7 @@
         if(query === "") {
             document.getElementById('bulkSearch').style.display = 'none';
             const searchListEl = document.getElementById('searchList');
-            searchListEl.innerHTML = `<li style="text-align:center; padding:50px 20px; color:var(--text-dim);">Type in the search bar to find folders.</li>`;
+            searchListEl.innerHTML = getEmptyStateHTML("Search Engine", "Type in the bar above to find specific folders.");
             searchListEl.style.border = "none";
             searchListEl.style.background = "transparent";
             return;
@@ -679,6 +777,44 @@
         checkedBoxes.forEach(cb => batchPayload.push(cb.value));
         
         sendPost(batchPayload.join("\n"), btn, "Bulk");
+    }
+
+    // WEB-BASED DUPLICATE FINDER
+    function findDuplicatesWeb() {
+        const disp = document.getElementById('dupDisplay');
+        
+        if(allItems.length < 2) {
+            disp.style.display = 'block';
+            disp.innerHTML = "Your inventory is perfectly clean.<br>No duplicates found.";
+            return;
+        }
+        
+        let sorted = [...allItems].sort();
+        let dups = [];
+        let lastBase = "";
+
+        for(let i = 0; i < sorted.length; i++) {
+            let current = sorted[i];
+            if (i > 0) {
+                let prev = sorted[i-1];
+                if (current.startsWith(prev + " ")) {
+                    dups.push(current);
+                } else if (lastBase !== "" && current.startsWith(lastBase + " ")) {
+                    dups.push(current);
+                } else {
+                    lastBase = current;
+                }
+            } else {
+                lastBase = current;
+            }
+        }
+
+        disp.style.display = 'block';
+        if(dups.length > 0) {
+            disp.innerHTML = `<strong style="color:var(--text-main)">Found ${dups.length} possible duplicates:</strong><br><br>` + dups.map(d => `• ${d}`).join('<br>');
+        } else {
+            disp.innerHTML = "Your inventory is perfectly clean.<br>No duplicates found.";
+        }
     }
 
     loadInventory();
