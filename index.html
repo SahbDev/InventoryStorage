@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>MMC Personal Inventory</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,7 @@
     --soft:#a1a1a1;
     --dim:#666;
     --danger:#ff4b4b;
-    --green:#4cff9d;
+    --green:#67ff9c;
     --transition:all .22s ease;
 }
 
@@ -74,39 +74,6 @@ h1{
     letter-spacing:1px;
 }
 
-.top-status{
-    margin-top:20px;
-    display:flex;
-    justify-content:center;
-    gap:14px;
-    flex-wrap:wrap;
-}
-
-.status-box{
-    background:#0d0d0d;
-    border:1px solid #222;
-    border-radius:16px;
-    padding:12px 16px;
-    min-width:120px;
-}
-
-.status-label{
-    font-size:.62rem;
-    color:#777;
-    text-transform:uppercase;
-    letter-spacing:1px;
-}
-
-.status-value{
-    margin-top:6px;
-    font-size:.9rem;
-    font-weight:700;
-}
-
-.online{
-    color:var(--green);
-}
-
 .tabs{
     display:flex;
     justify-content:center;
@@ -149,21 +116,6 @@ h1{
     display:block;
 }
 
-.search-bar{
-    margin-bottom:18px;
-}
-
-.search-input{
-    width:100%;
-    background:#0c0c0c;
-    border:1px solid #232323;
-    border-radius:18px;
-    padding:16px;
-    color:#fff;
-    font-size:.9rem;
-    outline:none;
-}
-
 .bulk-actions{
     display:flex;
     justify-content:center;
@@ -177,6 +129,7 @@ h1{
     width:fit-content;
     margin-left:auto;
     margin-right:auto;
+    flex-wrap:wrap;
 }
 
 .checkbox-label{
@@ -193,8 +146,7 @@ h1{
     accent-color:#fff;
 }
 
-.btn-bulk-deliver,
-.remote-btn{
+.btn-bulk-deliver{
     background:#fff;
     color:#000;
     border:none;
@@ -207,17 +159,61 @@ h1{
     letter-spacing:1px;
 }
 
-.remote-panel{
-    display:flex;
-    gap:12px;
-    flex-wrap:wrap;
-    justify-content:center;
-    margin-bottom:20px;
+.btn-bulk-deliver:hover{
+    transform:translateY(-1px);
 }
 
-.remote-btn.danger{
-    background:#ff4b4b;
-    color:#fff;
+.cat-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(105px,1fr));
+    gap:24px;
+}
+
+.cat-circle{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+    cursor:pointer;
+    transition:var(--transition);
+}
+
+.cat-circle:hover{
+    transform:translateY(-4px);
+}
+
+.cat-icon-bg{
+    width:88px;
+    height:88px;
+    border-radius:26px;
+    background:linear-gradient(180deg,#181818,#0d0d0d);
+    border:1px solid #262626;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    transition:var(--transition);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.03),
+        0 18px 35px rgba(0,0,0,.45);
+}
+
+.cat-circle:hover .cat-icon-bg{
+    border-color:#4e4e4e;
+}
+
+.cat-icon-bg svg{
+    width:42px;
+    height:42px;
+    fill:#f3f3f3;
+}
+
+.cat-label{
+    font-size:.65rem;
+    letter-spacing:1.4px;
+    font-weight:700;
+    text-transform:uppercase;
+    color:#9c9c9c;
+    text-align:center;
 }
 
 .item-list{
@@ -255,27 +251,45 @@ h1{
     gap:10px;
 }
 
-.item-btn{
-    border:none;
-    cursor:pointer;
+.action-btn{
+    background:#111;
+    border:1px solid #2a2a2a;
+    color:#fff;
+    padding:10px 14px;
     border-radius:12px;
-    padding:10px 12px;
+    cursor:pointer;
     font-size:.62rem;
-    font-weight:800;
-    letter-spacing:1px;
-    text-transform:uppercase;
-    transition:all .2s ease;
+    font-weight:700;
+    transition:var(--transition);
 }
 
-.deliver-btn{
-    background:#fff;
-    color:#000;
+.action-btn:hover{
+    border-color:#555;
 }
 
-.delete-btn{
-    background:#1a1a1a;
-    color:#ff5a5a;
-    border:1px solid #2f2f2f;
+.action-btn.delete{
+    border-color:#3a1515;
+    color:#ff9090;
+}
+
+.action-btn.delete:hover{
+    background:#220d0d;
+}
+
+.empty-watermark{
+    padding:80px 20px;
+    text-align:center;
+}
+
+.empty-watermark-title{
+    font-size:1rem;
+    font-weight:700;
+    letter-spacing:2px;
+    margin-bottom:10px;
+}
+
+.empty-watermark-sub{
+    color:#666;
 }
 
 .footer-status{
@@ -285,27 +299,39 @@ h1{
     color:#666;
 }
 
-.toast{
-    position:fixed;
-    bottom:24px;
-    left:50%;
-    transform:translateX(-50%);
-    background:#111;
-    border:1px solid #2b2b2b;
+.search-box{
+    width:100%;
+    padding:16px 18px;
+    background:#0c0c0c;
+    border:1px solid #232323;
+    border-radius:18px;
     color:#fff;
-    padding:14px 18px;
-    border-radius:14px;
-    opacity:0;
-    pointer-events:none;
-    transition:.25s ease;
-    z-index:999;
-    font-size:.75rem;
-    letter-spacing:.5px;
+    outline:none;
+    margin-bottom:18px;
+    font-size:.9rem;
 }
 
-.toast.show{
-    opacity:1;
-    transform:translateX(-50%) translateY(-6px);
+.search-box:focus{
+    border-color:#4e4e4e;
+}
+
+.status-online{
+    color:var(--green);
+}
+
+.status-error{
+    color:#ff7676;
+}
+
+.back-btn{
+    margin-bottom:18px;
+    background:#111;
+    border:1px solid #262626;
+    color:#fff;
+    padding:12px 16px;
+    border-radius:14px;
+    cursor:pointer;
+    font-weight:700;
 }
 
 </style>
@@ -315,68 +341,32 @@ h1{
 <div class="container">
 
 <header>
-
 <h1>✦ PERSONAL INVENTORY</h1>
-
-<div class="subtitle">
-powered by Saori Suki
-</div>
-
-<div class="top-status">
-
-<div class="status-box">
-<div class="status-label">STATUS</div>
-<div class="status-value online" id="statusText">
-ONLINE
-</div>
-</div>
-
-<div class="status-box">
-<div class="status-label">FOLDERS</div>
-<div class="status-value" id="folderCount">
-0
-</div>
-</div>
-
-<div class="status-box">
-<div class="status-label">SERVER</div>
-<div class="status-value" id="serverName">
-MMC
-</div>
-</div>
-
-</div>
-
+<div class="subtitle">powered by Saori Suki</div>
 </header>
 
 <div class="tabs">
 
-<button class="tab-btn active" onclick="switchTab('inventory', this)">
+<button class="tab-btn active" onclick="switchTab('inventory',this)">
 Inventory
 </button>
 
-<button class="tab-btn" onclick="switchTab('tools', this)">
-Remote
+<button class="tab-btn" onclick="switchTab('categories',this)">
+Categories
+</button>
+
+<button class="tab-btn" onclick="switchTab('search',this)">
+Search
 </button>
 
 </div>
 
 <div id="tab-inventory" class="tab-content active">
 
-<div class="search-bar">
-<input
-type="text"
-class="search-input"
-placeholder="Search folders..."
-id="searchInput"
-onkeyup="filterInventory()"
->
-</div>
-
 <div class="bulk-actions">
 
 <label class="checkbox-label">
-<input type="checkbox" class="item-cb" id="selectAll">
+<input type="checkbox" id="selectAll" class="item-cb">
 Select All
 </label>
 
@@ -390,45 +380,368 @@ Deliver Selected
 
 </div>
 
-<div id="tab-tools" class="tab-content">
+<div id="tab-categories" class="tab-content">
 
-<div class="remote-panel">
+<div id="categories-view">
 
-<button class="remote-btn" onclick="reloadInventory()">
-Refresh Inventory
+<div class="cat-grid">
+
+<div class="cat-circle" onclick="openCategory('hair')">
+<div class="cat-icon-bg">💇</div>
+<div class="cat-label">Hair</div>
+</div>
+
+<div class="cat-circle" onclick="openCategory('skin')">
+<div class="cat-icon-bg">✨</div>
+<div class="cat-label">Skin</div>
+</div>
+
+<div class="cat-circle" onclick="openCategory('mesh')">
+<div class="cat-icon-bg">🧍</div>
+<div class="cat-label">Mesh</div>
+</div>
+
+<div class="cat-circle" onclick="openCategory('clothing')">
+<div class="cat-icon-bg">👕</div>
+<div class="cat-label">Clothing</div>
+</div>
+
+<div class="cat-circle" onclick="openCategory('accessories')">
+<div class="cat-icon-bg">💎</div>
+<div class="cat-label">Accessories</div>
+</div>
+
+<div class="cat-circle" onclick="openCategory('decor')">
+<div class="cat-icon-bg">🪑</div>
+<div class="cat-label">Decor</div>
+</div>
+
+<div class="cat-circle" onclick="openCategory('houses')">
+<div class="cat-icon-bg">🏠</div>
+<div class="cat-label">Houses</div>
+</div>
+
+<div class="cat-circle" onclick="openCategory('textures')">
+<div class="cat-icon-bg">🧩</div>
+<div class="cat-label">Textures</div>
+</div>
+
+</div>
+
+</div>
+
+<div id="category-items-view" style="display:none;">
+
+<button class="back-btn" onclick="closeCategory()">
+← Back
 </button>
 
-<button class="remote-btn danger" onclick="resetServer()">
-Reset Script
-</button>
+<ul class="item-list" id="category-list"></ul>
 
 </div>
 
 </div>
 
-<div class="footer-status" id="footerStatus">
-Connecting to SL API...
-</div>
+<div id="tab-search" class="tab-content">
+
+<input
+type="text"
+class="search-box"
+placeholder="Search inventory..."
+oninput="searchInventory(this.value)"
+>
+
+<ul class="item-list" id="search-results"></ul>
 
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="footer-status" id="statusText">
+Connecting...
+</div>
+
+</div>
 
 <script>
 
-const urlParams = new URLSearchParams(window.location.search);
-const apiURL = urlParams.get("api");
+const params = new URLSearchParams(location.search);
+const api = params.get("api");
 
-let inventoryData = [];
-let filteredData = [];
+let inventory = [];
 
-if(!apiURL){
-    document.getElementById("footerStatus").innerText = "Missing SL API.";
-}else{
+if(!api){
+    document.getElementById("statusText").innerHTML =
+    '<span class="status-error">Missing SL API.</span>';
+}
+else{
     loadInventory();
 }
 
-function switchTab(tabId, btnElement){
+async function loadInventory(){
+
+    try{
+
+        const response = await fetch(api);
+
+        const data = await response.json();
+
+        inventory = data.map(v=>decodeURIComponent(v));
+
+        renderInventory(inventory);
+
+        document.getElementById("statusText").innerHTML =
+        '<span class="status-online">Inventory connected successfully.</span>';
+
+    }catch(err){
+
+        console.error(err);
+
+        document.getElementById("statusText").innerHTML =
+        '<span class="status-error">Connection failed.</span>';
+    }
+}
+
+function renderInventory(items){
+
+    const list = document.getElementById("inventory-list");
+
+    list.innerHTML = "";
+
+    if(!items.length){
+
+        list.innerHTML = `
+        <div class="empty-watermark">
+            <div class="empty-watermark-title">
+            Empty
+            </div>
+            <div class="empty-watermark-sub">
+            No folders detected.
+            </div>
+        </div>
+        `;
+
+        return;
+    }
+
+    items.forEach(item=>{
+
+        const li = document.createElement("li");
+
+        li.className = "item";
+
+        li.innerHTML = `
+        <input type="checkbox" class="item-cb itemCheck" value="${escapeHtml(item)}">
+
+        <div class="item-name">${escapeHtml(item)}</div>
+
+        <div class="item-actions">
+
+            <button class="action-btn" onclick="deliverItem(this,'${escapeJs(item)}')">
+            Deliver
+            </button>
+
+            <button class="action-btn delete" onclick="deleteItem(this,'${escapeJs(item)}')">
+            Delete
+            </button>
+
+        </div>
+        `;
+
+        list.appendChild(li);
+
+    });
+}
+
+async function deliverItem(btn,item){
+
+    const original = btn.innerText;
+
+    btn.innerText = "Wait...";
+
+    try{
+
+        await fetch(api,{
+            method:"POST",
+            body:item
+        });
+
+        btn.innerText = "Done ✔";
+
+    }catch{
+
+        btn.innerText = "Error";
+
+    }
+
+    setTimeout(()=>{
+        btn.innerText = original;
+    },2000);
+}
+
+async function deleteItem(btn,item){
+
+    const original = btn.innerText;
+
+    btn.innerText = "Wait...";
+
+    try{
+
+        await fetch(api,{
+            method:"POST",
+            body:"MENU_DEL:" + item
+        });
+
+        btn.innerText = "Check SL";
+
+    }catch{
+
+        btn.innerText = "Error";
+
+    }
+
+    setTimeout(()=>{
+        btn.innerText = original;
+    },2500);
+}
+
+async function deliverSelected(){
+
+    const checked = [...document.querySelectorAll(".itemCheck:checked")];
+
+    if(!checked.length) return;
+
+    const payload = checked.map(cb=>cb.value).join("\n");
+
+    const btn = document.querySelector(".btn-bulk-deliver");
+
+    const old = btn.innerText;
+
+    btn.innerText = "Sending...";
+
+    try{
+
+        await fetch(api,{
+            method:"POST",
+            body:payload
+        });
+
+        btn.innerText = "Delivered ✔";
+
+    }catch{
+
+        btn.innerText = "Error";
+
+    }
+
+    setTimeout(()=>{
+        btn.innerText = old;
+    },2200);
+}
+
+document.getElementById("selectAll").addEventListener("change",e=>{
+
+    document.querySelectorAll(".itemCheck").forEach(cb=>{
+        cb.checked = e.target.checked;
+    });
+
+});
+
+function searchInventory(query){
+
+    query = query.toLowerCase();
+
+    const results = inventory.filter(v=>
+        v.toLowerCase().includes(query)
+    );
+
+    renderSearch(results);
+}
+
+function renderSearch(results){
+
+    const list = document.getElementById("search-results");
+
+    list.innerHTML = "";
+
+    results.forEach(item=>{
+
+        const li = document.createElement("li");
+
+        li.className = "item";
+
+        li.innerHTML = `
+        <div class="item-name">${escapeHtml(item)}</div>
+
+        <div class="item-actions">
+
+            <button class="action-btn" onclick="deliverItem(this,'${escapeJs(item)}')">
+            Deliver
+            </button>
+
+        </div>
+        `;
+
+        list.appendChild(li);
+
+    });
+}
+
+function openCategory(cat){
+
+    document.getElementById("categories-view").style.display = "none";
+
+    document.getElementById("category-items-view").style.display = "block";
+
+    const list = document.getElementById("category-list");
+
+    list.innerHTML = "";
+
+    const filtered = inventory.filter(v=>{
+
+        const lower = v.toLowerCase();
+
+        if(cat==="hair") return lower.includes("hair");
+        if(cat==="skin") return lower.includes("skin");
+        if(cat==="mesh") return lower.includes("mesh");
+        if(cat==="clothing") return lower.includes("shirt") || lower.includes("pant") || lower.includes("outfit");
+        if(cat==="accessories") return lower.includes("access");
+        if(cat==="decor") return lower.includes("decor");
+        if(cat==="houses") return lower.includes("house");
+        if(cat==="textures") return lower.includes("texture");
+
+        return false;
+    });
+
+    filtered.forEach(item=>{
+
+        const li = document.createElement("li");
+
+        li.className = "item";
+
+        li.innerHTML = `
+        <div class="item-name">${escapeHtml(item)}</div>
+
+        <div class="item-actions">
+
+            <button class="action-btn" onclick="deliverItem(this,'${escapeJs(item)}')">
+            Deliver
+            </button>
+
+        </div>
+        `;
+
+        list.appendChild(li);
+
+    });
+}
+
+function closeCategory(){
+
+    document.getElementById("categories-view").style.display = "block";
+
+    document.getElementById("category-items-view").style.display = "none";
+}
+
+function switchTab(tabId,btnElement){
 
     document.querySelectorAll('.tab-btn').forEach(btn=>{
         btn.classList.remove('active');
@@ -443,266 +756,18 @@ function switchTab(tabId, btnElement){
     btnElement.classList.add('active');
 }
 
-async function loadInventory(){
+function escapeHtml(str){
 
-    try{
-
-        document.getElementById("footerStatus").innerText = "Loading inventory...";
-
-        const res = await fetch(apiURL);
-        const data = await res.json();
-
-        inventoryData = data;
-        filteredData = data;
-
-        renderInventory();
-
-        document.getElementById("folderCount").innerText = data.length;
-
-        document.getElementById("footerStatus").innerText =
-        "Inventory connected successfully.";
-
-    }catch(e){
-
-        console.error(e);
-
-        document.getElementById("footerStatus").innerText =
-        "Connection failed.";
-
-        showToast("Failed to connect.");
-
-    }
-}
-
-function renderInventory(){
-
-    const list = document.getElementById("inventory-list");
-
-    list.innerHTML = "";
-
-    if(filteredData.length === 0){
-
-        list.innerHTML = `
-        <div style="padding:70px 20px;text-align:center;color:#666;">
-            No folders found.
-        </div>
-        `;
-
-        return;
-    }
-
-    filteredData.forEach(item=>{
-
-        const li = document.createElement("li");
-        li.className = "item";
-
-        li.innerHTML = `
-
-        <input type="checkbox" class="item-cb folder-check" value="${escapeHtml(item)}">
-
-        <div class="item-name">${escapeHtml(item)}</div>
-
-        <div class="item-actions">
-
-            <button
-            class="item-btn deliver-btn"
-            onclick="deliverItem('${escapeJs(item)}', this)">
-            Deliver
-            </button>
-
-            <button
-            class="item-btn delete-btn"
-            onclick="deleteItem('${escapeJs(item)}', this)">
-            Delete
-            </button>
-
-        </div>
-        `;
-
-        list.appendChild(li);
-
-    });
-
-}
-
-function filterInventory(){
-
-    const q = document.getElementById("searchInput")
-    .value
-    .toLowerCase()
-    .trim();
-
-    filteredData = inventoryData.filter(item=>
-        item.toLowerCase().includes(q)
-    );
-
-    renderInventory();
-}
-
-async function deliverItem(item, btn){
-
-    const old = btn.innerText;
-
-    btn.innerText = "WAIT...";
-    btn.disabled = true;
-
-    try{
-
-        const res = await fetch(apiURL,{
-            method:"POST",
-            body:item
-        });
-
-        if(res.ok){
-
-            btn.innerText = "DONE ✓";
-
-            showToast("Delivered: " + item);
-
-        }else{
-
-            btn.innerText = "ERROR";
-
-        }
-
-    }catch(e){
-
-        btn.innerText = "ERROR";
-
-    }
-
-    setTimeout(()=>{
-        btn.innerText = old;
-        btn.disabled = false;
-    },2000);
-}
-
-async function deleteItem(item, btn){
-
-    const old = btn.innerText;
-
-    btn.innerText = "WAIT...";
-    btn.disabled = true;
-
-    try{
-
-        const res = await fetch(apiURL,{
-            method:"POST",
-            body:"MENU_DEL:" + item
-        });
-
-        if(res.ok){
-
-            btn.innerText = "CHECK SL";
-
-            showToast("Confirm deletion in Second Life.");
-
-        }else{
-
-            btn.innerText = "ERROR";
-
-        }
-
-    }catch(e){
-
-        btn.innerText = "ERROR";
-
-    }
-
-    setTimeout(()=>{
-        btn.innerText = old;
-        btn.disabled = false;
-    },3000);
-}
-
-async function deliverSelected(){
-
-    const checks = document.querySelectorAll(".folder-check:checked");
-
-    if(checks.length === 0){
-        showToast("No folders selected.");
-        return;
-    }
-
-    const names = [];
-
-    checks.forEach(c=>{
-        names.push(c.value);
-    });
-
-    try{
-
-        await fetch(apiURL,{
-            method:"POST",
-            body:names.join("\n")
-        });
-
-        showToast("Bulk delivery completed.");
-
-    }catch(e){
-
-        showToast("Bulk delivery failed.");
-
-    }
-}
-
-async function resetServer(){
-
-    if(!confirm("Reset script?")) return;
-
-    try{
-
-        await fetch(apiURL,{
-            method:"POST",
-            body:"CMD:RESET"
-        });
-
-        showToast("Server reset executed.");
-
-    }catch(e){
-
-        showToast("Reset failed.");
-
-    }
-}
-
-function reloadInventory(){
-    loadInventory();
-    showToast("Refreshing inventory...");
-}
-
-document.getElementById("selectAll")
-.addEventListener("change",function(){
-
-    document.querySelectorAll(".folder-check")
-    .forEach(cb=>{
-        cb.checked = this.checked;
-    });
-
-});
-
-function showToast(msg){
-
-    const toast = document.getElementById("toast");
-
-    toast.innerText = msg;
-
-    toast.classList.add("show");
-
-    setTimeout(()=>{
-        toast.classList.remove("show");
-    },2500);
-}
-
-function escapeHtml(text){
-    return text
+    return str
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;");
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;");
 }
 
-function escapeJs(text){
-    return text
+function escapeJs(str){
+
+    return str
     .replaceAll("\\","\\\\")
     .replaceAll("'","\\'");
 }
