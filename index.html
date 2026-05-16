@@ -31,7 +31,7 @@
 
         .container {
             width: 100%;
-            max-width: 650px;
+            max-width: 700px;
             background-color: var(--container-bg);
             border-left: 1px solid var(--border);
             border-right: 1px solid var(--border);
@@ -89,15 +89,10 @@
             color: var(--text-main);
         }
 
-        .tab-content {
-            display: none;
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Inputs & Textareas */
+        /* Inputs */
         input[type="text"] {
             width: 100%;
             padding: 12px 15px;
@@ -110,10 +105,6 @@
             outline: none;
             margin-bottom: 15px;
             font-family: 'Inter', sans-serif;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--text-dim);
         }
 
         /* Bulk Actions Bar */
@@ -156,33 +147,55 @@
             border-radius: 2px;
             transition: background 0.2s;
         }
+        .btn-bulk-deliver:hover { background: #e0e0e0; }
 
-        .btn-bulk-deliver:hover {
-            background: #e0e0e0;
+        /* Categories Grid */
+        .cat-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
         }
 
-        /* Empty State Watermark */
-        .empty-watermark {
-            text-align: center;
-            padding: 50px 20px;
-            color: #333333;
-            font-size: 1.2rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .cat-circle {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.2s;
         }
 
-        .empty-watermark span {
-            font-size: 0.85rem;
-            font-weight: 400;
-            letter-spacing: 0;
-            color: #222222;
+        .cat-circle:hover, .cat-circle.active {
+            opacity: 1;
         }
 
-        /* Item List */
+        .cat-icon-bg {
+            width: 48px;
+            height: 48px;
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .cat-circle.active .cat-icon-bg {
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(255,255,255,0.1);
+        }
+
+        .cat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Item List - CSS Grid to fix Layout */
         .item-list {
             list-style: none;
             padding: 0;
@@ -198,28 +211,48 @@
         .item-list::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
 
         .item {
-            display: flex;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 15px;
             align-items: center;
             padding: 15px 20px;
             border-bottom: 1px solid #1a1a1a;
         }
 
-        .item:last-child {
-            border-bottom: none;
-        }
-
         .item-name {
             font-size: 0.9rem;
-            flex-grow: 1;
-            word-break: break-all;
-            padding-right: 15px;
-            padding-left: 12px;
             color: #ffffff;
+            word-break: break-word;
+            line-height: 1.4;
         }
 
         .item-actions {
             display: flex;
+            align-items: center;
             gap: 10px;
+        }
+
+        .cat-badge {
+            width: 28px;
+            height: 28px;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .cat-badge:hover {
+            border-color: #fff;
+        }
+
+        .cat-badge svg {
+            width: 14px;
+            height: 14px;
+            fill: #fff;
         }
 
         .btn-action {
@@ -233,52 +266,40 @@
             cursor: pointer;
             border-radius: 2px;
             transition: border-color 0.2s;
+            white-space: nowrap;
         }
 
-        .btn-action:hover {
-            border-color: #ffffff;
+        .btn-action:hover { border-color: #ffffff; }
+        .btn-delete { border-color: #4a2222; color: var(--accent-red); }
+        .btn-delete:hover { border-color: var(--accent-red); }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
 
-        .btn-delete {
-            border-color: #4a2222;
-            color: var(--accent-red);
-        }
-
-        .btn-delete:hover {
-            border-color: var(--accent-red);
-        }
-
-        /* Config / Panels */
-        .settings-group {
-            background: #0d0d0d;
+        .modal-content {
+            background: var(--container-bg);
             border: 1px solid var(--border);
-            padding: 20px;
-            border-radius: 4px;
-            margin-bottom: 15px;
+            padding: 25px;
+            max-width: 400px;
+            width: 90%;
+            border-radius: 6px;
+            text-align: center;
         }
 
-        .settings-label {
-            font-size: 0.85rem;
-            margin-bottom: 12px;
-            color: var(--text-dim);
-            line-height: 1.4;
-        }
-
-        .btn-panel {
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 10px 20px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: border-color 0.2s;
-            width: 100%;
-        }
-
-        .btn-panel:hover {
-            border-color: var(--text-main);
+        .cat-selector-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
         }
 
         .footer-status {
@@ -288,20 +309,18 @@
             margin-top: auto;
             padding-top: 20px;
         }
-        
-        .dup-list {
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            margin-top: 10px;
-            background: #000;
-            padding: 10px;
-            border-radius: 4px;
-            display: none;
-            border: 1px solid var(--border);
-        }
     </style>
 </head>
 <body>
+
+<svg style="display:none;">
+    <symbol id="icon-clothing" viewBox="0 0 24 24"><path d="M20.5 5.5l-4-3c-.6-.4-1.2-.5-1.5-.5h-6c-.3 0-.9.1-1.5.5l-4 3c-.5.4-.5 1-.5 1.5v3c0 .5.5.5 1 .5h1v10c0 .6.4 1 1 1h10c.6 0 1-.4 1-1v-10h1c.5 0 1-.2 1-.5v-3c0-.5 0-1-.5-1.5zM12 5c1 0 2 .5 2 .5s-1 1-2 1-2-1-2-1 1-.5 2-.5z"/></symbol>
+    <symbol id="icon-hair" viewBox="0 0 24 24"><path d="M12 2c-4.4 0-8 3.6-8 8v5c0 1.1.9 2 2 2h1.5v3c0 1.1.9 2 2 2h5c1.1 0 2-.9 2-2v-3H18c1.1 0 2-.9 2-2v-5c0-4.4-3.6-8-8-8zm-1 17H9v-3h2v3zm4 0h-2v-3h2v3zm1-5H8v-4c0-2.2 1.8-4 4-4s4 1.8 4 4v4z"/></symbol>
+    <symbol id="icon-accessories" viewBox="0 0 24 24"><path d="M21 16v-2c0-1.5-1.4-2.8-3.1-3.4-.6-.2-1.3-.3-1.9-.3h-3v-2.1c.6-.4 1-1.1 1-1.9V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2.3c0 .8.4 1.5 1 1.9V10.3h-3c-.6 0-1.3.1-1.9.3C3.4 11.2 2 12.5 2 14v2c0 1.1.9 2 2 2h3.2l1.6 4.1c.1.4.5.7.9.7h4.6c.4 0 .8-.3.9-.7l1.6-4.1H21c-1.1 0-2-.9-2-2zm-12-9h6v1h-6V7zm4.5-3v1h-3V4h3zM13 10.3v3.7h-2v-3.7h2zM9.4 20l-1.1-3h7.4l-1.1 3H9.4zM4 14c0-.6.7-1.3 1.8-1.7.7-.2 1.5-.3 2.2-.3h8c.7 0 1.5.1 2.2.3 1.1.4 1.8 1.1 1.8 1.7v2H4v-2z"/></symbol>
+    <symbol id="icon-home" viewBox="0 0 24 24"><path d="M12 3L2 12h3v8h14v-8h3L12 3zm5 15h-10v-6.5l5-4.5 5 4.5V18z"/></symbol>
+    <symbol id="icon-skybox" viewBox="0 0 24 24"><path d="M20 7.2L12 3 4 7.2v9.6L12 21l8-4.2V7.2zm-8 11.4l-6-3.1V10.8l6 3.1v4.7zm1-5.7L7.1 9.8 12 7.2l4.9 2.6-5.9 3.1zm6 1v4.7l-6 3.1v-4.7l6-3.1z"/></symbol>
+    <symbol id="icon-none" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm1 16h-2v-2h2v2zm0-4h-2V9c0-1.1.9-2 2-2s2 .9 2 2v1c0 1.1-.9 2-2 2v2z"/></symbol>
+</svg>
 
 <div class="container">
     <header>
@@ -311,9 +330,9 @@
 
     <div class="tabs">
         <button type="button" class="tab-btn active" onclick="switchTab('inventory')">Inventory</button>
+        <button type="button" class="tab-btn" onclick="switchTab('categories')">Categories</button>
         <button type="button" class="tab-btn" onclick="switchTab('search')">Search By</button>
         <button type="button" class="tab-btn" onclick="switchTab('manage')">Manage</button>
-        <button type="button" class="tab-btn" onclick="switchTab('config')">Config</button>
     </div>
 
     <div id="tab-inventory" class="tab-content active">
@@ -324,6 +343,43 @@
             <button type="button" class="btn-bulk-deliver" onclick="deliverSelected('inventoryList')">Deliver Selected</button>
         </div>
         <ul class="item-list" id="inventoryList" style="border: none; background: transparent;"></ul>
+    </div>
+
+    <div id="tab-categories" class="tab-content">
+        <div class="cat-grid">
+            <div class="cat-circle active" onclick="filterCategory('all', this)">
+                <div class="cat-icon-bg" style="font-size:12px; font-weight:bold;">ALL</div>
+                <div class="cat-label">All Items</div>
+            </div>
+            <div class="cat-circle" onclick="filterCategory('clothing', this)">
+                <div class="cat-icon-bg"><svg width="24" height="24" fill="#fff"><use href="#icon-clothing"></use></svg></div>
+                <div class="cat-label">Clothing</div>
+            </div>
+            <div class="cat-circle" onclick="filterCategory('hair', this)">
+                <div class="cat-icon-bg"><svg width="24" height="24" fill="#fff"><use href="#icon-hair"></use></svg></div>
+                <div class="cat-label">Hair</div>
+            </div>
+            <div class="cat-circle" onclick="filterCategory('accessories', this)">
+                <div class="cat-icon-bg"><svg width="24" height="24" fill="#fff"><use href="#icon-accessories"></use></svg></div>
+                <div class="cat-label">Accessories</div>
+            </div>
+            <div class="cat-circle" onclick="filterCategory('home', this)">
+                <div class="cat-icon-bg"><svg width="24" height="24" fill="#fff"><use href="#icon-home"></use></svg></div>
+                <div class="cat-label">Home Decor</div>
+            </div>
+            <div class="cat-circle" onclick="filterCategory('skybox', this)">
+                <div class="cat-icon-bg"><svg width="24" height="24" fill="#fff"><use href="#icon-skybox"></use></svg></div>
+                <div class="cat-label">Skybox/Build</div>
+            </div>
+        </div>
+        
+        <div class="bulk-actions" id="bulkCat" style="display: none;">
+            <label class="checkbox-label">
+                <input type="checkbox" id="selectAllCat" class="item-cb" onclick="toggleSelectAll('catList', this)"> Select All
+            </label>
+            <button type="button" class="btn-bulk-deliver" onclick="deliverSelected('catList')">Deliver Selected</button>
+        </div>
+        <ul class="item-list" id="catList" style="border: none; background: transparent;"></ul>
     </div>
 
     <div id="tab-search" class="tab-content">
@@ -338,29 +394,70 @@
     </div>
 
     <div id="tab-manage" class="tab-content">
-        <div class="settings-group">
-            <div class="settings-label" style="text-align:center;">
-                <strong>Manage Options</strong><br><br>
+        <div class="settings-group" style="text-align:center;">
+            <div class="settings-label">
                 <span style="color:var(--text-dim);">Future tools and management options will be placed here.</span>
             </div>
-        </div>
-    </div>
-
-    <div id="tab-config" class="tab-content">
-        <div class="settings-group">
-            <div class="settings-label"><strong>Smart Duplicate Finder 🔧</strong><br>Scan your server for folders with identical names or SL numeric suffixes (e.g. "Item", "Item 1").</div>
-            <button type="button" class="btn-panel" onclick="findDuplicatesWeb()">Scan for Duplicates</button>
-            <div class="dup-list" id="dupDisplay"></div>
         </div>
     </div>
 
     <div class="footer-status" id="countStatus">Initialising connection...</div>
 </div>
 
+<div class="modal" id="assignModal">
+    <div class="modal-content">
+        <div class="modal-title" style="color:var(--text-main);">Assign Category</div>
+        <div class="modal-text" id="assignModalText">Choose a category for this folder.</div>
+        <div class="cat-selector-grid">
+            <div class="cat-badge" style="width:40px;height:40px;" onclick="setManualCategory('clothing')"><svg width="20" height="20"><use href="#icon-clothing"></use></svg></div>
+            <div class="cat-badge" style="width:40px;height:40px;" onclick="setManualCategory('hair')"><svg width="20" height="20"><use href="#icon-hair"></use></svg></div>
+            <div class="cat-badge" style="width:40px;height:40px;" onclick="setManualCategory('accessories')"><svg width="20" height="20"><use href="#icon-accessories"></use></svg></div>
+            <div class="cat-badge" style="width:40px;height:40px;" onclick="setManualCategory('home')"><svg width="20" height="20"><use href="#icon-home"></use></svg></div>
+            <div class="cat-badge" style="width:40px;height:40px;" onclick="setManualCategory('skybox')"><svg width="20" height="20"><use href="#icon-skybox"></use></svg></div>
+            <div class="cat-badge" style="width:40px;height:40px;" onclick="setManualCategory('none')"><svg width="20" height="20"><use href="#icon-none"></use></svg></div>
+        </div>
+        <button type="button" class="btn-panel" style="margin-top:20px;" onclick="closeAssignModal()">Cancel</button>
+    </div>
+</div>
+
+<div class="modal" id="deleteModal">
+    <div class="modal-content">
+        <div class="modal-title">⚠️ CAUTION: Are you sure?</div>
+        <div class="modal-text" id="deleteModalText">This action will permanently remove the folder from the server's contents.</div>
+        <div class="modal-buttons">
+            <button type="button" class="btn-panel btn-delete" id="confirmDeleteBtn">Yes, Delete</button>
+            <button type="button" class="btn-panel" onclick="closeDeleteModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const slApiUrl = urlParams.get('api');
+    
     let allItems = [];
+    let savedCategories = JSON.parse(localStorage.getItem('mmc_categories')) || {};
+    let itemToAssign = "";
+    let currentCategoryFilter = "all";
+
+    // Smart Auto-Detector Logic
+    const keywords = {
+        'clothing': ['shirt', 'pants', 'dress', 'jacket', 'top', 'skirt', 'jeans', 'apparel', 'outfit', 'suit', 'hoodie', 'shorts', 'bra'],
+        'hair': ['hair', 'bangs', 'ponytail', 'braid', 'curls'],
+        'accessories': ['shoes', 'boots', 'sneakers', 'heels', 'necklace', 'ring', 'piercing', 'bag', 'glasses', 'hat'],
+        'home': ['decor', 'house', 'couch', 'bed', 'furniture', 'lamp', 'rug', 'plant', 'chair', 'table'],
+        'skybox': ['skybox', 'build', 'room', 'studio', 'backdrop']
+    };
+
+    function detectCategory(name) {
+        if(savedCategories[name]) return savedCategories[name]; // Priority: Manual Save
+        
+        const lowerName = name.toLowerCase();
+        for (const [cat, words] of Object.entries(keywords)) {
+            if (words.some(word => lowerName.includes(word))) return cat;
+        }
+        return 'none';
+    }
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -368,6 +465,8 @@
         
         event.target.classList.add('active');
         document.getElementById(`tab-${tabId}`).classList.add('active');
+        
+        if(tabId === 'categories') filterCategory('all', document.querySelector('.cat-circle'));
     }
 
     async function loadInventory() {
@@ -388,9 +487,16 @@
             searchListEl.style.border = "none";
             searchListEl.style.background = "transparent";
             
+            const catListEl = document.getElementById('catList');
+            catListEl.innerHTML = `<li style="text-align:center; padding:50px 20px; color:var(--text-dim);">Select a category above to filter.</li>`;
+            
         } catch (error) {
             document.getElementById('countStatus').innerText = "Connection Lost: Generate a new secure session link via your terminal.";
         }
+    }
+
+    function getCatIcon(catName) {
+        return `<svg><use href="#icon-${catName}"></use></svg>`;
     }
 
     function renderList(items, containerId, bulkId) {
@@ -407,7 +513,7 @@
                     Server inventory empty.
                     <span>No items to manage.</span>
                 </div>`;
-            updateTotal();
+            if(containerId === 'inventoryList') updateTotal();
             return;
         }
 
@@ -418,6 +524,8 @@
         items.forEach(item => {
             const li = document.createElement('li');
             li.className = 'item';
+            
+            const catClass = detectCategory(item);
             
             const cb = document.createElement('input');
             cb.type = 'checkbox';
@@ -431,6 +539,13 @@
             const actions = document.createElement('div');
             actions.className = 'item-actions';
             
+            // Category Icon Badge
+            const catBadge = document.createElement('div');
+            catBadge.className = 'cat-badge';
+            catBadge.innerHTML = getCatIcon(catClass);
+            catBadge.title = "Change Category";
+            catBadge.onclick = () => openAssignModal(item);
+            
             const btnDeliver = document.createElement('button');
             btnDeliver.className = 'btn-action';
             btnDeliver.innerText = 'Deliver';
@@ -441,19 +556,65 @@
             btnDel.innerText = 'Delete';
             btnDel.onclick = () => sendPost(`MENU_DEL:${item}`, btnDel, "OpenMenu");
             
+            actions.appendChild(catBadge);
             actions.appendChild(btnDeliver);
             actions.appendChild(btnDel);
+            
             li.appendChild(cb);
             li.appendChild(span);
             li.appendChild(actions);
             listEl.appendChild(li);
         });
 
-        updateTotal();
+        if(containerId === 'inventoryList') updateTotal();
     }
 
     function updateTotal() {
         document.getElementById('countStatus').innerText = `Total Folders Allocated: ${allItems.length}`;
+    }
+
+    // CATEGORY FILTERS
+    function filterCategory(cat, element) {
+        document.querySelectorAll('.cat-circle').forEach(el => el.classList.remove('active'));
+        if(element) element.classList.add('active');
+        
+        currentCategoryFilter = cat;
+        
+        let filtered = [];
+        if(cat === 'all') {
+            filtered = allItems;
+        } else {
+            filtered = allItems.filter(item => detectCategory(item) === cat);
+        }
+        
+        renderList(filtered, 'catList', 'bulkCat');
+    }
+
+    // ASSIGN CATEGORY (Local Storage)
+    function openAssignModal(itemName) {
+        itemToAssign = itemName;
+        document.getElementById('assignModalText').innerText = `Select category for:\n${itemName}`;
+        document.getElementById('assignModal').style.display = 'flex';
+    }
+
+    function closeAssignModal() {
+        document.getElementById('assignModal').style.display = 'none';
+        itemToAssign = "";
+    }
+
+    function setManualCategory(catName) {
+        if(itemToAssign) {
+            savedCategories[itemToAssign] = catName;
+            localStorage.setItem('mmc_categories', JSON.stringify(savedCategories));
+            
+            // Refresh visible lists
+            if(document.getElementById('tab-inventory').classList.contains('active')) {
+                renderList(allItems, 'inventoryList', 'bulkInv');
+            } else if(document.getElementById('tab-categories').classList.contains('active')) {
+                filterCategory(currentCategoryFilter, null); // refresh current view
+            }
+        }
+        closeAssignModal();
     }
 
     // SEARCH TAB LOGIC
@@ -490,7 +651,7 @@
             const response = await fetch(slApiUrl, { method: 'POST', body: payload });
             if(response.ok) {
                 if(context === "OpenMenu") {
-                    buttonEl.innerText = "Check SL"; // O SL abriu o menu azul
+                    buttonEl.innerText = "Check SL"; 
                 } else {
                     buttonEl.innerText = "Done ✔";
                 }
@@ -501,7 +662,6 @@
             buttonEl.innerText = "Failed";
         }
         
-        // Se for o botão Check SL, deixa ele por mais tempo para o cliente ler
         const delay = context === "OpenMenu" ? 4000 : 1500;
         setTimeout(() => {
             buttonEl.innerText = oldText;
@@ -519,44 +679,6 @@
         checkedBoxes.forEach(cb => batchPayload.push(cb.value));
         
         sendPost(batchPayload.join("\n"), btn, "Bulk");
-    }
-
-    // WEB-BASED DUPLICATE FINDER
-    function findDuplicatesWeb() {
-        const disp = document.getElementById('dupDisplay');
-        
-        if(allItems.length < 2) {
-            disp.style.display = 'block';
-            disp.innerHTML = "Your inventory is perfectly clean. No duplicates found.";
-            return;
-        }
-        
-        let sorted = [...allItems].sort();
-        let dups = [];
-        let lastBase = "";
-
-        for(let i = 0; i < sorted.length; i++) {
-            let current = sorted[i];
-            if (i > 0) {
-                let prev = sorted[i-1];
-                if (current.startsWith(prev + " ")) {
-                    dups.push(current);
-                } else if (lastBase !== "" && current.startsWith(lastBase + " ")) {
-                    dups.push(current);
-                } else {
-                    lastBase = current;
-                }
-            } else {
-                lastBase = current;
-            }
-        }
-
-        disp.style.display = 'block';
-        if(dups.length > 0) {
-            disp.innerHTML = `<strong style="color:var(--text-main)">Found ${dups.length} possible duplicates:</strong><br><br>` + dups.map(d => `• ${d}`).join('<br>');
-        } else {
-            disp.innerHTML = "Your inventory is perfectly clean. No duplicates found.";
-        }
     }
 
     loadInventory();
