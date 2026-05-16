@@ -62,10 +62,6 @@
             font-weight: 400;
         }
 
-        .subtitle strong {
-            color: var(--text-main);
-        }
-
         /* Tabs System */
         .tabs {
             display: flex;
@@ -102,7 +98,7 @@
         }
 
         /* Inputs & Textareas */
-        input[type="text"], textarea {
+        input[type="text"] {
             width: 100%;
             padding: 12px 15px;
             background-color: #050505;
@@ -116,16 +112,11 @@
             font-family: 'Inter', sans-serif;
         }
 
-        input[type="text"]:focus, textarea:focus {
+        input[type="text"]:focus {
             border-color: var(--text-dim);
         }
 
-        textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        /* Bulk Actions Bar (Matched to User Print) */
+        /* Bulk Actions Bar */
         .bulk-actions {
             display: flex;
             justify-content: space-between;
@@ -191,7 +182,7 @@
             color: #222222;
         }
 
-        /* Item List (Matched to User Print) */
+        /* Item List */
         .item-list {
             list-style: none;
             padding: 0;
@@ -273,11 +264,6 @@
             line-height: 1.4;
         }
 
-        .flex-row {
-            display: flex;
-            gap: 10px;
-        }
-
         .btn-panel {
             background: transparent;
             color: var(--text-main);
@@ -293,47 +279,6 @@
 
         .btn-panel:hover {
             border-color: var(--text-main);
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background: var(--container-bg);
-            border: 1px solid var(--border);
-            padding: 25px;
-            max-width: 400px;
-            width: 90%;
-            border-radius: 6px;
-            text-align: center;
-        }
-
-        .modal-title {
-            color: var(--accent-red);
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 10px;
-        }
-
-        .modal-text {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
         }
 
         .footer-status {
@@ -360,8 +305,8 @@
 
 <div class="container">
     <header>
-        <h1 id="headerTitle">✦ Personal Inventory</h1>
-        <div class="subtitle" id="connectionStatus">Connecting...</div>
+        <h1 id="headerTitle">✦ PERSONAL INVENTORY</h1>
+        <div class="subtitle">powered by Saori Suki</div>
     </header>
 
     <div class="tabs">
@@ -394,61 +339,28 @@
 
     <div id="tab-manage" class="tab-content">
         <div class="settings-group">
-            <div class="settings-label">
-                <strong>Terminal Console</strong><br>
-                Paste your folder names below (one per line) just like you would in local chat. The server will process all of them instantly.
+            <div class="settings-label" style="text-align:center;">
+                <strong>Manage Options</strong><br><br>
+                <span style="color:var(--text-dim);">Future tools and management options will be placed here.</span>
             </div>
-            <textarea id="manageInput" placeholder="/9 MY JACKET - BLACK&#10;/9 MY PANTS - BLUE&#10;/9 SNEAKERS..."></textarea>
-            <button type="button" class="btn-panel" style="background: var(--text-main); color: #000; font-weight: 600;" onclick="sendManageText(this)">Send to Server</button>
         </div>
     </div>
 
     <div id="tab-config" class="tab-content">
         <div class="settings-group">
-            <div class="settings-label"><strong>Rename Server Hashtag</strong><br>Change the object name and hashtag of your storage.</div>
-            <div class="flex-row">
-                <input type="text" id="hashtagInput" placeholder="e.g., CASUAL, FORMAL, COUTURES" style="margin:0;">
-                <button type="button" class="btn-panel" style="width: auto;" onclick="remoteRename(this)">Update</button>
-            </div>
-        </div>
-
-        <div class="settings-group">
             <div class="settings-label"><strong>Smart Duplicate Finder 🔧</strong><br>Scan your server for folders with identical names or SL numeric suffixes (e.g. "Item", "Item 1").</div>
-            <button type="button" class="btn-panel" onclick="findDuplicatesWeb(this)">Scan for Duplicates</button>
+            <button type="button" class="btn-panel" onclick="findDuplicatesWeb()">Scan for Duplicates</button>
             <div class="dup-list" id="dupDisplay"></div>
         </div>
     </div>
 
-    <div class="footer-status" id="countStatus">Initialising tracking...</div>
-</div>
-
-<div class="modal" id="deleteModal">
-    <div class="modal-content">
-        <div class="modal-title">⚠️ CAUTION: Are you sure?</div>
-        <div class="modal-text" id="deleteModalText">This action will permanently remove the folder from the server's contents.</div>
-        <div class="modal-buttons">
-            <button type="button" class="btn-panel btn-delete" id="confirmDeleteBtn">Yes, Delete</button>
-            <button type="button" class="btn-panel" onclick="closeDeleteModal()">Cancel</button>
-        </div>
-    </div>
+    <div class="footer-status" id="countStatus">Initialising connection...</div>
 </div>
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
     const slApiUrl = urlParams.get('api');
-    const urlUser = urlParams.get('user');
-    
     let allItems = [];
-    let deleteTarget = "";
-    let greetingHTML = "Connecting...";
-
-    // Set Header and Custom Greeting
-    if(urlUser) {
-        const cleanName = decodeURIComponent(urlUser).replace(/_/g, ' ');
-        document.getElementById('headerTitle').innerText = `✦ MMC Personal Manager`;
-        greetingHTML = `💜 Hi <strong>${cleanName}</strong>, How can I help you today?`;
-        document.getElementById('connectionStatus').innerHTML = greetingHTML;
-    }
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -460,8 +372,7 @@
 
     async function loadInventory() {
         if (!slApiUrl) {
-            document.getElementById('connectionStatus').innerText = "Disconnected: No Secure Token Provided.";
-            document.getElementById('countStatus').innerText = "Please access this Web App through your Second Life server menu.";
+            document.getElementById('countStatus').innerText = "Disconnected: Please access this Web App through your Second Life server menu.";
             return;
         }
 
@@ -469,13 +380,6 @@
             const response = await fetch(slApiUrl);
             const data = await response.json();
             allItems = data.map(item => decodeURIComponent(item));
-            
-            // Mantém a saudação do usuário se ela existir
-            if(greetingHTML !== "Connecting...") {
-                document.getElementById('connectionStatus').innerHTML = greetingHTML;
-            } else {
-                document.getElementById('connectionStatus').innerText = "🟢 Server Connected Successfully";
-            }
             
             renderList(allItems, 'inventoryList', 'bulkInv');
             
@@ -485,8 +389,7 @@
             searchListEl.style.background = "transparent";
             
         } catch (error) {
-            document.getElementById('connectionStatus').innerHTML = "🔴 Connection Lost or Expired";
-            document.getElementById('countStatus').innerText = "Generate a new secure session link via your terminal.";
+            document.getElementById('countStatus').innerText = "Connection Lost: Generate a new secure session link via your terminal.";
         }
     }
 
@@ -536,7 +439,7 @@
             const btnDel = document.createElement('button');
             btnDel.className = 'btn-action btn-delete';
             btnDel.innerText = 'Delete';
-            btnDel.onclick = () => openDeleteModal(item);
+            btnDel.onclick = () => sendPost(`MENU_DEL:${item}`, btnDel, "OpenMenu");
             
             actions.appendChild(btnDeliver);
             actions.appendChild(btnDel);
@@ -586,17 +489,10 @@
         try {
             const response = await fetch(slApiUrl, { method: 'POST', body: payload });
             if(response.ok) {
-                buttonEl.innerText = "Done ✔";
-                
-                if(context === "Delete") {
-                    allItems = allItems.filter(i => i !== deleteTarget);
-                    renderList(allItems, 'inventoryList', 'bulkInv');
-                    filterSearch(); 
-                    closeDeleteModal();
-                }
-                
-                if(context === "Manage") {
-                    document.getElementById('manageInput').value = "";
+                if(context === "OpenMenu") {
+                    buttonEl.innerText = "Check SL"; // O SL abriu o menu azul
+                } else {
+                    buttonEl.innerText = "Done ✔";
                 }
             } else {
                 buttonEl.innerText = "Error";
@@ -605,10 +501,12 @@
             buttonEl.innerText = "Failed";
         }
         
+        // Se for o botão Check SL, deixa ele por mais tempo para o cliente ler
+        const delay = context === "OpenMenu" ? 4000 : 1500;
         setTimeout(() => {
             buttonEl.innerText = oldText;
             buttonEl.disabled = false;
-        }, 1500);
+        }, delay);
     }
 
     function deliverSelected(containerId) {
@@ -623,35 +521,8 @@
         sendPost(batchPayload.join("\n"), btn, "Bulk");
     }
 
-    // MANAGE TAB LOGIC
-    function sendManageText(btn) {
-        const text = document.getElementById('manageInput').value.trim();
-        if(!text) return;
-        sendPost(text, btn, "Manage");
-    }
-
-    // DELETE MODAL
-    function openDeleteModal(itemName) {
-        deleteTarget = itemName;
-        document.getElementById('deleteModalText').innerText = `"${itemName}"\n\nThis action will permanently remove this folder from the server's contents.`;
-        document.getElementById('deleteModal').style.display = 'flex';
-        document.getElementById('confirmDeleteBtn').onclick = () => sendPost(`DEL:${deleteTarget}`, document.getElementById('confirmDeleteBtn'), "Delete");
-    }
-
-    function closeDeleteModal() {
-        document.getElementById('deleteModal').style.display = 'none';
-        deleteTarget = "";
-    }
-
-    // CONFIG TAB LOGIC
-    function remoteRename(btn) {
-        const name = document.getElementById('hashtagInput').value.trim();
-        if(!name) return;
-        sendPost(`CMD:RENAME:${name}`, btn, "Rename");
-    }
-
     // WEB-BASED DUPLICATE FINDER
-    function findDuplicatesWeb(btn) {
+    function findDuplicatesWeb() {
         const disp = document.getElementById('dupDisplay');
         
         if(allItems.length < 2) {
