@@ -3,37 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>MMC Personal Inventory</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 
 :root{
-    --bg:#060606;
-    --panel:#0f0f0f;
-    --panel-2:#131313;
+    --bg:#050505;
+    --panel:#101010;
+    --panel2:#141414;
 
     --line:#202020;
-    --line-soft:#171717;
+    --line2:#2a2a2a;
 
-    --text:#f5f5f5;
-    --text-soft:#b5b5b5;
-    --text-dim:#747474;
+    --text:#f3f3f3;
+    --soft:#a1a1a1;
+    --dim:#666;
 
     --danger:#ff4b4b;
 
-    --radius:24px;
-    --radius-soft:18px;
-
     --transition:all .22s ease;
-
-    --shadow:
-        0 20px 60px rgba(0,0,0,.55);
-
-    --shadow-hover:
-        0 25px 70px rgba(0,0,0,.7);
 }
 
 *{
@@ -42,20 +36,20 @@
 
 body{
     margin:0;
-    min-height:100vh;
+    padding:40px 18px;
 
     background:
-        radial-gradient(circle at top, rgba(255,255,255,.03), transparent 35%),
-        linear-gradient(to bottom,#080808,#040404);
-
-    color:var(--text);
+        radial-gradient(circle at top, rgba(255,255,255,.03), transparent 30%),
+        #060606;
 
     font-family:'Inter',sans-serif;
+
+    color:var(--text);
 
     display:flex;
     justify-content:center;
 
-    padding:40px 20px;
+    min-height:100vh;
 
     -webkit-font-smoothing:antialiased;
 }
@@ -65,111 +59,97 @@ body{
     max-width:760px;
 
     background:
-        linear-gradient(180deg,#101010,#0a0a0a);
+        linear-gradient(180deg,#111111,#0a0a0a);
 
     border:1px solid var(--line);
 
-    border-radius:32px;
+    border-radius:34px;
 
     padding:34px;
 
-    box-shadow:var(--shadow);
-
-    position:relative;
-
-    overflow:hidden;
-}
-
-.container::before{
-    content:"";
-
-    position:absolute;
-    inset:0;
-
-    background:
-        linear-gradient(180deg,rgba(255,255,255,.03),transparent 15%);
-
-    pointer-events:none;
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.65);
 }
 
 header{
     text-align:center;
-    padding-bottom:26px;
-    border-bottom:1px solid var(--line-soft);
+
+    padding-bottom:24px;
+
+    border-bottom:1px solid #1b1b1b;
 }
 
 h1{
     margin:0;
 
-    font-size:1.15rem;
-    font-weight:800;
+    font-size:1.05rem;
 
     letter-spacing:4px;
+
+    font-weight:800;
+
     text-transform:uppercase;
 }
 
 .subtitle{
     margin-top:12px;
 
-    color:var(--text-dim);
+    color:var(--dim);
 
     font-size:.78rem;
-    font-weight:500;
 
     letter-spacing:1px;
 }
 
 .tabs{
     display:flex;
-    flex-wrap:wrap;
     justify-content:center;
+    flex-wrap:wrap;
 
     gap:12px;
 
-    margin:26px 0 30px;
+    margin:26px 0;
 }
 
 .tab-btn{
-    border:none;
-
     background:
-        linear-gradient(180deg,#151515,#101010);
+        linear-gradient(180deg,#181818,#111111);
 
-    border:1px solid #1f1f1f;
+    border:1px solid #262626;
 
-    color:#858585;
+    color:#8d8d8d;
 
-    padding:11px 18px;
+    padding:12px 18px;
 
     border-radius:999px;
-
-    font-size:.7rem;
-    font-weight:700;
-
-    letter-spacing:1.5px;
-    text-transform:uppercase;
 
     cursor:pointer;
 
     transition:var(--transition);
+
+    font-size:.7rem;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
 }
 
 .tab-btn:hover{
     transform:translateY(-2px);
 
-    color:white;
+    color:#fff;
 
-    border-color:#3a3a3a;
+    border-color:#4a4a4a;
 }
 
 .tab-btn.active{
-    background:white;
-    color:black;
+    background:#fff;
 
-    border-color:white;
+    color:#000;
 
-    box-shadow:
-        0 8px 22px rgba(255,255,255,.12);
+    border-color:#fff;
 }
 
 .tab-content{
@@ -180,10 +160,105 @@ h1{
     display:block;
 }
 
+input[type="text"]{
+    width:100%;
+
+    background:#0c0c0c;
+
+    border:1px solid #242424;
+
+    color:#fff;
+
+    padding:16px;
+
+    border-radius:18px;
+
+    outline:none;
+
+    font-size:.9rem;
+
+    margin-bottom:18px;
+
+    transition:var(--transition);
+}
+
+input[type="text"]:focus{
+    border-color:#555;
+}
+
+/* BULK ACTIONS AJUSTADO */
+
+.bulk-actions{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:14px;
+
+    background:#0c0c0c;
+
+    border:1px solid #232323;
+
+    border-radius:18px;
+
+    padding:12px 16px;
+
+    margin-bottom:18px;
+
+    width:fit-content;
+
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.checkbox-label{
+    display:flex;
+    align-items:center;
+
+    gap:8px;
+
+    font-size:.68rem;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+    color:#d8d8d8;
+
+    white-space:nowrap;
+}
+
+.item-cb{
+    accent-color:#fff;
+}
+
+.btn-bulk-deliver{
+    background:#fff;
+
+    color:#000;
+
+    border:none;
+
+    padding:10px 14px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:.62rem;
+
+    font-weight:800;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+}
+
+/* CATEGORY GRID */
+
 .cat-grid{
     display:grid;
 
-    grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(105px,1fr));
 
     gap:24px;
 }
@@ -198,12 +273,9 @@ h1{
     cursor:pointer;
 
     transition:var(--transition);
-
-    opacity:.78;
 }
 
 .cat-circle:hover{
-    opacity:1;
     transform:translateY(-4px);
 }
 
@@ -211,7 +283,7 @@ h1{
     width:88px;
     height:88px;
 
-    border-radius:30px;
+    border-radius:26px;
 
     background:
         linear-gradient(180deg,#181818,#0d0d0d);
@@ -225,59 +297,50 @@ h1{
     transition:var(--transition);
 
     box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.04),
-        0 10px 30px rgba(0,0,0,.4);
+        inset 0 1px 0 rgba(255,255,255,.03),
+        0 18px 35px rgba(0,0,0,.45);
 }
 
 .cat-circle:hover .cat-icon-bg{
-    border-color:#404040;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.05),
-        0 18px 40px rgba(0,0,0,.65);
+    border-color:#4e4e4e;
 }
 
 .cat-icon-bg svg{
-    width:40px;
-    height:40px;
+    width:38px;
+    height:38px;
 
-    fill:#e8e8e8;
-
-    transition:var(--transition);
-}
-
-.cat-circle:hover svg{
-    transform:scale(1.05);
+    fill:#f3f3f3;
 }
 
 .cat-label{
-    font-size:.68rem;
+    font-size:.65rem;
+
+    letter-spacing:1.4px;
+
     font-weight:700;
 
-    letter-spacing:1.8px;
     text-transform:uppercase;
 
-    color:#8a8a8a;
+    color:#9c9c9c;
 
     text-align:center;
 }
 
+/* ITEM LIST */
+
 .item-list{
     list-style:none;
 
-    padding:0;
     margin:0;
-
-    background:
-        linear-gradient(180deg,#0f0f0f,#090909);
-
-    border:1px solid var(--line);
+    padding:0;
 
     border-radius:24px;
 
     overflow:hidden;
 
-    box-shadow:var(--shadow);
+    border:1px solid #202020;
+
+    background:#0c0c0c;
 }
 
 .item{
@@ -285,19 +348,13 @@ h1{
 
     grid-template-columns:auto 1fr auto;
 
-    align-items:center;
+    gap:16px;
 
-    gap:18px;
+    align-items:center;
 
     padding:18px 20px;
 
     border-bottom:1px solid rgba(255,255,255,.03);
-
-    transition:var(--transition);
-}
-
-.item:hover{
-    background:rgba(255,255,255,.02);
 }
 
 .item:last-child{
@@ -305,424 +362,192 @@ h1{
 }
 
 .item-name{
-    font-size:.9rem;
+    font-size:.88rem;
 
     font-weight:500;
 
-    color:white;
-
-    line-height:1.45;
+    word-break:break-word;
 }
 
 .item-actions{
     display:flex;
     align-items:center;
+
     gap:10px;
 }
 
 .cat-badge{
-    width:36px;
-    height:36px;
+    width:38px;
+    height:38px;
 
-    border-radius:12px;
+    border-radius:14px;
 
-    background:#050505;
+    border:1px solid #292929;
 
-    border:1px solid #2a2a2a;
+    background:#070707;
 
     display:flex;
     justify-content:center;
     align-items:center;
 
     cursor:pointer;
-
-    transition:var(--transition);
-}
-
-.cat-badge:hover{
-    border-color:#555;
 }
 
 .cat-badge svg{
     width:16px;
     height:16px;
 
-    fill:white;
+    fill:#fff;
 }
 
 .btn-action{
-    border:none;
-
     background:
-        linear-gradient(180deg,#171717,#111111);
+        linear-gradient(180deg,#1a1a1a,#111);
 
     border:1px solid #303030;
 
-    color:white;
+    color:#fff;
 
-    padding:9px 14px;
+    padding:10px 14px;
 
     border-radius:12px;
 
+    cursor:pointer;
+
     font-size:.66rem;
+
     font-weight:800;
 
     letter-spacing:1px;
+
     text-transform:uppercase;
-
-    cursor:pointer;
-
-    transition:var(--transition);
-}
-
-.btn-action:hover{
-    transform:translateY(-1px);
-
-    border-color:#555;
 }
 
 .btn-delete{
-    border-color:#3b1d1d;
+    border-color:#442222;
+
     color:var(--danger);
 }
 
-.btn-delete:hover{
-    border-color:var(--danger);
-}
-
-.bulk-actions{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    margin-bottom:20px;
-
-    padding:14px 16px;
-
-    border-radius:18px;
-
-    background:
-        linear-gradient(180deg,#111111,#0b0b0b);
-
-    border:1px solid var(--line);
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.02);
-}
-
-.checkbox-label{
-    display:flex;
-    align-items:center;
-    gap:10px;
-
-    font-size:.76rem;
-    font-weight:600;
-
-    color:#d0d0d0;
-}
-
-.item-cb{
-    width:16px;
-    height:16px;
-
-    accent-color:white;
-
-    cursor:pointer;
-}
-
-.btn-bulk-deliver{
-    border:none;
-
-    background:white;
-
-    color:black;
-
-    padding:10px 16px;
-
-    border-radius:12px;
-
-    font-size:.65rem;
-    font-weight:800;
-
-    letter-spacing:1px;
-    text-transform:uppercase;
-
-    cursor:pointer;
-
-    transition:var(--transition);
-}
-
-.btn-bulk-deliver:hover{
-    transform:translateY(-1px);
-}
-
-input[type="text"]{
-    width:100%;
-
-    background:
-        linear-gradient(180deg,#101010,#0a0a0a);
-
-    border:1px solid #252525;
-
-    color:white;
-
-    padding:16px 18px;
-
-    border-radius:18px;
-
-    outline:none;
-
-    font-size:.9rem;
-
-    margin-bottom:20px;
-
-    transition:var(--transition);
-}
-
-input[type="text"]:focus{
-    border-color:#4d4d4d;
-}
-
-.settings-group{
-    background:
-        linear-gradient(180deg,#121212,#0d0d0d);
-
-    border:1px solid var(--line);
-
-    border-radius:24px;
-
-    padding:28px;
-
-    text-align:center;
-}
-
-.settings-label{
-    color:#bcbcbc;
-
-    line-height:1.7;
-
-    font-size:.84rem;
-}
-
-.btn-panel{
-    width:100%;
-
-    margin-top:18px;
-
-    border:none;
-
-    background:
-        linear-gradient(180deg,#181818,#111111);
-
-    border:1px solid #303030;
-
-    color:white;
-
-    padding:14px;
-
-    border-radius:16px;
-
-    font-size:.72rem;
-    font-weight:700;
-
-    letter-spacing:1px;
-    text-transform:uppercase;
-
-    cursor:pointer;
-
-    transition:var(--transition);
-}
-
-.btn-panel:hover{
-    border-color:#555;
-}
-
-.footer-status{
-    margin-top:26px;
-
-    text-align:center;
-
-    color:#777;
-
-    font-size:.74rem;
-
-    letter-spacing:1px;
-}
-
 .empty-watermark{
-    text-align:center;
-
     padding:80px 20px;
+
+    text-align:center;
 }
 
 .empty-watermark-title{
     font-size:1rem;
+
     font-weight:700;
 
     letter-spacing:2px;
-    text-transform:uppercase;
-
-    color:white;
 
     margin-bottom:10px;
 }
 
 .empty-watermark-sub{
-    color:#777;
-
-    font-size:.85rem;
+    color:#666;
 }
 
-.modal{
-    position:fixed;
-    inset:0;
+.footer-status{
+    margin-top:24px;
 
-    background:rgba(0,0,0,.8);
+    text-align:center;
 
-    display:none;
+    font-size:.75rem;
 
-    justify-content:center;
-    align-items:center;
-
-    z-index:999;
-}
-
-.modal-content{
-    width:90%;
-    max-width:520px;
-
-    background:
-        linear-gradient(180deg,#131313,#0b0b0b);
-
-    border:1px solid #222;
-
-    border-radius:28px;
-
-    padding:28px;
-
-    box-shadow:var(--shadow-hover);
-}
-
-.cat-selector-grid{
-    display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
-
-    gap:18px;
-
-    margin-top:22px;
-}
-
-.cat-badge-large{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-
-    gap:10px;
-
-    cursor:pointer;
-
-    transition:var(--transition);
-}
-
-.cat-badge-large:hover{
-    transform:translateY(-3px);
-}
-
-.icon-box{
-    width:58px;
-    height:58px;
-
-    border-radius:18px;
-
-    background:
-        linear-gradient(180deg,#181818,#0d0d0d);
-
-    border:1px solid #2b2b2b;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    transition:var(--transition);
-}
-
-.cat-badge-large:hover .icon-box{
-    border-color:#555;
-}
-
-.icon-box svg{
-    width:24px;
-    height:24px;
-
-    fill:#fff;
-}
-
-.cat-badge-large span{
-    font-size:.63rem;
-
-    color:#8a8a8a;
-
-    font-weight:700;
-
-    letter-spacing:1px;
-    text-transform:uppercase;
+    color:#666;
 }
 
 </style>
 </head>
-
 <body>
+
+<!-- ICONS -->
+
+<svg style="display:none;">
+
+<symbol id="icon-clothing" viewBox="0 0 24 24">
+<path d="M12 3l4 3 3-1 2 4-3 2v8H6v-8L3 9l2-4 3 1z"/>
+</symbol>
+
+<!-- NOVO ICONE HAIR FEMININO -->
+
+<symbol id="icon-hairs" viewBox="0 0 24 24">
+<path d="M12 2C7.5 2 4 5.4 4 10v3c0 5 3.3 9 8 9s8-4 8-9v-3c0-4.6-3.5-8-8-8zm-5 8.3c1.2-.4 2.5-1.3 3.6-2.5.8 1.8 2.7 3.3 5.4 4.1V13c0 3.7-2.1 6-5 6s-5-2.3-5-6v-2.7zm10 1.2c-3.4-.8-5.5-2.6-6.2-5.3-.9 1.5-2.7 3.1-4.8 4V10c0-3.3 2.4-5.7 6-5.7s6 2.4 6 5.7v1.5z"/>
+</symbol>
+
+<symbol id="icon-faceskin" viewBox="0 0 24 24">
+<path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-4 7a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm8 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm-4 8c-2 0-3.7-1-4.5-2.5h9C15.7 16 14 17 12 17z"/>
+</symbol>
+
+<symbol id="icon-bodyskin" viewBox="0 0 24 24">
+<path d="M12 2a3 3 0 013 3v2h2c1.7 0 3 1.3 3 3v9h-3v-5h-2v5H9v-5H7v5H4v-9c0-1.7 1.3-3 3-3h2V5a3 3 0 013-3z"/>
+</symbol>
+
+<symbol id="icon-meshhead" viewBox="0 0 24 24">
+<path d="M12 2C7 2 4 6 4 11v2c0 5 3 9 8 9s8-4 8-9v-2c0-5-3-9-8-9z"/>
+</symbol>
+
+<symbol id="icon-meshbody" viewBox="0 0 24 24">
+<path d="M12 2a4 4 0 100 8 4 4 0 000-8zm0 10c-4 0-7 2-7 5v3h14v-3c0-3-3-5-7-5z"/>
+</symbol>
+
+<symbol id="icon-accessories" viewBox="0 0 24 24">
+<path d="M12 2l9 7-9 13L3 9l9-7z"/>
+</symbol>
+
+<symbol id="icon-houses" viewBox="0 0 24 24">
+<path d="M12 3L3 11h3v9h12v-9h3z"/>
+</symbol>
+
+<symbol id="icon-decor" viewBox="0 0 24 24">
+<path d="M4 10h16v8H4zM7 6h10v2H7z"/>
+</symbol>
+
+<symbol id="icon-objects" viewBox="0 0 24 24">
+<path d="M12 2l8 4v12l-8 4-8-4V6z"/>
+</symbol>
+
+<symbol id="icon-textures" viewBox="0 0 24 24">
+<path d="M3 3h18v18H3zM7 7h4v4H7zm6 0h4v4h-4zm-6 6h4v4H7zm6 0h4v4h-4z"/>
+</symbol>
+
+<symbol id="icon-scripts" viewBox="0 0 24 24">
+<path d="M8 6L2 12l6 6 2-2-4-4 4-4zm8 0l-2 2 4 4-4 4 2 2 6-6z"/>
+</symbol>
+
+</svg>
 
 <div class="container">
 
 <header>
-    <h1>✦ PERSONAL INVENTORY</h1>
-    <div class="subtitle">powered by Saori Suki</div>
+<h1>✦ PERSONAL INVENTORY</h1>
+<div class="subtitle">powered by Saori Suki</div>
 </header>
 
 <div class="tabs">
-    <button class="tab-btn active">Inventory</button>
-    <button class="tab-btn">Categories</button>
-    <button class="tab-btn">Search By</button>
-    <button class="tab-btn">Manage</button>
-    <button class="tab-btn">Config</button>
-</div>
 
-<div class="cat-grid">
+<button class="tab-btn active" onclick="switchTab('inventory', this)">
+Inventory
+</button>
 
-<div class="cat-circle">
-<div class="cat-icon-bg">
-<svg viewBox="0 0 24 24">
-<path d="M12.87 3.14a4 4 0 00-1.74 0L4 6v2h2v11a1 1 0 001 1h10a1 1 0 001-1V8h2V6l-7.13-2.86z"/>
-</svg>
-</div>
-<div class="cat-label">Clothing</div>
-</div>
+<button class="tab-btn" onclick="switchTab('categories', this)">
+Categories
+</button>
 
-<div class="cat-circle">
-<div class="cat-icon-bg">
-<svg viewBox="0 0 24 24">
-<path d="M12 2C7 2 3 6 3 11v2c0 1.5 1 2.7 2.4 3C5.8 20 8.5 22 12 22s6.2-2 6.6-6c1.4-.3 2.4-1.5 2.4-3v-2c0-5-4-9-9-9z"/>
-</svg>
-</div>
-<div class="cat-label">Hairs</div>
-</div>
-
-<div class="cat-circle">
-<div class="cat-icon-bg">
-<svg viewBox="0 0 24 24">
-<path d="M12 2C9.8 2 8 3.8 8 6c0 1.5.8 2.7 2 3.4V11H8.5C6.6 11 5 12.6 5 14.5V19c0 .6.4 1 1 1h2v-4h1v4h6v-4h1v4h2c.6 0 1-.4 1-1v-4.5c0-1.9-1.6-3.5-3.5-3.5H14V9.4c1.2-.7 2-1.9 2-3.4 0-2.2-1.8-4-4-4z"/>
-</svg>
-</div>
-<div class="cat-label">Body Skin</div>
-</div>
+<button class="tab-btn" onclick="switchTab('search', this)">
+Search
+</button>
 
 </div>
 
-<div style="height:26px"></div>
+<!-- INVENTORY -->
+
+<div id="tab-inventory" class="tab-content active">
 
 <div class="bulk-actions">
+
 <label class="checkbox-label">
 <input type="checkbox" class="item-cb">
 Select All
@@ -731,55 +556,205 @@ Select All
 <button class="btn-bulk-deliver">
 Deliver Selected
 </button>
+
 </div>
 
 <ul class="item-list">
 
 <li class="item">
 
-<div class="cat-badge">
-<svg viewBox="0 0 24 24">
-<path d="M12.87 3.14a4 4 0 00-1.74 0L4 6v2h2v11a1 1 0 001 1h10a1 1 0 001-1V8h2V6l-7.13-2.86z"/>
-</svg>
-</div>
+<input type="checkbox" class="item-cb">
 
 <div class="item-name">
-[MMC] Luxury Outfit Collection 2026
+[MMC] Legacy Outfit Collection 2026
 </div>
 
 <div class="item-actions">
-<button class="btn-action">Deliver</button>
-<button class="btn-action btn-delete">Delete</button>
+
+<div class="cat-badge">
+<svg><use href="#icon-clothing"></use></svg>
+</div>
+
+<button class="btn-action">
+Deliver
+</button>
+
+<button class="btn-action btn-delete">
+Delete
+</button>
+
 </div>
 
 </li>
 
 <li class="item">
 
-<div class="cat-badge">
-<svg viewBox="0 0 24 24">
-<path d="M12 2C7 2 3 6 3 11v2c0 1.5 1 2.7 2.4 3C5.8 20 8.5 22 12 22s6.2-2 6.6-6c1.4-.3 2.4-1.5 2.4-3v-2c0-5-4-9-9-9z"/>
-</svg>
-</div>
+<input type="checkbox" class="item-cb">
 
 <div class="item-name">
-TRUTH Hairpack — Blonde Collection
+LeLutka Hair Pack
 </div>
 
 <div class="item-actions">
-<button class="btn-action">Deliver</button>
-<button class="btn-action btn-delete">Delete</button>
+
+<div class="cat-badge">
+<svg><use href="#icon-hairs"></use></svg>
+</div>
+
+<button class="btn-action">
+Deliver
+</button>
+
+<button class="btn-action btn-delete">
+Delete
+</button>
+
 </div>
 
 </li>
 
 </ul>
 
-<div class="footer-status">
-Total Folders Allocated: 284
+</div>
+
+<!-- CATEGORIES -->
+
+<div id="tab-categories" class="tab-content">
+
+<div class="cat-grid">
+
+<div class="cat-circle">
+<div class="cat-icon-bg">
+<svg><use href="#icon-clothing"></use></svg>
+</div>
+<div class="cat-label">Clothing</div>
+</div>
+
+<div class="cat-circle">
+<div class="cat-icon-bg">
+<svg><use href="#icon-hairs"></use></svg>
+</div>
+<div class="cat-label">Hair</div>
+</div>
+
+<div class="cat-circle">
+<div class="cat-icon-bg">
+<svg><use href="#icon-faceskin"></use></svg>
+</div>
+<div class="cat-label">Face Skin</div>
+</div>
+
+<div class="cat-circle">
+<div class="cat-icon-bg">
+<svg><use href="#icon-bodyskin"></use></svg>
+</div>
+<div class="cat-label">Body Skin</div>
+</div>
+
+<div class="cat-circle">
+<div class="cat-icon-bg">
+<svg><use href="#icon-meshhead"></use></svg>
+</div>
+<div class="cat-label">Mesh Head</div>
+</div>
+
+<div class="cat-circle">
+<div class="cat-icon-bg">
+<svg><use href="#icon-meshbody"></use></svg>
+</div>
+<div class="cat-label">Mesh Body</div>
+</div>
+
+<div class="cat-circle">
+<div class="cat-icon-bg">
+<svg><use href="#icon-accessories"></use></svg>
+</div>
+<div class="cat-label">Accessories</div>
+</div>
+
+<div class="cat-circle">
+<div class="cat-icon-bg">
+<svg><use href="#icon-houses"></use></svg>
+</div>
+<div class="cat-label">Houses</div>
+</div>
+
+<div class="cat-circle">
+<div class="cat-icon-bg">
+<svg><use href="#icon-decor"></use></svg>
+</div>
+<div class="cat-label">Decor</div>
+</div>
+
+<div class="cat-circle">
+<div class="cat-icon-bg">
+<svg><use href="#icon-objects"></use></svg>
+</div>
+<div class="cat-label">Objects</div>
+</div>
+
+<div class="cat-circle">
+<div class="cat-icon-bg">
+<svg><use href="#icon-textures"></use></svg>
+</div>
+<div class="cat-label">Textures</div>
+</div>
+
+<div class="cat-circle">
+<div class="cat-icon-bg">
+<svg><use href="#icon-scripts"></use></svg>
+</div>
+<div class="cat-label">Scripts</div>
 </div>
 
 </div>
+
+</div>
+
+<!-- SEARCH -->
+
+<div id="tab-search" class="tab-content">
+
+<input type="text" placeholder="Search folders, outfits, brands...">
+
+<div class="empty-watermark">
+
+<div class="empty-watermark-title">
+Search Engine
+</div>
+
+<div class="empty-watermark-sub">
+Type something to begin searching.
+</div>
+
+</div>
+
+</div>
+
+<div class="footer-status">
+Inventory connected successfully.
+</div>
+
+</div>
+
+<script>
+
+function switchTab(tabId, btnElement){
+
+    document.querySelectorAll('.tab-btn').forEach(btn=>{
+        btn.classList.remove('active');
+    });
+
+    document.querySelectorAll('.tab-content').forEach(tab=>{
+        tab.classList.remove('active');
+    });
+
+    document.getElementById(`tab-${tabId}`).classList.add('active');
+
+    btnElement.classList.add('active');
+}
+
+</script>
 
 </body>
 </html>
