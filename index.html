@@ -104,10 +104,11 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 }
 .search-input:focus{ border-color:#444; }
 
+/* CORREÇÃO DO SELECT ALL: Ajustado para o conteúdo, centralizado e sem buracos gigantes */
 .bulk-actions{
-    display:flex; justify-content:space-between; align-items:center;
+    display:flex; justify-content:center; align-items:center; gap:20px;
     background:#0c0c0c; border:1px solid #232323; border-radius:18px;
-    padding:12px 16px; margin: 0 auto 18px auto; width: 100%; max-width: 380px;
+    padding:12px 20px; margin: 0 auto 18px auto; width: max-content;
 }
 .checkbox-label{ display:flex; align-items:center; gap:8px; font-size:.68rem; font-weight:700; letter-spacing:.5px; color:#d8d8d8; cursor:pointer;}
 .item-cb{ accent-color:#fff; cursor: pointer; }
@@ -188,7 +189,9 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .empty-watermark{ padding:80px 20px; text-align:center; }
 .empty-watermark-title{ font-size:1rem; font-weight:700; letter-spacing:2px; margin-bottom:10px; text-transform: uppercase; }
 .empty-watermark-sub{ color:#666; font-size: 0.85rem;}
-.footer-status{ margin-top:24px; text-align:center; font-size:.75rem; color:#666; }
+
+/* CORREÇÃO DO RODAPÉ: Mais espaço para não esmagar os ícones */
+.footer-status{ margin-top:55px; text-align:center; font-size:.75rem; color:#555; }
 
 .toast{
     position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
@@ -209,8 +212,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .modal-cat:hover { border-color: #fff; background: #1a1a1a; color: #fff; }
 .modal-cat svg { width: 22px; height: 22px; margin-bottom: 8px; fill: #888; transition: .2s;}
 .modal-cat:hover svg { fill: #fff; }
-
-.dup-list { font-size: 0.8rem; color: var(--soft); margin-top: 18px; background: #000; padding: 16px; border-radius: 16px; display: none; border: 1px solid #202020; text-align: center; }
 </style>
 </head>
 <body>
@@ -246,7 +247,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             </div>
         </div>
         
-        <h1>✦ PERSONAL INVENTORY</h1>
+        <h1>✦ PERSONAL INVENTORY ✦</h1>
         <div class="subtitle">powered by Saori Suki</div>
         <div class="top-stats">
             <div class="stat-card">
@@ -301,10 +302,10 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     </div>
 
     <div id="tab-tools" class="tab-content">
-        <div class="bulk-actions" style="margin-bottom: 30px;">
-            <button class="btn btn-dark" onclick="findDuplicatesWeb()">Scan Duplicates</button>
+        <div class="bulk-actions" style="margin-bottom: 30px; justify-content: center; width: max-content; padding: 16px 24px;">
+            <button class="btn btn-dark" style="font-size: 0.75rem;" onclick="findDuplicatesWeb()">Scan Duplicates</button>
         </div>
-        <div class="dup-list" id="dupDisplay"></div>
+        <div class="item-list" id="dupDisplay" style="display: none; padding: 20px; border-radius: 18px; text-align: center; color: #aaa; font-size: 0.85rem;"></div>
     </div>
 
     <div class="footer-status">MMC Storage Remote Interface</div>
@@ -339,7 +340,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     let savedCategories = JSON.parse(localStorage.getItem('mmc_categories')) || {};
     let currentOpenCategoryViewId = "";
     
-    // Engine de Deleção
     let deleteMode = "";
     let deleteTarget = null;
 
@@ -462,7 +462,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         document.getElementById("selectedCount").innerText = total;
     }
 
-    // --- ENGINES DE ENTREGA E DELEÇÃO ---
     async function deliverItem(itemEncoded, btn){
         const item = decodeURIComponent(itemEncoded);
         btn.innerHTML = "..."; btn.disabled = true;
@@ -489,7 +488,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         if(document.getElementById("selectAllCat")) document.getElementById("selectAllCat").checked = false;
     }
 
-    // Modal Caution Web Deletion Flow
     function confirmDelete(itemEncoded) {
         deleteMode = "single";
         deleteTarget = decodeURIComponent(itemEncoded);
@@ -519,7 +517,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             }
             toast("Deleted successfully");
             closeDeleteModal();
-            loadInventory(); // Resync para atualizar a tela
+            loadInventory(); 
         } catch(e) {
             toast("Delete failed");
         }
@@ -542,7 +540,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         updateSelectedCount();
     }
 
-    // Categorias 
     function renderCategories(){
         const grid = document.getElementById("cat-grid");
         grid.innerHTML = "";
