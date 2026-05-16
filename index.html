@@ -21,6 +21,7 @@
     --dim:#666;
     --green:#52ff9c;
     --danger:#ff4b4b;
+    --accent-purple:#cfa3ff; /* LILÁS CLARO PARA SELEÇÃO */
     --transition:all .22s ease;
 }
 
@@ -136,7 +137,14 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .item{ display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center; padding:18px 20px; border-bottom:1px solid rgba(255,255,255,.03); transition:.2s; }
 .item:hover{ background:#111; }
 .item:last-child{ border-bottom:none; }
-.item-name{ font-size:.88rem; font-weight:500; word-break:break-word; line-height: 1.4;}
+
+/* Wrapper para o Tooltip do Hover no Nome */
+.item-name-wrapper { position: relative; width: max-content; display: flex; align-items: center; cursor: default; }
+.item-name{ font-size:.88rem; font-weight:500; word-break:break-word; line-height: 1.4; transition: color 0.2s;}
+
+/* LILÁS CLARO QUANDO SELECIONADO */
+.item:has(.item-select:checked) .item-name { color: var(--accent-purple); text-shadow: 0 0 8px rgba(207, 163, 255, 0.2); }
+
 .item-actions{ display:flex; align-items:center; gap:8px; }
 
 .cat-badge{
@@ -146,18 +154,22 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 }
 .cat-badge:hover{ border-color:#555; transform:translateY(-1px); }
 .cat-badge svg{ width:16px; height:16px; fill:#fff; }
+
 .cat-tooltip{
     position:absolute; bottom:-34px; left:50%; transform:translateX(-50%);
     background:#fff; color:#000; font-size:.55rem; font-weight:800;
     padding:6px 8px; border-radius:8px; letter-spacing:1px; opacity:0;
     pointer-events:none; transition:.18s; white-space:nowrap; text-transform:uppercase; z-index:20;
 }
-.cat-badge:hover .cat-tooltip{ opacity:1; bottom:-30px; }
+.cat-badge:hover .cat-tooltip, .action-btn:hover .cat-tooltip, .item-name-wrapper:hover .cat-tooltip { opacity:1; bottom:-30px; }
+
+/* TOOLTIP COM TRANSPARÊNCIA PARA DATA */
+.date-tooltip { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); }
 
 .action-btn{
     width:38px; height:38px; border-radius:14px; border:1px solid #292929;
     background:#070707; color:#fff; display:flex; justify-content:center; align-items:center;
-    cursor:pointer; transition:all .2s ease;
+    cursor:pointer; transition:all .2s ease; position:relative; /* Necessario pro Tooltip */
 }
 .action-btn svg { width: 18px; height: 18px; fill: currentColor; }
 .action-btn:hover{ border-color:#555; transform:translateY(-1px); }
@@ -366,12 +378,16 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         setTimeout(() => t.classList.remove("show"), 2500);
     }
 
-    // --- CLEAN NAMES ENGINE ---
-    // Remove as tags de data e os sufixos numericos para exibir o nome limpo no site
+    // REGEX DE LIMPEZA E EXTRAÇÃO DE DATA:
+    // Pega o nome do item e isola os colchetes com a data perfeitamente.
     function formatItemName(rawName) {
-        const match = rawName.match(/(.*?)\s*(\[\d{4}-\d{2}-\d{2}.*)$/i);
-        if (match) { return { clean: match[1].trim(), date: match[2].trim() }; }
-        return { clean: rawName, date: "" };
+        const match = rawName.match(/(.*?)\s*(\[\d{4}-\d{2}-\d{2}[^\]]*\])/i);
+        if (match) { 
+            return { clean: match[1].trim(), date: match[2].trim() }; 
+        }
+        // Fallback: Tira possíveis sufixos soltos no fim caso não tenha data (Ex: "Shirt 1", "Shirt 2")
+        const cleanName = rawName.replace(/\s+\d+$/, '').trim();
+        return { clean: cleanName, date: "" };
     }
 
     function detectCategory(name) {
@@ -407,7 +423,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             if(searchVal) filterInventory(searchVal);
             else renderInventory(inventoryData, "inventory-list", "bulkInv");
             
-            // Re-executa scan de duplicatas se a aba de tools estiver aberta
             if(!document.getElementById('dupContainer').classList.contains('hidden')) { findDuplicatesWeb(); }
             
             toast("Sync Complete");
@@ -434,13 +449,15 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             const category = detectCategory(item);
             const icon = categories[category] || "icon-objects";
             const parsed = formatItemName(item);
-            const nameAttr = parsed.date ? `title="Criado em: ${parsed.date}"` : '';
 
             const li = document.createElement("li");
             li.className = "item";
             li.innerHTML = `
                 <input type="checkbox" class="item-cb item-select" value="${item}">
-                <div class="item-name" ${nameAttr}>${parsed.clean}</div>
+                <div class="item-name-wrapper">
+                    <div class="item-name">${parsed.clean}</div>
+                    ${parsed.date ? `<div class="cat-tooltip date-tooltip">Created on: ${parsed.date}</div>` : ''}
+                </div>
                 <div class="item-actions">
                     <div class="cat-badge" onclick="openCategoryModal('${encodeURIComponent(item)}')">
                         <svg><use href="#${icon}"></use></svg>
@@ -448,9 +465,11 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                     </div>
                     <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(item)}', this)">
                         <svg><use href="#icon-send"></use></svg>
+                        <div class="cat-tooltip">DELIVER</div>
                     </button>
                     <button class="action-btn delete-btn" onclick="confirmDelete('${encodeURIComponent(item)}')">
                         <svg><use href="#icon-trash"></use></svg>
+                        <div class="cat-tooltip">DELETE</div>
                     </button>
                 </div>
             `;
@@ -477,7 +496,10 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             const res = await fetch(API, { method:"POST", body:item });
             if(res.ok) { btn.innerHTML = "✔"; toast("Delivered"); } else { btn.innerHTML = "X"; }
         }catch{ btn.innerHTML = "X"; }
-        setTimeout(()=>{ btn.innerHTML = `<svg><use href="#icon-send"></use></svg>`; btn.disabled = false; }, 1800);
+        setTimeout(()=>{ 
+            btn.innerHTML = `<svg><use href="#icon-send"></use></svg><div class="cat-tooltip">DELIVER</div>`; 
+            btn.disabled = false; 
+        }, 1800);
     }
 
     async function deliverSelected(containerId = "inventory-list"){
@@ -610,12 +632,10 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         modal.classList.add("active");
     }
 
-    // --- DUPLICATES SCANNER ENGINE ---
-    // Extrai o nome base (ignorando a data e sufixos como " 1") para comparar quem é igual a quem
     function getBaseName(rawName) {
         let parsed = formatItemName(rawName);
-        let clean = parsed.clean.replace(/\s+\d+$/, '').trim();
-        return clean.toLowerCase();
+        let clean = parsed.clean.toLowerCase();
+        return clean;
     }
 
     function findDuplicatesWeb() {
@@ -630,7 +650,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         let dups = [];
         Object.values(groups).forEach(group => {
             if(group.length > 1) {
-                group.sort(); // O original fica no topo, cópias descem
+                group.sort(); 
                 dups = dups.concat(group);
             }
         });
