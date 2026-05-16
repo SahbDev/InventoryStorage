@@ -485,15 +485,10 @@
 
 <svg style="display:none;">
     <symbol id="icon-clothing" viewBox="0 0 24 24"><path d="M12.87 3.14a4 4 0 00-1.74 0L4 6v2h2v11a1 1 0 001 1h10a1 1 0 001-1V8h2V6l-7.13-2.86z"/></symbol>
-    
     <symbol id="icon-hairs" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 2.22.73 4.27 1.95 5.89C4.54 16.48 7.9 15 12 15c4.1 0 7.46 1.48 8.05 2.89C21.27 16.27 22 14.22 22 12c0-5.52-4.48-10-10-10zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"/></symbol>
-    
     <symbol id="icon-faceskin" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></symbol>
-    
     <symbol id="icon-bodyskin" viewBox="0 0 24 24"><path d="M12 2C10.9 2 10 2.9 10 4s.9 2 2 2 2-.9 2-2-.9-2-2-2zM4 9c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2h-1v7h2c1.1 0 2 .9 2 2h-4c-1.1 0-2-.9-2-2v-7h-1v7c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2h2v-7h-1c-1.1 0-2-.9-2-2v-2z"/></symbol>
-    
     <symbol id="icon-meshhead" viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9v3h1c.55 0 1 .45 1 1v4c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-4c0-.55.45-1 1-1h1v-3c0-4.97-4.03-9-9-9z"/></symbol>
-    
     <symbol id="icon-meshbody" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></symbol>
     <symbol id="icon-accessories" viewBox="0 0 24 24"><path d="M19 3H5L2 9l10 13L22 9l-3-6zM5.8 5h12.4l1.5 3H4.3l1.5-3zm6.2 14.5L5.6 10h12.8L12 19.5z"/></symbol>
     <symbol id="icon-skybox" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></symbol>
@@ -515,6 +510,7 @@
         <button type="button" class="tab-btn active" onclick="switchTab('inventory')">Inventory</button>
         <button type="button" class="tab-btn" onclick="switchTab('categories')">Categories</button>
         <button type="button" class="tab-btn" onclick="switchTab('search')">Search By</button>
+        <button type="button" class="tab-btn" onclick="switchTab('manage')">Manage</button>
         <button type="button" class="tab-btn" onclick="switchTab('config')">Config</button>
     </div>
 
@@ -550,8 +546,8 @@
                 <div class="cat-circle" onclick="openCategoryView('meshbody', 'MESH BODY')">
                     <div class="cat-icon-bg"><svg><use href="#icon-meshbody"></use></svg></div><div class="cat-label">Mesh Body</div>
                 </div>
-                <div class="cat-circle" onclick="openCategoryView('accessories', 'ACESSORIES')">
-                    <div class="cat-icon-bg"><svg><use href="#icon-accessories"></use></svg></div><div class="cat-label">Acessories</div>
+                <div class="cat-circle" onclick="openCategoryView('accessories', 'ACCESSORIES')">
+                    <div class="cat-icon-bg"><svg><use href="#icon-accessories"></use></svg></div><div class="cat-label">Accessories</div>
                 </div>
                 <div class="cat-circle" onclick="openCategoryView('skybox', 'SKYBOX')">
                     <div class="cat-icon-bg"><svg><use href="#icon-skybox"></use></svg></div><div class="cat-label">Skybox</div>
@@ -601,6 +597,15 @@
         <ul class="item-list" id="searchList" style="border: none; background: transparent;"></ul>
     </div>
 
+    <div id="tab-manage" class="tab-content">
+        <div class="settings-group">
+            <div class="settings-label" style="text-align:center;">
+                <strong>Manage Options</strong><br><br>
+                <span style="color:var(--text-dim);">Future tools and management options will be placed here.</span>
+            </div>
+        </div>
+    </div>
+
     <div id="tab-config" class="tab-content">
         <div class="settings-group">
             <div class="settings-label"><strong>Smart Duplicate Finder 🔧</strong><br><br>Scan your server for folders with identical names or SL numeric suffixes.</div>
@@ -624,7 +629,7 @@
             <div class="cat-badge-large" onclick="setManualCategory('bodyskin')"><div class="icon-box"><svg><use href="#icon-bodyskin"></use></svg></div><span>Body Skin</span></div>
             <div class="cat-badge-large" onclick="setManualCategory('meshhead')"><div class="icon-box"><svg><use href="#icon-meshhead"></use></svg></div><span>Mesh Head</span></div>
             <div class="cat-badge-large" onclick="setManualCategory('meshbody')"><div class="icon-box"><svg><use href="#icon-meshbody"></use></svg></div><span>Mesh Body</span></div>
-            <div class="cat-badge-large" onclick="setManualCategory('accessories')"><div class="icon-box"><svg><use href="#icon-accessories"></use></svg></div><span>Acessories</span></div>
+            <div class="cat-badge-large" onclick="setManualCategory('accessories')"><div class="icon-box"><svg><use href="#icon-accessories"></use></svg></div><span>Accessories</span></div>
             <div class="cat-badge-large" onclick="setManualCategory('skybox')"><div class="icon-box"><svg><use href="#icon-skybox"></use></svg></div><span>Skybox</span></div>
             <div class="cat-badge-large" onclick="setManualCategory('houses')"><div class="icon-box"><svg><use href="#icon-houses"></use></svg></div><span>Houses</span></div>
             <div class="cat-badge-large" onclick="setManualCategory('decor')"><div class="icon-box"><svg><use href="#icon-decor"></use></svg></div><span>Decor</span></div>
@@ -646,6 +651,24 @@
     let savedCategories = JSON.parse(localStorage.getItem('mmc_categories')) || {};
     let itemToAssign = "";
     let currentOpenCategoryViewId = "";
+
+    // Mapeamento de nomes de exibição para o Tooltip (Hover) do mouse
+    const catDisplayNames = {
+        'clothing': 'CLOTHING',
+        'hairs': 'HAIRS',
+        'faceskin': 'FACE SKIN',
+        'bodyskin': 'BODY SKIN',
+        'meshhead': 'MESH HEAD',
+        'meshbody': 'MESH BODY',
+        'accessories': 'ACCESSORIES',
+        'skybox': 'SKYBOX',
+        'houses': 'HOUSES',
+        'decor': 'DECOR',
+        'objects': 'OBJECTS',
+        'textures': 'TEXTURES',
+        'scripts': 'SCRIPTS',
+        'none': 'UNASSIGNED'
+    };
 
     const keywords = {
         'clothing': ['shirt', 'pants', 'dress', 'jacket', 'top', 'skirt', 'jeans', 'apparel', 'outfit', 'suit', 'hoodie', 'shorts', 'bra', 'lingerie', ' sweater'],
@@ -774,7 +797,8 @@
             const catBadge = document.createElement('div');
             catBadge.className = 'cat-badge';
             catBadge.innerHTML = getCatIcon(catClass);
-            catBadge.title = "Change Category";
+            // ✦ Aqui está a alteração: O balão de ajuda agora exibe o NOME da categoria em vez de "Change Category"
+            catBadge.title = catDisplayNames[catClass] || "UNASSIGNED";
             catBadge.onclick = () => openAssignModal(item);
             
             const btnDeliver = document.createElement('button');
@@ -820,6 +844,7 @@
             savedCategories[itemToAssign] = catName;
             localStorage.setItem('mmc_categories', JSON.stringify(savedCategories));
             
+            // Refresh visible lists
             if(document.getElementById('tab-inventory').classList.contains('active')) {
                 renderList(allItems, 'inventoryList', 'bulkInv');
             } else if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") {
