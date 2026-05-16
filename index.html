@@ -112,7 +112,7 @@
             border-color: var(--text-dim);
         }
 
-        /* ✦ NOVO BULK ACTIONS BAR (MENOR E CENTRALIZADO) ✦ */
+        /* Bulk Actions Bar */
         .bulk-actions {
             display: flex;
             justify-content: space-between;
@@ -122,7 +122,7 @@
             border: 1px solid #333333;
             border-radius: 6px;
             margin: 0 auto 20px auto;
-            max-width: 320px; /* Isso restringe a largura perfeitamente */
+            max-width: 320px; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
@@ -485,10 +485,15 @@
 
 <svg style="display:none;">
     <symbol id="icon-clothing" viewBox="0 0 24 24"><path d="M12.87 3.14a4 4 0 00-1.74 0L4 6v2h2v11a1 1 0 001 1h10a1 1 0 001-1V8h2V6l-7.13-2.86z"/></symbol>
-    <symbol id="icon-hairs" viewBox="0 0 24 24"><path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3zm13.71-9.37l-1.34-1.34c-.39-.39-1.04-.39-1.41 0L9 12.25 11.75 15l8.96-8.96c.39-.39.39-1.02 0-1.41z"/></symbol>
-    <symbol id="icon-faceskin" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></symbol>
-    <symbol id="icon-bodyskin" viewBox="0 0 24 24"><path d="M12 2c-5.33 4.55-8 8.48-8 11.8 0 4.98 3.8 8.2 8 8.2s8-3.22 8-8.2c0-3.32-2.67-7.25-8-11.8zm0 18c-3.35 0-6-2.57-6-6.2 0-2.34 1.95-5.44 6-9.14 4.05 3.7 6 6.79 6 9.14 0 3.63-2.65 6.2-6 6.2z"/></symbol>
-    <symbol id="icon-meshhead" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></symbol>
+    
+    <symbol id="icon-hairs" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 2.22.73 4.27 1.95 5.89C4.54 16.48 7.9 15 12 15c4.1 0 7.46 1.48 8.05 2.89C21.27 16.27 22 14.22 22 12c0-5.52-4.48-10-10-10zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3z"/></symbol>
+    
+    <symbol id="icon-faceskin" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></symbol>
+    
+    <symbol id="icon-bodyskin" viewBox="0 0 24 24"><path d="M12 2C10.9 2 10 2.9 10 4s.9 2 2 2 2-.9 2-2-.9-2-2-2zM4 9c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2h-1v7h2c1.1 0 2 .9 2 2h-4c-1.1 0-2-.9-2-2v-7h-1v7c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2h2v-7h-1c-1.1 0-2-.9-2-2v-2z"/></symbol>
+    
+    <symbol id="icon-meshhead" viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9v3h1c.55 0 1 .45 1 1v4c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-4c0-.55.45-1 1-1h1v-3c0-4.97-4.03-9-9-9z"/></symbol>
+    
     <symbol id="icon-meshbody" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></symbol>
     <symbol id="icon-accessories" viewBox="0 0 24 24"><path d="M19 3H5L2 9l10 13L22 9l-3-6zM5.8 5h12.4l1.5 3H4.3l1.5-3zm6.2 14.5L5.6 10h12.8L12 19.5z"/></symbol>
     <symbol id="icon-skybox" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></symbol>
@@ -642,7 +647,6 @@
     let itemToAssign = "";
     let currentOpenCategoryViewId = "";
 
-    // 13 categories Auto-Detector mapping
     const keywords = {
         'clothing': ['shirt', 'pants', 'dress', 'jacket', 'top', 'skirt', 'jeans', 'apparel', 'outfit', 'suit', 'hoodie', 'shorts', 'bra', 'lingerie', ' sweater'],
         'hairs': ['hair', 'bangs', 'ponytail', 'braid', 'curls', 'updo'],
@@ -688,7 +692,6 @@
         }
     }
 
-    // CATEGORY VIEW NAVIGATION
     function openCategoryView(catId, displayName) {
         currentOpenCategoryViewId = catId;
         document.getElementById('catGridView').style.display = 'none';
@@ -817,7 +820,6 @@
             savedCategories[itemToAssign] = catName;
             localStorage.setItem('mmc_categories', JSON.stringify(savedCategories));
             
-            // Refresh visible lists
             if(document.getElementById('tab-inventory').classList.contains('active')) {
                 renderList(allItems, 'inventoryList', 'bulkInv');
             } else if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") {
