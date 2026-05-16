@@ -429,7 +429,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         
         if(tabId === 'categories') closeCategoryView(); 
         
-        // RECOLHER: Sempre esconde a lista de duplicados ao mudar de aba
         document.getElementById('dupContainer').classList.add('hidden');
         clearAllMasterCheckboxes();
     }
@@ -450,11 +449,26 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             inventoryData = data.map(i => decodeURIComponent(i));
             
             clearAllMasterCheckboxes();
+
+            // Zera o conteúdo das listas que estão escondidas para evitar que os checkboxes fantamas contem
+            if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") {
+                openCategory(currentOpenCategoryViewId);
+            } else {
+                document.getElementById("category-items").innerHTML = "";
+            }
+
+            // Atualiza duplicatas automaticamente caso o painel delas já esteja aberto
+            if(!document.getElementById('dupContainer').classList.contains('hidden')) {
+                findDuplicatesWeb();
+            } else {
+                document.getElementById("dup-list").innerHTML = "";
+            }
             
             const searchVal = document.getElementById("searchBar").value;
             if(searchVal) filterInventory(searchVal);
             else renderInventory(inventoryData, "inventory-list", "bulkInv");
             
+            updateSelectedCount(); // Força a recontagem oficial e zera os selecionados
             toast("Sync Complete");
         }catch(e){
             toast("Connection failed");
