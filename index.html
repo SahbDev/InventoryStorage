@@ -7,11 +7,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
     --bg:#050505;
     --panel:#101010;
@@ -26,9 +24,7 @@
     --transition:all .22s ease;
 }
 
-*{
-    box-sizing:border-box;
-}
+*{ box-sizing:border-box; }
 
 body{
     margin:0;
@@ -52,6 +48,8 @@ body{
     border-radius:34px;
     padding:34px;
     box-shadow:0 30px 80px rgba(0,0,0,.65);
+    display: flex;
+    flex-direction: column;
 }
 
 header{
@@ -62,663 +60,500 @@ header{
 }
 
 .status-badge{
-    position:absolute;
-    top:0;
-    right:0;
-    background:#0f0f0f;
-    border:1px solid #2a2a2a;
-    padding:10px 14px;
-    border-radius:999px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-size:.68rem;
-    font-weight:700;
-    letter-spacing:1px;
+    position:absolute; top:0; right:0;
+    background:#0f0f0f; border:1px solid #2a2a2a;
+    padding:10px 14px; border-radius:999px;
+    display:flex; align-items:center; gap:8px;
+    font-size:.68rem; font-weight:700; letter-spacing:1px;
 }
+.status-dot{ width:8px; height:8px; border-radius:999px; background:var(--green); box-shadow:0 0 10px var(--green); }
 
-.status-dot{
-    width:8px;
-    height:8px;
-    border-radius:999px;
-    background:var(--green);
-    box-shadow:0 0 10px var(--green);
-}
+h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-transform:uppercase; }
+.subtitle{ margin-top:12px; color:var(--dim); font-size:.78rem; letter-spacing:1px; }
 
-h1{
-    margin:0;
-    font-size:1.05rem;
-    letter-spacing:4px;
-    font-weight:800;
-    text-transform:uppercase;
-}
+.top-stats{ display:flex; justify-content:center; gap:14px; margin-top:22px; flex-wrap:wrap; }
+.stat-card{ background:#0d0d0d; border:1px solid #202020; border-radius:18px; padding:14px 18px; min-width:120px; text-align: center; }
+.stat-label{ color:#777; font-size:.62rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+.stat-value{ font-size:1rem; font-weight:700; }
 
-.subtitle{
-    margin-top:12px;
-    color:var(--dim);
-    font-size:.78rem;
-    letter-spacing:1px;
-}
-
-.top-stats{
-    display:flex;
-    justify-content:center;
-    gap:14px;
-    margin-top:22px;
-    flex-wrap:wrap;
-}
-
-.stat-card{
-    background:#0d0d0d;
-    border:1px solid #202020;
-    border-radius:18px;
-    padding:14px 18px;
-    min-width:120px;
-}
-
-.stat-label{
-    color:#777;
-    font-size:.62rem;
-    letter-spacing:1px;
-    text-transform:uppercase;
-    margin-bottom:6px;
-}
-
-.stat-value{
-    font-size:1rem;
-    font-weight:700;
-}
-
-.tabs{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:12px;
-    margin:26px 0;
-}
-
+.tabs{ display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin:26px 0; }
 .tab-btn{
     background:linear-gradient(180deg,#181818,#111111);
-    border:1px solid #262626;
-    color:#8d8d8d;
-    padding:12px 18px;
-    border-radius:999px;
-    cursor:pointer;
-    transition:var(--transition);
-    font-size:.7rem;
-    font-weight:700;
-    letter-spacing:1px;
-    text-transform:uppercase;
+    border:1px solid #262626; color:#8d8d8d;
+    padding:12px 18px; border-radius:999px;
+    cursor:pointer; transition:var(--transition);
+    font-size:.7rem; font-weight:700; letter-spacing:1px;
+    text-transform:uppercase; outline: none;
 }
+.tab-btn:hover{ transform:translateY(-2px); color:#fff; border-color:#4a4a4a; }
+.tab-btn.active{ background:#fff; color:#000; border-color:#fff; }
 
-.tab-btn:hover{
-    transform:translateY(-2px);
-    color:#fff;
-    border-color:#4a4a4a;
-}
+.tab-content{ display:none; }
+.tab-content.active{ display:block; }
 
-.tab-btn.active{
-    background:#fff;
-    color:#000;
-    border-color:#fff;
-}
-
-.tab-content{
-    display:none;
-}
-
-.tab-content.active{
-    display:block;
-}
-
-.search-box{
-    width:100%;
-    margin-bottom:18px;
-}
-
+.search-box{ width:100%; margin-bottom:18px; }
 .search-input{
-    width:100%;
-    background:#0c0c0c;
-    border:1px solid #242424;
-    color:#fff;
-    padding:18px 20px;
-    border-radius:18px;
-    outline:none;
-    font-size:.9rem;
+    width:100%; background:#0c0c0c; border:1px solid #242424;
+    color:#fff; padding:18px 20px; border-radius:18px;
+    outline:none; font-size:.9rem; text-align: center;
 }
-
-.search-input:focus{
-    border-color:#444;
-}
+.search-input:focus{ border-color:#444; }
 
 .bulk-actions{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:14px;
-    background:#0c0c0c;
-    border:1px solid #232323;
-    border-radius:18px;
-    padding:12px 16px;
-    margin-bottom:18px;
-    width:fit-content;
-    margin-left:auto;
-    margin-right:auto;
-    flex-wrap:wrap;
+    display:flex; justify-content:center; align-items:center; gap:14px;
+    background:#0c0c0c; border:1px solid #232323; border-radius:18px;
+    padding:12px 16px; margin-bottom:18px; width:fit-content;
+    margin-left:auto; margin-right:auto; flex-wrap:wrap;
 }
-
-.checkbox-label{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-size:.68rem;
-    font-weight:700;
-    letter-spacing:.5px;
-    color:#d8d8d8;
-}
-
-.item-cb{
-    accent-color:#fff;
-}
+.checkbox-label{ display:flex; align-items:center; gap:8px; font-size:.68rem; font-weight:700; letter-spacing:.5px; color:#d8d8d8; cursor:pointer;}
+.item-cb{ accent-color:#fff; cursor: pointer; }
 
 .btn{
-    border:none;
-    padding:10px 14px;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:.62rem;
-    font-weight:800;
-    text-transform:uppercase;
-    letter-spacing:1px;
-    transition:var(--transition);
+    border:none; padding:10px 14px; border-radius:12px;
+    cursor:pointer; font-size:.62rem; font-weight:800;
+    text-transform:uppercase; letter-spacing:1px; transition:var(--transition);
 }
+.btn-white{ background:#fff; color:#000; }
+.btn-dark{ background:#111; border:1px solid #252525; color:#fff; }
+.btn:hover{ transform:translateY(-1px); }
 
-.btn-white{
-    background:#fff;
-    color:#000;
-}
-
-.btn-dark{
-    background:#111;
-    border:1px solid #252525;
-    color:#fff;
-}
-
-.btn:hover{
-    transform:translateY(-1px);
-}
-
-.cat-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(105px,1fr));
-    gap:24px;
-}
-
-.cat-circle{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:14px;
-    cursor:pointer;
-    transition:var(--transition);
-}
-
-.cat-circle:hover{
-    transform:translateY(-4px);
-}
-
+.cat-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(105px,1fr)); gap:24px; }
+.cat-circle{ display:flex; flex-direction:column; align-items:center; gap:14px; cursor:pointer; transition:var(--transition); }
+.cat-circle:hover{ transform:translateY(-4px); }
 .cat-icon-bg{
-    width:88px;
-    height:88px;
-    border-radius:26px;
+    width:88px; height:88px; border-radius:26px;
     background:linear-gradient(180deg,#181818,#0d0d0d);
-    border:1px solid #262626;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    transition:var(--transition);
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.03),
-        0 18px 35px rgba(0,0,0,.45);
+    border:1px solid #262626; display:flex; justify-content:center; align-items:center;
+    transition:var(--transition); box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 18px 35px rgba(0,0,0,.45);
 }
+.cat-circle:hover .cat-icon-bg{ border-color:#4e4e4e; }
+.cat-icon-bg svg{ width:38px; height:38px; fill:#f3f3f3; transition: .3s;}
+.cat-circle:hover .cat-icon-bg svg{ fill: #fff; }
+.cat-label{ font-size:.65rem; letter-spacing:1.4px; font-weight:700; text-transform:uppercase; color:#9c9c9c; text-align:center; }
+.cat-circle:hover .cat-label{ color: #fff; }
 
-.cat-icon-bg:hover{
-    border-color:#4e4e4e;
-}
-
-.cat-icon{
-    width:28px;
-    height:28px;
-    border:2px solid white;
-    border-radius:10px;
-    opacity:.9;
-}
-
-.cat-label{
-    font-size:.65rem;
-    letter-spacing:1.4px;
-    font-weight:700;
-    text-transform:uppercase;
-    color:#9c9c9c;
-    text-align:center;
-}
+.cat-view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #202020; }
+.cat-view-title { font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
 
 .item-list{
-    list-style:none;
-    margin:0;
-    padding:0;
-    border-radius:24px;
-    overflow:hidden;
-    border:1px solid #202020;
-    background:#0c0c0c;
+    list-style:none; margin:0; padding:0; border-radius:24px; overflow:hidden;
+    border:1px solid #202020; background:#0c0c0c; max-height:450px; overflow-y:auto;
 }
+.item-list::-webkit-scrollbar { width: 6px; }
+.item-list::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+.item{ display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center; padding:18px 20px; border-bottom:1px solid rgba(255,255,255,.03); transition:.2s; }
+.item:hover{ background:#111; }
+.item:last-child{ border-bottom:none; }
+.item-name{ font-size:.88rem; font-weight:500; word-break:break-word; }
+.item-actions{ display:flex; align-items:center; gap:10px; }
 
-.item{
-    display:grid;
-    grid-template-columns:auto 1fr auto;
-    gap:16px;
-    align-items:center;
-    padding:18px 20px;
-    border-bottom:1px solid rgba(255,255,255,.03);
+.cat-badge{
+    width:38px; height:38px; border-radius:14px; border:1px solid #292929;
+    background:#070707; display:flex; justify-content:center; align-items:center;
+    cursor:pointer; transition:all .2s ease; position:relative;
 }
-
-.item:last-child{
-    border-bottom:none;
+.cat-badge:hover{ border-color:#555; transform:translateY(-1px); }
+.cat-badge svg{ width:16px; height:16px; fill:#fff; }
+.cat-tooltip{
+    position:absolute; bottom:-34px; left:50%; transform:translateX(-50%);
+    background:#fff; color:#000; font-size:.55rem; font-weight:800;
+    padding:6px 8px; border-radius:8px; letter-spacing:1px; opacity:0;
+    pointer-events:none; transition:.18s; white-space:nowrap; text-transform:uppercase; z-index:20;
 }
-
-.item-name{
-    font-size:.88rem;
-    font-weight:500;
-    word-break:break-word;
-}
-
-.item-actions{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
+.cat-badge:hover .cat-tooltip{ opacity:1; bottom:-30px; }
 
 .action-btn{
-    width:38px;
-    height:38px;
-    border-radius:14px;
-    border:1px solid #292929;
-    background:#070707;
-    color:#fff;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
-    transition:all .2s ease;
-    font-size:.7rem;
-    font-weight:700;
+    width:38px; height:38px; border-radius:14px; border:1px solid #292929;
+    background:#070707; color:#fff; display:flex; justify-content:center; align-items:center;
+    cursor:pointer; transition:all .2s ease; font-size:.8rem; font-weight:700;
 }
+.action-btn:hover{ border-color:#555; transform:translateY(-1px); }
+.action-btn.delete-btn:hover { border-color: var(--danger); color: var(--danger); }
 
-.action-btn:hover{
-    border-color:#555;
-    transform:translateY(-1px);
-}
-
-.footer-status{
-    margin-top:24px;
-    text-align:center;
-    font-size:.75rem;
-    color:#666;
-}
+.empty-watermark{ padding:80px 20px; text-align:center; }
+.empty-watermark-title{ font-size:1rem; font-weight:700; letter-spacing:2px; margin-bottom:10px; text-transform: uppercase; }
+.empty-watermark-sub{ color:#666; font-size: 0.85rem;}
+.footer-status{ margin-top:24px; text-align:center; font-size:.75rem; color:#666; }
 
 .toast{
-    position:fixed;
-    bottom:30px;
-    left:50%;
-    transform:translateX(-50%);
-    background:#111;
-    border:1px solid #2a2a2a;
-    color:#fff;
-    padding:14px 18px;
-    border-radius:16px;
-    opacity:0;
-    pointer-events:none;
-    transition:all .3s ease;
-    z-index:999;
+    position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
+    background:#111; border:1px solid #2a2a2a; color:#fff;
+    padding:14px 18px; border-radius:16px; opacity:0; pointer-events:none;
+    transition:all .3s ease; z-index:999; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
 }
+.toast.show{ opacity:1; bottom:40px; }
+.hidden { display: none !important; }
 
-.toast.show{
-    opacity:1;
-    bottom:40px;
-}
+/* Modal Engine */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
+.modal.active { display: flex; }
+.modal-box { width: 95%; max-width: 420px; background: #0e0e0e; border: 1px solid #252525; border-radius: 28px; padding: 24px; }
+.modal-title { font-size: .95rem; font-weight: 700; margin-bottom: 18px; text-align: center; text-transform: uppercase; letter-spacing: 1px; color: #fff;}
+.modal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-height: 280px; overflow-y: auto; padding: 4px; }
+.modal-cat { background: #141414; border: 1px solid #262626; border-radius: 18px; padding: 16px 10px; cursor: pointer; text-align: center; font-size: .65rem; font-weight: 700; text-transform: uppercase; color: #888; transition: .2s;}
+.modal-cat:hover { border-color: #fff; background: #1a1a1a; color: #fff; }
+.modal-cat svg { width: 22px; height: 22px; margin-bottom: 8px; fill: #888; transition: .2s;}
+.modal-cat:hover svg { fill: #fff; }
 
+.dup-list { font-size: 0.8rem; color: var(--soft); margin-top: 18px; background: #000; padding: 16px; border-radius: 16px; display: none; border: 1px solid #202020; text-align: center; }
 </style>
 </head>
 <body>
 
+<svg style="display:none;">
+    <symbol id="icon-clothing" viewBox="0 0 24 24"><path d="M12.87 3.14a4 4 0 00-1.74 0L4 6v2h2v11a1 1 0 001 1h10a1 1 0 001-1V8h2V6l-7.13-2.86z"/></symbol>
+    <symbol id="icon-hairs" viewBox="0 0 24 24"><path d="M12 2C7 2 3 6 3 11v2c0 1.5 1 2.7 2.4 3C5.8 20 8.5 22 12 22s6.2-2 6.6-6c1.4-.3 2.4-1.5 2.4-3v-2c0-5-4-9-9-9zm0 2c3.9 0 7 3.1 7 7v1h-1.2c-.4-2.3-2.4-4-4.8-4-1.3 0-2.5.5-3.4 1.4C8.8 8.5 7.5 8 6 8c-.3 0-.7 0-1 .1C6 5.7 8.8 4 12 4zm-5 9v-1c2 0 3.5-.7 4.5-2 1 .7 2.2 1 3.5 1h2v2c0 3-2.2 5-5 5s-5-2-5-5z"/></symbol>
+    <symbol id="icon-faceskin" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></symbol>
+    <symbol id="icon-bodyskin" viewBox="0 0 24 24"><path d="M12 2C9.8 2 8 3.8 8 6c0 1.5.8 2.7 2 3.4V11H8.5C6.6 11 5 12.6 5 14.5V19c0 .6.4 1 1 1h2v-4h1v4h6v-4h1v4h2c.6 0 1-.4 1-1v-4.5c0-1.9-1.6-3.5-3.5-3.5H14V9.4c1.2-.7 2-1.9 2-3.4 0-2.2-1.8-4-4-4z"/></symbol>
+    <symbol id="icon-meshhead" viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9v3h1c.55 0 1 .45 1 1v4c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-4c0-.55.45-1 1-1h1v-3c0-4.97-4.03-9-9-9z"/></symbol>
+    <symbol id="icon-meshbody" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></symbol>
+    <symbol id="icon-accessories" viewBox="0 0 24 24"><path d="M19 3H5L2 9l10 13L22 9l-3-6zM5.8 5h12.4l1.5 3H4.3l1.5-3zm6.2 14.5L5.6 10h12.8L12 19.5z"/></symbol>
+    <symbol id="icon-skybox" viewBox="0 0 24 24"><path d="M12 3L2 12h3v8h14v-8h3L12 3zm3 10h-6v-2h6v2zm0-4h-6V7h6v2z"/></symbol>
+    <symbol id="icon-houses" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></symbol>
+    <symbol id="icon-decor" viewBox="0 0 24 24"><path d="M20 10h-2V7c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v6h2v-2h16v2h2v-6c0-1.1-.9-2-2-2zm-4 0H8V7h8v3z"/></symbol>
+    <symbol id="icon-objects" viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44c-.32-.17-.53-.5-.53-.88V7.5c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.19v6.72zm14 0v-6.72l-6 3.39v6.71l6-3.38z"/></symbol>
+    <symbol id="icon-textures" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></symbol>
+    <symbol id="icon-scripts" viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></symbol>
+</svg>
+
 <div class="container">
+    <header>
+        <div class="status-badge">
+            <div class="status-dot"></div> CONNECTED
+        </div>
+        <h1>✦ PERSONAL INVENTORY</h1>
+        <div class="subtitle">powered by Saori Suki</div>
+        <div class="top-stats">
+            <div class="stat-card">
+                <div class="stat-label">Folders</div>
+                <div class="stat-value" id="folderCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Selected</div>
+                <div class="stat-value" id="selectedCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Status</div>
+                <div class="stat-value">LIVE</div>
+            </div>
+        </div>
+    </header>
 
-<header>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('inventory', this)">Inventory</button>
+        <button class="tab-btn" onclick="switchTab('categories', this)">Categories</button>
+        <button class="tab-btn" onclick="switchTab('search', this)">Search</button>
+        <button class="tab-btn" onclick="switchTab('tools', this)">Tools</button>
+    </div>
 
-<div class="status-badge">
-<div class="status-dot"></div>
-CONNECTED
-</div>
+    <div id="tab-inventory" class="tab-content active">
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Search folders..." oninput="filterInventory(this.value)">
+        </div>
+        <div class="bulk-actions" id="bulkInv" style="display: none;">
+            <label class="checkbox-label"><input type="checkbox" class="item-cb" id="select-all"> Select All</label>
+            <button class="btn btn-white" onclick="deliverSelected('inventory-list')">Deliver Selected</button>
+        </div>
+        <ul class="item-list" id="inventory-list"><div class="loading">Loading inventory from SL server...</div></ul>
+    </div>
 
-<h1>✦ PERSONAL INVENTORY</h1>
-<div class="subtitle">powered by Saori Suki</div>
+    <div id="tab-categories" class="tab-content">
+        <div id="categories-home">
+            <div class="cat-grid" id="cat-grid"></div>
+        </div>
+        <div id="category-view" class="hidden">
+            <div class="cat-view-header">
+                <div class="cat-view-title" id="catViewTitle">📁 CATEGORY: NAME</div>
+                <button class="btn btn-dark" style="padding: 6px 14px; font-size: 0.65rem;" onclick="closeCategoryView()">◀ Back</button>
+            </div>
+            <div class="bulk-actions" id="bulkCat" style="display: none;">
+                <label class="checkbox-label"><input type="checkbox" id="selectAllCat" class="item-cb" onclick="toggleSelectAll('category-items', this)"> Select All</label>
+                <button class="btn btn-white" onclick="deliverSelected('category-items')">Deliver Selected</button>
+            </div>
+            <ul class="item-list" id="category-items"></ul>
+        </div>
+    </div>
 
-<div class="top-stats">
+    <div id="tab-search" class="tab-content">
+        <div class="empty-watermark">
+            <div class="empty-watermark-title">Search Engine Merged</div>
+            <div class="empty-watermark-sub">The search bar is now integrated directly into the Inventory Tab for a better experience!</div>
+        </div>
+    </div>
 
-<div class="stat-card">
-<div class="stat-label">Folders</div>
-<div class="stat-value" id="folderCount">0</div>
-</div>
+    <div id="tab-tools" class="tab-content">
+        <div class="bulk-actions" style="margin-bottom: 30px;">
+            <button class="btn btn-dark" onclick="sendCommand('CMD:RESET')">Reset Script</button>
+            <button class="btn btn-dark" onclick="findDuplicatesWeb()">Scan Duplicates</button>
+        </div>
+        <div class="dup-list" id="dupDisplay"></div>
+    </div>
 
-<div class="stat-card">
-<div class="stat-label">Selected</div>
-<div class="stat-value" id="selectedCount">0</div>
-</div>
-
-<div class="stat-card">
-<div class="stat-label">Status</div>
-<div class="stat-value">LIVE</div>
-</div>
-
-</div>
-
-</header>
-
-<div class="tabs">
-
-<button class="tab-btn active" onclick="switchTab('inventory', this)">
-Inventory
-</button>
-
-<button class="tab-btn" onclick="switchTab('categories', this)">
-Categories
-</button>
-
-<button class="tab-btn" onclick="switchTab('tools', this)">
-Tools
-</button>
-
-</div>
-
-<div id="tab-inventory" class="tab-content active">
-
-<div class="search-box">
-<input type="text" class="search-input" placeholder="Search folders..." oninput="filterInventory(this.value)">
-</div>
-
-<div class="bulk-actions">
-
-<label class="checkbox-label">
-<input type="checkbox" class="item-cb" onchange="toggleAll(this)">
-Select All
-</label>
-
-<button class="btn btn-white" onclick="deliverSelected()">
-Deliver Selected
-</button>
-
-</div>
-
-<ul class="item-list" id="inventory-list"></ul>
-
-</div>
-
-<div id="tab-categories" class="tab-content">
-
-<div class="cat-grid">
-
-<div class="cat-circle"><div class="cat-icon-bg"><div class="cat-icon"></div></div><div class="cat-label">Clothing</div></div>
-<div class="cat-circle"><div class="cat-icon-bg"><div class="cat-icon"></div></div><div class="cat-label">Hair</div></div>
-<div class="cat-circle"><div class="cat-icon-bg"><div class="cat-icon"></div></div><div class="cat-label">Face Skin</div></div>
-<div class="cat-circle"><div class="cat-icon-bg"><div class="cat-icon"></div></div><div class="cat-label">Body Skin</div></div>
-<div class="cat-circle"><div class="cat-icon-bg"><div class="cat-icon"></div></div><div class="cat-label">Mesh Head</div></div>
-<div class="cat-circle"><div class="cat-icon-bg"><div class="cat-icon"></div></div><div class="cat-label">Mesh Body</div></div>
-<div class="cat-circle"><div class="cat-icon-bg"><div class="cat-icon"></div></div><div class="cat-label">Accessories</div></div>
-<div class="cat-circle"><div class="cat-icon-bg"><div class="cat-icon"></div></div><div class="cat-label">Skybox</div></div>
-<div class="cat-circle"><div class="cat-icon-bg"><div class="cat-icon"></div></div><div class="cat-label">Houses</div></div>
-<div class="cat-circle"><div class="cat-icon-bg"><div class="cat-icon"></div></div><div class="cat-label">Decor</div></div>
-<div class="cat-circle"><div class="cat-icon-bg"><div class="cat-icon"></div></div><div class="cat-label">Objects</div></div>
-<div class="cat-circle"><div class="cat-icon-bg"><div class="cat-icon"></div></div><div class="cat-label">Textures</div></div>
-<div class="cat-circle"><div class="cat-icon-bg"><div class="cat-icon"></div></div><div class="cat-label">Scripts</div></div>
-
-</div>
-
-</div>
-
-<div id="tab-tools" class="tab-content">
-
-<div class="bulk-actions">
-
-<button class="btn btn-dark" onclick="sendCommand('CMD:RESET')">
-Reset Script
-</button>
-
-<button class="btn btn-dark" onclick="scanDuplicates()">
-Scan Duplicates
-</button>
-
-</div>
-
-</div>
-
-<div class="footer-status">
-MMC Storage Remote Interface
-</div>
-
+    <div class="footer-status">MMC Storage Remote Interface</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<div class="modal" id="category-modal">
+    <div class="modal-box">
+        <div class="modal-title">Assign Category</div>
+        <div class="modal-grid" id="modal-grid"></div>
+        <button class="btn btn-dark" style="width: 100%; margin-top: 20px;" onclick="document.getElementById('category-modal').classList.remove('active')">Cancel</button>
+    </div>
+</div>
+
 <script>
+    const API = new URLSearchParams(window.location.search).get("api");
+    let inventoryData = [];
+    let savedCategories = JSON.parse(localStorage.getItem('mmc_categories')) || {};
+    let itemToAssign = "";
+    let currentOpenCategoryViewId = "";
 
-const API = new URLSearchParams(location.search).get("api");
+    const categories = {
+        "Clothing": "icon-clothing", "Hair": "icon-hairs", "Face Skin": "icon-faceskin", "Body Skin": "icon-bodyskin",
+        "Mesh Head": "icon-meshhead", "Mesh Body": "icon-meshbody", "Accessories": "icon-accessories", "Skybox": "icon-skybox",
+        "Houses": "icon-houses", "Decor": "icon-decor", "Objects": "icon-objects", "Textures": "icon-textures", "Scripts": "icon-scripts"
+    };
 
-let inventoryData = [];
+    const keywords = {
+        'Clothing': ['shirt', 'pants', 'dress', 'jacket', 'top', 'skirt', 'jeans', 'apparel', 'outfit', 'suit', 'hoodie', 'shorts', 'bra', 'lingerie', 'sweater'],
+        'Hair': ['hair', 'bangs', 'ponytail', 'braid', 'curls', 'updo', 'wig'],
+        'Face Skin': ['makeup', 'face', 'lipstick', 'eyeshadow', 'blush', 'eyebrows', 'lip', 'eye'],
+        'Body Skin': ['body skin', 'skin', 'tattoo', 'freckles', 'bom'],
+        'Mesh Head': ['head', 'lelutka', 'catwa', 'genus'],
+        'Mesh Body': ['body', 'maitreya', 'legacy', 'ebody', 'kupra', 'reborn'],
+        'Accessories': ['shoes', 'boots', 'sneakers', 'heels', 'necklace', 'ring', 'piercing', 'bag', 'glasses', 'hat', 'earrings', 'choker'],
+        'Skybox': ['skybox', 'backdrop', 'studio', 'surround'],
+        'Houses': ['house', 'cabin', 'mansion', 'cottage', 'building'],
+        'Decor': ['decor', 'furniture', 'couch', 'bed', 'lamp', 'rug', 'plant', 'chair', 'table', 'sofa'],
+        'Objects': ['object', 'prop', 'mesh'],
+        'Textures': ['texture', 'map', 'specular', 'normal', 'seamless'],
+        'Scripts': ['script', 'lsl', 'hud', 'tool', 'animation', 'pose', 'ao']
+    };
 
-function toast(msg){
-    const t=document.getElementById("toast");
-    t.innerText=msg;
-    t.classList.add("show");
-    setTimeout(()=>t.classList.remove("show"),2500);
-}
-
-function switchTab(tabId, btnElement){
-
-    document.querySelectorAll('.tab-btn').forEach(btn=>{
-        btn.classList.remove('active');
-    });
-
-    document.querySelectorAll('.tab-content').forEach(tab=>{
-        tab.classList.remove('active');
-    });
-
-    document.getElementById(`tab-${tabId}`).classList.add('active');
-
-    btnElement.classList.add('active');
-}
-
-async function loadInventory(){
-
-    if(!API){
-        toast("Missing SL API");
-        return;
+    function toast(msg){
+        const t = document.getElementById("toast");
+        t.innerText = msg; t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 2500);
     }
 
-    try{
-
-        const res = await fetch(API);
-        const data = await res.json();
-
-        inventoryData = data;
-
-        renderInventory(data);
-
-        document.getElementById("folderCount").innerText=data.length;
-
-    }catch(e){
-
-        toast("Connection failed");
-
+    function switchTab(tabId, btnElement){
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+        btnElement.classList.add('active');
+        if(tabId === 'categories') closeCategoryView(); 
     }
-}
 
-function renderInventory(items){
+    function detectCategory(name) {
+        if (savedCategories[name]) return savedCategories[name];
+        const lowerName = name.toLowerCase();
+        for (const [cat, words] of Object.entries(keywords)) {
+            if (words.some(word => lowerName.includes(word))) return cat;
+        }
+        return 'Objects';
+    }
 
-    const list=document.getElementById("inventory-list");
+    function getEmptyStateHTML(title, sub) { 
+        return `<div class="empty-watermark"><div class="empty-watermark-title">${title}</div><div class="empty-watermark-sub">${sub}</div></div>`; 
+    }
 
-    list.innerHTML="";
+    async function loadInventory(){
+        if(!API){ toast("Missing SL API URL"); document.getElementById("inventory-list").innerHTML = getEmptyStateHTML("Disconnected", "Access via SL Menu."); return; }
+        try{
+            const res = await fetch(API);
+            const data = await res.json();
+            inventoryData = data.map(i => decodeURIComponent(i));
+            renderInventory(inventoryData, "inventory-list", "bulkInv");
+        }catch(e){
+            toast("Connection failed");
+            document.getElementById("inventory-list").innerHTML = getEmptyStateHTML("Error", "Could not reach SL Server.");
+        }
+    }
 
-    items.forEach(name=>{
+    function renderInventory(items, targetId, bulkId = null){
+        const list = document.getElementById(targetId);
+        const bulkEl = bulkId ? document.getElementById(bulkId) : null;
+        list.innerHTML = "";
+        
+        if(items.length === 0){
+            if(bulkEl) bulkEl.style.display = 'none';
+            list.innerHTML = getEmptyStateHTML("Nothing Found", "No matching folders.");
+            if(targetId === "inventory-list") updateCounts(0);
+            return;
+        }
 
-        list.innerHTML += `
-        <li class="item">
+        if(bulkEl) bulkEl.style.display = 'flex';
 
-            <input type="checkbox" class="item-cb item-select">
+        items.forEach(item => {
+            const category = detectCategory(item);
+            const icon = categories[category];
 
-            <div class="item-name">${decodeURIComponent(name)}</div>
+            const li = document.createElement("li");
+            li.className = "item";
+            li.innerHTML = `
+                <input type="checkbox" class="item-cb item-select" value="${item}">
+                <div class="item-name">${item}</div>
+                <div class="item-actions">
+                    <div class="cat-badge" onclick="openCategoryModal('${encodeURIComponent(item)}')">
+                        <svg><use href="#${icon}"></use></svg>
+                        <div class="cat-tooltip">${category}</div>
+                    </div>
+                    <button class="action-btn" onclick="deliverItem('${encodeURIComponent(item)}', this)">⇣</button>
+                    <button class="action-btn delete-btn" onclick="deleteItem('${encodeURIComponent(item)}', this)">✕</button>
+                </div>
+            `;
+            list.appendChild(li);
+        });
 
-            <div class="item-actions">
+        if(targetId === "inventory-list") updateCounts(items.length);
+        
+        // Re-attach listener for checkboxes to update the top stats counter
+        document.querySelectorAll(`#${targetId} .item-select`).forEach(cb => {
+            cb.addEventListener('change', updateSelectedCount);
+        });
+    }
 
-                <button class="action-btn" onclick="deliverItem('${name}', this)">
-                ⇣
-                </button>
+    function updateCounts(total) { document.getElementById("folderCount").innerText = total; }
+    function updateSelectedCount() { 
+        const total = document.querySelectorAll(".item-select:checked").length;
+        document.getElementById("selectedCount").innerText = total;
+    }
 
-                <button class="action-btn" onclick="deleteItem('${name}', this)">
-                ✕
-                </button>
+    // HTTP Comands with UI Feedback
+    async function deliverItem(itemEncoded, btn){
+        const item = decodeURIComponent(itemEncoded);
+        btn.innerText = "..."; btn.disabled = true;
+        try{
+            const res = await fetch(API, { method:"POST", body:item });
+            if(res.ok) { btn.innerText = "✔"; toast("Delivered"); } else { btn.innerText = "X"; }
+        }catch{ btn.innerText = "X"; }
+        setTimeout(()=>{ btn.innerText = "⇣"; btn.disabled = false; }, 1800);
+    }
 
-            </div>
+    async function deleteItem(itemEncoded, btn){
+        const item = decodeURIComponent(itemEncoded);
+        btn.innerText = "..."; btn.disabled = true;
+        try{
+            const res = await fetch(API, { method:"POST", body:"MENU_DEL:" + item });
+            if(res.ok) { btn.innerText = "✔"; toast("Check SL Popup"); } else { btn.innerText = "X"; }
+        }catch{ btn.innerText = "X"; }
+        setTimeout(()=>{ btn.innerText = "✕"; btn.disabled = false; }, 4000);
+    }
 
-        </li>
-        `;
+    async function sendCommand(cmd){
+        toast("Sending command...");
+        await fetch(API, { method:"POST", body:cmd });
+        toast("Executed");
+    }
 
+    async function deliverSelected(containerId = "inventory-list"){
+        const checked = [...document.getElementById(containerId).querySelectorAll(".item-select:checked")];
+        if(!checked.length){ toast("Nothing selected"); return; }
+        const items = checked.map(c => c.value).join("\n");
+        toast("Delivering bulk...");
+        await fetch(API, { method:"POST", body:items });
+        toast("Bulk delivery completed ✔");
+        
+        // Uncheck all after delivery
+        checked.forEach(c => c.checked = false);
+        updateSelectedCount();
+        document.getElementById("select-all").checked = false;
+        if(document.getElementById("selectAllCat")) document.getElementById("selectAllCat").checked = false;
+    }
+
+    function filterInventory(query){
+        const val = query.toLowerCase();
+        if(!val) { renderInventory(inventoryData, "inventory-list", "bulkInv"); return; }
+        const filtered = inventoryData.filter(x => x.toLowerCase().includes(val));
+        renderInventory(filtered, "inventory-list", "bulkInv");
+    }
+
+    document.getElementById("select-all").addEventListener("change", e=>{
+        toggleSelectAll('inventory-list', e.target);
     });
 
-}
-
-async function deliverItem(name,btn){
-
-    btn.innerText="...";
-
-    await fetch(API,{
-        method:"POST",
-        body:decodeURIComponent(name)
-    });
-
-    btn.innerText="✔";
-
-    toast("Delivered");
-
-    setTimeout(()=>{
-        btn.innerText="⇣";
-    },1200);
-}
-
-async function deleteItem(name,btn){
-
-    btn.innerText="...";
-
-    await fetch(API,{
-        method:"POST",
-        body:"MENU_DEL:"+decodeURIComponent(name)
-    });
-
-    btn.innerText="✔";
-
-    toast("Check SL popup");
-
-    setTimeout(()=>{
-        btn.innerText="✕";
-    },1200);
-}
-
-function toggleAll(el){
-
-    document.querySelectorAll(".item-select").forEach(cb=>{
-        cb.checked=el.checked;
-    });
-
-    updateSelectedCount();
-}
-
-function updateSelectedCount(){
-
-    const total=[...document.querySelectorAll(".item-select")]
-    .filter(x=>x.checked).length;
-
-    document.getElementById("selectedCount").innerText=total;
-}
-
-document.addEventListener("change",e=>{
-
-    if(e.target.classList.contains("item-select")){
+    function toggleSelectAll(containerId, masterCheckbox) {
+        document.getElementById(containerId).querySelectorAll('.item-select').forEach(cb => { cb.checked = masterCheckbox.checked; });
         updateSelectedCount();
     }
 
-});
-
-async function deliverSelected(){
-
-    const selected=[];
-
-    document.querySelectorAll(".item").forEach(item=>{
-
-        const cb=item.querySelector(".item-select");
-
-        if(cb.checked){
-
-            selected.push(
-                item.querySelector(".item-name").innerText
-            );
-
-        }
-
-    });
-
-    if(selected.length===0){
-        toast("Nothing selected");
-        return;
+    // Categories Engine
+    function renderCategories(){
+        const grid = document.getElementById("cat-grid");
+        grid.innerHTML = "";
+        Object.entries(categories).forEach(([name, icon])=>{
+            const div = document.createElement("div"); div.className = "cat-circle";
+            div.innerHTML = `<div class="cat-icon-bg"><svg><use href="#${icon}"></use></svg></div><div class="cat-label">${name}</div>`;
+            div.onclick = () => openCategory(name);
+            grid.appendChild(div);
+        });
     }
 
-    await fetch(API,{
-        method:"POST",
-        body:selected.join("\n")
-    });
+    function openCategory(category){
+        currentOpenCategoryViewId = category;
+        document.getElementById("categories-home").classList.add("hidden");
+        document.getElementById("category-view").classList.remove("hidden");
+        document.getElementById("catViewTitle").innerText = `📁 CATEGORY: ${category}`;
+        const filtered = inventoryData.filter(item => detectCategory(item) === category);
+        renderInventory(filtered, "category-items", "bulkCat");
+    }
 
-    toast("Bulk delivery completed");
-}
+    function closeCategoryView(){
+        currentOpenCategoryViewId = "";
+        document.getElementById("categories-home").classList.remove("hidden");
+        document.getElementById("category-view").classList.add("hidden");
+    }
 
-function filterInventory(query){
+    function openCategoryModal(itemEncoded){
+        selectedItem = decodeURIComponent(itemEncoded);
+        const modal = document.getElementById("category-modal");
+        const grid = document.getElementById("modal-grid");
+        grid.innerHTML = "";
 
-    query=query.toLowerCase();
+        Object.entries(categories).forEach(([name, icon])=>{
+            const div = document.createElement("div"); div.className = "modal-cat";
+            div.innerHTML = `<svg><use href="#${icon}"></use></svg><br>${name}`;
+            div.onclick = ()=>{
+                savedCategories[selectedItem] = name;
+                localStorage.setItem("mmc_categories", JSON.stringify(savedCategories));
+                modal.classList.remove("active");
+                
+                // Refresh UI Live
+                if(document.getElementById('tab-inventory').classList.contains('active')) {
+                    const searchVal = document.querySelector('.search-input').value;
+                    filterInventory(searchVal);
+                } else if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") {
+                    openCategory(currentOpenCategoryViewId);
+                }
+                toast("Category Saved");
+            };
+            grid.appendChild(div);
+        });
+        modal.classList.add("active");
+    }
 
-    const filtered=inventoryData.filter(x=>
-        decodeURIComponent(x).toLowerCase().includes(query)
-    );
+    // Web Duplicate Scanner
+    function findDuplicatesWeb() {
+        const disp = document.getElementById('dupDisplay');
+        if(inventoryData.length < 2) { disp.style.display = 'block'; disp.innerHTML = "Inventory clean.<br>No duplicates."; return; }
+        let sorted = [...inventoryData].sort(); let dups = []; let lastBase = "";
+        for(let i = 0; i < sorted.length; i++) {
+            let current = sorted[i];
+            if (i > 0) {
+                let prev = sorted[i-1];
+                if (current.startsWith(prev + " ")) dups.push(current);
+                else if (lastBase !== "" && current.startsWith(lastBase + " ")) dups.push(current);
+                else lastBase = current;
+            } else lastBase = current;
+        }
+        disp.style.display = 'block';
+        if(dups.length > 0) disp.innerHTML = `<strong style="color:#fff;">Found ${dups.length} possible duplicates:</strong><br><br>` + dups.map(d => `• ${d}`).join('<br>');
+        else disp.innerHTML = "Inventory perfectly clean.<br>No duplicates found.";
+    }
 
-    renderInventory(filtered);
-}
-
-async function sendCommand(cmd){
-
-    await fetch(API,{
-        method:"POST",
-        body:cmd
-    });
-
-    toast("Command executed");
-}
-
-async function scanDuplicates(){
-
-    toast("Check SL local chat");
-}
-
-loadInventory();
-
-setInterval(loadInventory,15000);
-
+    renderCategories();
+    loadInventory();
 </script>
-
 </body>
 </html>
