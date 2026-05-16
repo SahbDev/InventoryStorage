@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MMC Personal Manager</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
         :root {
             --bg-color: #0a0a0a;
@@ -62,6 +62,10 @@
             font-weight: 400;
         }
 
+        .subtitle strong {
+            color: var(--text-main);
+        }
+
         /* Tabs System */
         .tabs {
             display: flex;
@@ -101,7 +105,7 @@
         input[type="text"], textarea {
             width: 100%;
             padding: 12px 15px;
-            background-color: #000;
+            background-color: #050505;
             border: 1px solid var(--border);
             color: var(--text-main);
             font-size: 0.9rem;
@@ -121,34 +125,41 @@
             min-height: 120px;
         }
 
-        /* Lists & Items */
+        /* Bulk Actions Bar (Matched to User Print) */
         .bulk-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 15px;
-            background: #0d0d0d;
+            padding: 12px 20px;
+            background: #050505;
             border: 1px solid var(--border);
             border-radius: 4px;
             margin-bottom: 15px;
-            font-size: 0.8rem;
         }
 
         .checkbox-label {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             cursor: pointer;
-            color: var(--text-main);
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .item-cb {
+            accent-color: var(--accent-purple);
+            width: 16px; height: 16px;
+            cursor: pointer;
         }
 
         .btn-bulk-deliver {
-            background: var(--text-main);
+            background: #ffffff;
             color: #000;
             border: none;
-            padding: 6px 12px;
+            padding: 8px 16px;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             cursor: pointer;
             border-radius: 2px;
@@ -156,32 +167,49 @@
         }
 
         .btn-bulk-deliver:hover {
-            background: var(--accent-green);
+            background: #e0e0e0;
         }
 
+        /* Empty State Watermark */
+        .empty-watermark {
+            text-align: center;
+            padding: 50px 20px;
+            color: #333333;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .empty-watermark span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0;
+            color: #222222;
+        }
+
+        /* Item List (Matched to User Print) */
         .item-list {
             list-style: none;
             padding: 0;
             margin: 0;
-            max-height: 400px;
+            max-height: 450px;
             overflow-y: auto;
             border: 1px solid var(--border);
             border-radius: 4px;
             background: #080808;
         }
 
-        .item-list::-webkit-scrollbar {
-            width: 6px;
-        }
-        .item-list::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 3px;
-        }
+        .item-list::-webkit-scrollbar { width: 6px; }
+        .item-list::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
 
         .item {
             display: flex;
             align-items: center;
-            padding: 12px 15px;
+            padding: 15px 20px;
             border-bottom: 1px solid #1a1a1a;
         }
 
@@ -189,29 +217,27 @@
             border-bottom: none;
         }
 
-        .item-cb {
-            margin-right: 12px;
-            cursor: pointer;
-        }
-
         .item-name {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             flex-grow: 1;
             word-break: break-all;
-            padding-right: 10px;
+            padding-right: 15px;
+            padding-left: 12px;
+            color: #ffffff;
         }
 
         .item-actions {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
         .btn-action {
             background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 5px 12px;
+            color: #ffffff;
+            border: 1px solid #444;
+            padding: 6px 14px;
             font-size: 0.7rem;
+            font-weight: 600;
             text-transform: uppercase;
             cursor: pointer;
             border-radius: 2px;
@@ -219,17 +245,16 @@
         }
 
         .btn-action:hover {
-            border-color: var(--text-main);
+            border-color: #ffffff;
         }
 
         .btn-delete {
-            border-color: #331111;
-            color: #aa8888;
+            border-color: #4a2222;
+            color: var(--accent-red);
         }
 
         .btn-delete:hover {
             border-color: var(--accent-red);
-            color: var(--accent-red);
         }
 
         /* Config / Panels */
@@ -340,31 +365,31 @@
     </header>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('inventory')">Inventory</button>
-        <button class="tab-btn" onclick="switchTab('search')">Search By</button>
-        <button class="tab-btn" onclick="switchTab('manage')">Manage</button>
-        <button class="tab-btn" onclick="switchTab('config')">Config</button>
+        <button type="button" class="tab-btn active" onclick="switchTab('inventory')">Inventory</button>
+        <button type="button" class="tab-btn" onclick="switchTab('search')">Search By</button>
+        <button type="button" class="tab-btn" onclick="switchTab('manage')">Manage</button>
+        <button type="button" class="tab-btn" onclick="switchTab('config')">Config</button>
     </div>
 
     <div id="tab-inventory" class="tab-content active">
-        <div class="bulk-actions">
+        <div class="bulk-actions" id="bulkInv" style="display: none;">
             <label class="checkbox-label">
-                <input type="checkbox" id="selectAllInv" onclick="toggleSelectAll('inventoryList', this)"> Select All
+                <input type="checkbox" id="selectAllInv" class="item-cb" onclick="toggleSelectAll('inventoryList', this)"> Select All
             </label>
-            <button class="btn-bulk-deliver" onclick="deliverSelected('inventoryList')">Deliver Selected</button>
+            <button type="button" class="btn-bulk-deliver" onclick="deliverSelected('inventoryList')">Deliver Selected</button>
         </div>
-        <ul class="item-list" id="inventoryList"></ul>
+        <ul class="item-list" id="inventoryList" style="border: none; background: transparent;"></ul>
     </div>
 
     <div id="tab-search" class="tab-content">
         <input type="text" id="searchBar" placeholder="Search by name, year (e.g. 2026), or month (e.g. -05-)..." onkeyup="filterSearch()">
-        <div class="bulk-actions">
+        <div class="bulk-actions" id="bulkSearch" style="display: none;">
             <label class="checkbox-label">
-                <input type="checkbox" id="selectAllSearch" onclick="toggleSelectAll('searchList', this)"> Select All Results
+                <input type="checkbox" id="selectAllSearch" class="item-cb" onclick="toggleSelectAll('searchList', this)"> Select All
             </label>
-            <button class="btn-bulk-deliver" onclick="deliverSelected('searchList')">Deliver Selected</button>
+            <button type="button" class="btn-bulk-deliver" onclick="deliverSelected('searchList')">Deliver Selected</button>
         </div>
-        <ul class="item-list" id="searchList"></ul>
+        <ul class="item-list" id="searchList" style="border: none; background: transparent;"></ul>
     </div>
 
     <div id="tab-manage" class="tab-content">
@@ -374,7 +399,7 @@
                 Paste your folder names below (one per line) just like you would in local chat. The server will process all of them instantly.
             </div>
             <textarea id="manageInput" placeholder="/9 MY JACKET - BLACK&#10;/9 MY PANTS - BLUE&#10;/9 SNEAKERS..."></textarea>
-            <button class="btn-panel" style="background: var(--text-main); color: #000; font-weight: 600;" onclick="sendManageText(this)">Send to Server</button>
+            <button type="button" class="btn-panel" style="background: var(--text-main); color: #000; font-weight: 600;" onclick="sendManageText(this)">Send to Server</button>
         </div>
     </div>
 
@@ -383,13 +408,13 @@
             <div class="settings-label"><strong>Rename Server Hashtag</strong><br>Change the object name and hashtag of your storage.</div>
             <div class="flex-row">
                 <input type="text" id="hashtagInput" placeholder="e.g., CASUAL, FORMAL, COUTURES" style="margin:0;">
-                <button class="btn-panel" style="width: auto;" onclick="remoteRename(this)">Update</button>
+                <button type="button" class="btn-panel" style="width: auto;" onclick="remoteRename(this)">Update</button>
             </div>
         </div>
 
         <div class="settings-group">
             <div class="settings-label"><strong>Smart Duplicate Finder 🔧</strong><br>Scan your server for folders with identical names or SL numeric suffixes (e.g. "Item", "Item 1").</div>
-            <button class="btn-panel" onclick="findDuplicatesWeb(this)">Scan for Duplicates</button>
+            <button type="button" class="btn-panel" onclick="findDuplicatesWeb(this)">Scan for Duplicates</button>
             <div class="dup-list" id="dupDisplay"></div>
         </div>
     </div>
@@ -402,8 +427,8 @@
         <div class="modal-title">⚠️ CAUTION: Are you sure?</div>
         <div class="modal-text" id="deleteModalText">This action will permanently remove the folder from the server's contents.</div>
         <div class="modal-buttons">
-            <button class="btn-panel btn-delete" id="confirmDeleteBtn">Yes, Delete</button>
-            <button class="btn-panel" onclick="closeDeleteModal()">Cancel</button>
+            <button type="button" class="btn-panel btn-delete" id="confirmDeleteBtn">Yes, Delete</button>
+            <button type="button" class="btn-panel" onclick="closeDeleteModal()">Cancel</button>
         </div>
     </div>
 </div>
@@ -415,12 +440,14 @@
     
     let allItems = [];
     let deleteTarget = "";
+    let greetingHTML = "Connecting...";
 
     // Set Header and Custom Greeting
     if(urlUser) {
         const cleanName = decodeURIComponent(urlUser).replace(/_/g, ' ');
         document.getElementById('headerTitle').innerText = `✦ MMC Personal Manager`;
-        document.getElementById('connectionStatus').innerHTML = `💜 Hi <strong>${cleanName}</strong>, How can I help you today?`;
+        greetingHTML = `💜 Hi <strong>${cleanName}</strong>, How can I help you today?`;
+        document.getElementById('connectionStatus').innerHTML = greetingHTML;
     }
 
     function switchTab(tabId) {
@@ -443,23 +470,47 @@
             const data = await response.json();
             allItems = data.map(item => decodeURIComponent(item));
             
-            renderList(allItems, 'inventoryList');
-            document.getElementById('searchList').innerHTML = `<li style="text-align:center; padding:20px; color:var(--text-dim);">Type in the search bar to find folders.</li>`;
+            // Mantém a saudação do usuário se ela existir
+            if(greetingHTML !== "Connecting...") {
+                document.getElementById('connectionStatus').innerHTML = greetingHTML;
+            } else {
+                document.getElementById('connectionStatus').innerText = "🟢 Server Connected Successfully";
+            }
+            
+            renderList(allItems, 'inventoryList', 'bulkInv');
+            
+            const searchListEl = document.getElementById('searchList');
+            searchListEl.innerHTML = `<li style="text-align:center; padding:50px 20px; color:var(--text-dim);">Type in the search bar to find folders.</li>`;
+            searchListEl.style.border = "none";
+            searchListEl.style.background = "transparent";
+            
         } catch (error) {
             document.getElementById('connectionStatus').innerHTML = "🔴 Connection Lost or Expired";
             document.getElementById('countStatus').innerText = "Generate a new secure session link via your terminal.";
         }
     }
 
-    function renderList(items, containerId) {
+    function renderList(items, containerId, bulkId) {
         const listEl = document.getElementById(containerId);
+        const bulkEl = document.getElementById(bulkId);
         listEl.innerHTML = "";
         
         if(items.length === 0) {
-            listEl.innerHTML = `<li style="text-align:center; padding:20px; color:var(--text-dim); font-size:0.85rem;">No folders match criteria.</li>`;
+            if(bulkEl) bulkEl.style.display = 'none';
+            listEl.style.border = "none";
+            listEl.style.background = "transparent";
+            listEl.innerHTML = `
+                <div class="empty-watermark">
+                    Server inventory empty.
+                    <span>No items to manage.</span>
+                </div>`;
             updateTotal();
             return;
         }
+
+        if(bulkEl) bulkEl.style.display = 'flex';
+        listEl.style.border = "1px solid var(--border)";
+        listEl.style.background = "#080808";
 
         items.forEach(item => {
             const li = document.createElement('li');
@@ -508,12 +559,16 @@
         const query = document.getElementById('searchBar').value.toLowerCase();
         
         if(query === "") {
-            document.getElementById('searchList').innerHTML = `<li style="text-align:center; padding:20px; color:var(--text-dim);">Type in the search bar to find folders.</li>`;
+            document.getElementById('bulkSearch').style.display = 'none';
+            const searchListEl = document.getElementById('searchList');
+            searchListEl.innerHTML = `<li style="text-align:center; padding:50px 20px; color:var(--text-dim);">Type in the search bar to find folders.</li>`;
+            searchListEl.style.border = "none";
+            searchListEl.style.background = "transparent";
             return;
         }
         
         const filtered = allItems.filter(item => item.toLowerCase().includes(query));
-        renderList(filtered, 'searchList');
+        renderList(filtered, 'searchList', 'bulkSearch');
     }
 
     // BULK SELECTION
@@ -525,18 +580,18 @@
     // POST COMMUNICATION TO SECOND LIFE
     async function sendPost(payload, buttonEl, context) {
         const oldText = buttonEl.innerText;
-        buttonEl.innerText = "Processing...";
+        buttonEl.innerText = "Wait...";
         buttonEl.disabled = true;
         
         try {
             const response = await fetch(slApiUrl, { method: 'POST', body: payload });
             if(response.ok) {
-                buttonEl.innerText = "Success ✔";
+                buttonEl.innerText = "Done ✔";
                 
                 if(context === "Delete") {
                     allItems = allItems.filter(i => i !== deleteTarget);
-                    renderList(allItems, 'inventoryList');
-                    filterSearch(); // Refresh search view if open
+                    renderList(allItems, 'inventoryList', 'bulkInv');
+                    filterSearch(); 
                     closeDeleteModal();
                 }
                 
@@ -597,7 +652,13 @@
 
     // WEB-BASED DUPLICATE FINDER
     function findDuplicatesWeb(btn) {
-        if(allItems.length < 2) return;
+        const disp = document.getElementById('dupDisplay');
+        
+        if(allItems.length < 2) {
+            disp.style.display = 'block';
+            disp.innerHTML = "Your inventory is perfectly clean. No duplicates found.";
+            return;
+        }
         
         let sorted = [...allItems].sort();
         let dups = [];
@@ -619,9 +680,7 @@
             }
         }
 
-        const disp = document.getElementById('dupDisplay');
         disp.style.display = 'block';
-        
         if(dups.length > 0) {
             disp.innerHTML = `<strong style="color:var(--text-main)">Found ${dups.length} possible duplicates:</strong><br><br>` + dups.map(d => `• ${d}`).join('<br>');
         } else {
