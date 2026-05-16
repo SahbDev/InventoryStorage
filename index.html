@@ -7,11 +7,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
     --bg:#050505;
     --panel:#101010;
@@ -25,9 +23,7 @@
     --transition:all .22s ease;
 }
 
-*{
-    box-sizing:border-box;
-}
+*{ box-sizing:border-box; }
 
 body{
     margin:0;
@@ -51,6 +47,8 @@ body{
     border-radius:34px;
     padding:34px;
     box-shadow:0 30px 80px rgba(0,0,0,.65);
+    display: flex;
+    flex-direction: column;
 }
 
 header{
@@ -94,6 +92,7 @@ h1{
     font-weight:700;
     letter-spacing:1px;
     text-transform:uppercase;
+    outline: none;
 }
 
 .tab-btn:hover{
@@ -108,19 +107,14 @@ h1{
     border-color:#fff;
 }
 
-.tab-content{
-    display:none;
-}
-
-.tab-content.active{
-    display:block;
-}
+.tab-content{ display:none; }
+.tab-content.active{ display:block; }
 
 .bulk-actions{
     display:flex;
     justify-content:center;
     align-items:center;
-    gap:10px;
+    gap:12px;
     background:#0c0c0c;
     border:1px solid #232323;
     border-radius:16px;
@@ -134,17 +128,16 @@ h1{
 .checkbox-label{
     display:flex;
     align-items:center;
-    gap:7px;
-    font-size:.63rem;
+    gap:8px;
+    font-size:.62rem;
     font-weight:700;
-    letter-spacing:.7px;
+    letter-spacing:1px;
     color:#d8d8d8;
     text-transform:uppercase;
+    cursor: pointer;
 }
 
-.item-cb{
-    accent-color:#fff;
-}
+.item-cb{ accent-color:#fff; cursor: pointer; }
 
 .btn-bulk-deliver{
     background:#fff;
@@ -157,7 +150,9 @@ h1{
     font-weight:800;
     text-transform:uppercase;
     letter-spacing:1px;
+    transition:.2s;
 }
+.btn-bulk-deliver:hover{ transform:translateY(-1px); }
 
 .cat-grid{
     display:grid;
@@ -173,10 +168,7 @@ h1{
     cursor:pointer;
     transition:var(--transition);
 }
-
-.cat-circle:hover{
-    transform:translateY(-4px);
-}
+.cat-circle:hover{ transform:translateY(-4px); }
 
 .cat-icon-bg{
     width:88px;
@@ -188,39 +180,25 @@ h1{
     justify-content:center;
     align-items:center;
     transition:var(--transition);
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.03),
-        0 18px 35px rgba(0,0,0,.45);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 18px 35px rgba(0,0,0,.45);
 }
-
-.cat-circle:hover .cat-icon-bg{
-    border-color:#4e4e4e;
-}
-
-.cat-icon-bg svg{
-    width:42px;
-    height:42px;
-    fill:#f3f3f3;
-}
-
-.cat-label{
-    font-size:.65rem;
-    letter-spacing:1.4px;
-    font-weight:700;
-    text-transform:uppercase;
-    color:#9c9c9c;
-    text-align:center;
-}
+.cat-circle:hover .cat-icon-bg{ border-color:#4e4e4e; }
+.cat-icon-bg svg{ width:42px; height:42px; fill:#f3f3f3; }
+.cat-label{ font-size:.65rem; letter-spacing:1.4px; font-weight:700; text-transform:uppercase; color:#9c9c9c; text-align:center; }
+.cat-circle:hover .cat-label { color:#ffffff; }
 
 .item-list{
     list-style:none;
-    margin:0;
-    padding:0;
+    margin:0; padding:0;
     border-radius:24px;
     overflow:hidden;
     border:1px solid #202020;
     background:#0c0c0c;
+    max-height: 450px;
+    overflow-y: auto;
 }
+.item-list::-webkit-scrollbar { width: 6px; }
+.item-list::-webkit-scrollbar-thumb { background: #202020; border-radius: 3px; }
 
 .item{
     display:grid;
@@ -229,27 +207,15 @@ h1{
     align-items:center;
     padding:18px 20px;
     border-bottom:1px solid rgba(255,255,255,.03);
+    transition:.2s;
 }
-
-.item:last-child{
-    border-bottom:none;
-}
-
-.item-name{
-    font-size:.88rem;
-    font-weight:500;
-    word-break:break-word;
-}
-
-.item-actions{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
+.item:hover{ background:#111; }
+.item:last-child{ border-bottom:none; }
+.item-name{ font-size:.88rem; font-weight:500; word-break:break-word; }
+.item-actions{ display:flex; align-items:center; gap:10px; }
 
 .cat-badge{
-    width:38px;
-    height:38px;
+    width:38px; height:38px;
     border-radius:14px;
     border:1px solid #292929;
     background:#070707;
@@ -260,666 +226,351 @@ h1{
     transition:all .2s ease;
     position:relative;
 }
+.cat-badge:hover{ border-color:#555; transform:translateY(-1px); }
+.cat-badge svg{ width:16px; height:16px; fill:#fff; }
 
-.cat-badge:hover{
-    border-color:#555;
-    transform:translateY(-1px);
+.cat-tooltip{
+    position:absolute; bottom:-34px; left:50%;
+    transform:translateX(-50%);
+    background:#fff; color:#000;
+    font-size:.55rem; font-weight:800;
+    padding:6px 8px; border-radius:8px;
+    letter-spacing:1px; opacity:0;
+    pointer-events:none; transition:.18s;
+    white-space:nowrap; text-transform:uppercase;
+    z-index:20;
 }
-
-.cat-badge svg{
-    width:16px;
-    height:16px;
-    fill:#fff;
-}
+.cat-badge:hover .cat-tooltip{ opacity:1; bottom:-30px; }
 
 .action-btn{
-    border:none;
-    border-radius:12px;
-    padding:10px 12px;
-    font-size:.62rem;
-    font-weight:800;
-    cursor:pointer;
-    letter-spacing:1px;
-    text-transform:uppercase;
-    transition:var(--transition);
+    border:none; border-radius:12px;
+    padding:10px 12px; font-size:.62rem;
+    font-weight:800; cursor:pointer;
+    letter-spacing:1px; text-transform:uppercase;
+    transition:var(--transition); white-space: nowrap;
 }
-
-.deliver-btn{
-    background:#fff;
-    color:#000;
-}
-
-.delete-btn{
-    background:#1a1a1a;
-    color:#ff5d5d;
-    border:1px solid #2f2f2f;
-}
-
-.action-btn:hover{
-    transform:translateY(-2px);
-}
-
-.empty-watermark{
-    padding:80px 20px;
-    text-align:center;
-}
-
-.empty-watermark-title{
-    font-size:1rem;
-    font-weight:700;
-    letter-spacing:2px;
-    margin-bottom:10px;
-}
-
-.empty-watermark-sub{
-    color:#666;
-}
-
-.footer-status{
-    margin-top:24px;
-    text-align:center;
-    font-size:.75rem;
-    color:#666;
-}
+.deliver-btn{ background:#fff; color:#000; }
+.delete-btn{ background:#1a1a1a; color:#ff5d5d; border:1px solid #2f2f2f; }
+.action-btn:hover{ transform:translateY(-2px); }
 
 .search-box{
-    width:100%;
-    background:#0d0d0d;
-    border:1px solid #242424;
-    color:#fff;
-    border-radius:18px;
-    padding:16px 18px;
-    outline:none;
-    font-size:.85rem;
+    width:100%; background:#0d0d0d;
+    border:1px solid #232323; color:#fff;
+    border-radius:18px; padding:16px 18px;
+    outline:none; font-size:.85rem; text-align: center;
+    margin-bottom: 20px;
 }
-
-.hidden{
-    display:none !important;
-}
+.search-box:focus{ border-color:#4d4d4d; }
 
 .back-btn{
-    background:#fff;
-    color:#000;
-    border:none;
-    padding:12px 18px;
-    border-radius:14px;
-    cursor:pointer;
-    margin-bottom:20px;
-    font-weight:700;
+    background:#fff; color:#000; border:none;
+    padding:12px 18px; border-radius:14px;
+    cursor:pointer; margin-bottom:20px; font-weight:700;
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;
+    transition: var(--transition);
 }
+.back-btn:hover { transform: translateY(-1px); }
+
+.empty-watermark{ padding:80px 20px; text-align:center; }
+.empty-watermark-title{ font-size:1rem; font-weight:700; letter-spacing:2px; margin-bottom:10px; text-transform: uppercase; }
+.empty-watermark-sub{ color:#666; }
+.footer-status{ margin-top:24px; text-align:center; font-size:.75rem; color:#666; }
+.loading{ padding:40px; text-align:center; color:#666; font-size: 0.85rem; }
 
 .modal{
-    position:fixed;
-    inset:0;
+    position:fixed; inset:0;
     background:rgba(0,0,0,.7);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:999;
+    display:none; align-items:center;
+    justify-content:center; z-index:999;
 }
-
-.modal.active{
-    display:flex;
-}
-
-.modal-box{
-    width:95%;
-    max-width:420px;
-    background:#0e0e0e;
-    border:1px solid #252525;
-    border-radius:28px;
-    padding:24px;
-}
-
-.modal-title{
-    font-size:.95rem;
-    font-weight:700;
-    margin-bottom:18px;
-}
-
-.modal-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
-}
-
-.modal-cat{
-    background:#141414;
-    border:1px solid #262626;
-    border-radius:18px;
-    padding:16px 10px;
-    cursor:pointer;
-    text-align:center;
-    font-size:.68rem;
-    font-weight:700;
-}
-
-.modal-cat:hover{
-    border-color:#555;
-}
-
+.modal.active{ display:flex; }
+.modal-box{ width:95%; max-width:420px; background:#0e0e0e; border:1px solid #252525; border-radius:28px; padding:24px; }
+.modal-title{ font-size:.95rem; font-weight:700; margin-bottom:18px; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+.modal-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-height: 280px; overflow-y: auto; padding: 4px; }
+.modal-cat{ background:#141414; border:1px solid #262626; border-radius:18px; padding:16px 10px; cursor:pointer; text-align:center; font-size:.65rem; font-weight:700; text-transform: uppercase; }
+.modal-cat:hover{ border-color:#555; background: #1a1a1a; }
+.hidden{ display:none !important; }
 </style>
 </head>
 <body>
 
 <svg style="display:none;">
-
-<symbol id="icon-clothing" viewBox="0 0 24 24">
-<path d="M12 3l4 3 3-1 2 4-3 2v8H6v-8L3 9l2-4 3 1z"/>
-</symbol>
-
-<symbol id="icon-hairs" viewBox="0 0 24 24">
-<path d="M12 2C7.5 2 4 5.5 4 10v2c0 5.2 3.2 10 8 10s8-4.8 8-10v-2c0-4.5-3.5-8-8-8zm-5 9c1.4-.5 3.2-1.8 4.5-3.8 1.4 2.6 4.2 4.2 7 4.7V13c0 4-2.4 7-6.5 7S5.5 17 5.5 13V11zm12-1.5c-3.4-.7-6-3-6.9-5.8-1.2 2.2-3.6 4.5-6.1 5.4C6.4 5.8 8.8 4 12 4c4 0 7 2.5 7 5.5z"/>
-</symbol>
-
-<symbol id="icon-faceskin" viewBox="0 0 24 24">
-<path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-4 7a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm8 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm-4 8c-2 0-3.7-1-4.5-2.5h9C15.7 16 14 17 12 17z"/>
-</symbol>
-
-<symbol id="icon-bodyskin" viewBox="0 0 24 24">
-<path d="M12 2a3 3 0 013 3v2h2c1.7 0 3 1.3 3 3v9h-3v-5h-2v5H9v-5H7v5H4v-9c0-1.7 1.3-3 3-3h2V5a3 3 0 013-3z"/>
-</symbol>
-
-<symbol id="icon-meshhead" viewBox="0 0 24 24">
-<path d="M12 2C7 2 4 6 4 11v2c0 5 3 9 8 9s8-4 8-9v-2c0-5-3-9-8-9z"/>
-</symbol>
-
-<symbol id="icon-meshbody" viewBox="0 0 24 24">
-<path d="M12 2a4 4 0 100 8 4 4 0 000-8zm0 10c-4 0-7 2-7 5v3h14v-3c0-3-3-5-7-5z"/>
-</symbol>
-
-<symbol id="icon-accessories" viewBox="0 0 24 24">
-<path d="M12 2l9 7-9 13L3 9l9-7z"/>
-</symbol>
-
-<symbol id="icon-skybox" viewBox="0 0 24 24">
-<path d="M12 3l5 4v3h2v2h-2v3H7v-3H5v-2h2V7l5-4z"/>
-<path d="M4 17c2.5-2 5.5-2 8 0 2.5-2 5.5-2 8 0-1 2.5-3.5 4-8 4s-7-1.5-8-4z"/>
-</symbol>
-
-<symbol id="icon-houses" viewBox="0 0 24 24">
-<path d="M12 3L3 11h3v9h12v-9h3z"/>
-</symbol>
-
-<symbol id="icon-decor" viewBox="0 0 24 24">
-<path d="M4 10h16v8H4zM7 6h10v2H7z"/>
-</symbol>
-
-<symbol id="icon-objects" viewBox="0 0 24 24">
-<path d="M12 2l8 4v12l-8 4-8-4V6z"/>
-</symbol>
-
-<symbol id="icon-textures" viewBox="0 0 24 24">
-<path d="M3 3h18v18H3z"/>
-</symbol>
-
-<symbol id="icon-scripts" viewBox="0 0 24 24">
-<path d="M8 6L2 12l6 6 2-2-4-4 4-4zm8 0l-2 2 4 4-4 4 2 2 6-6z"/>
-</symbol>
-
+<symbol id="icon-clothing" viewBox="0 0 24 24"><path d="M12 3l4 3 3-1 2 4-3 2v8H6v-8L3 9l2-4 3 1z"/></symbol>
+<symbol id="icon-hairs" viewBox="0 0 24 24"><path d="M12 2C7 2 3 6 3 11v2c0 1.5 1 2.7 2.4 3C5.8 20 8.5 22 12 22s6.2-2 6.6-6c1.4-.3 2.4-1.5 2.4-3v-2c0-5-4-9-9-9zm0 2c3.9 0 7 3.1 7 7v1h-1.2c-.4-2.3-2.4-4-4.8-4-1.3 0-2.5.5-3.4 1.4C8.8 8.5 7.5 8 6 8c-.3 0-.7 0-1 .1C6 5.7 8.8 4 12 4zm-5 9v-1c2 0 3.5-.7 4.5-2 1 .7 2.2 1 3.5 1h2v2c0 3-2.2 5-5 5s-5-2-5-5z"/></symbol>
+<symbol id="icon-faceskin" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-4 7a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm8 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm-4 8c-2 0-3.7-1-4.5-2.5h9C15.7 16 14 17 12 17z"/></symbol>
+<symbol id="icon-bodyskin" viewBox="0 0 24 24"><path d="M12 2C9.8 2 8 3.8 8 6c0 1.5.8 2.7 2 3.4V11H8.5C6.6 11 5 12.6 5 14.5V19c0 .6.4 1 1 1h2v-4h1v4h6v-4h1v4h2c.6 0 1-.4 1-1v-4.5c0-1.9-1.6-3.5-3.5-3.5H14V9.4c1.2-.7 2-1.9 2-3.4 0-2.2-1.8-4-4-4z"/></symbol>
+<symbol id="icon-meshhead" viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9v3h1c.55 0 1 .45 1 1v4c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-4c0-.55.45-1 1-1h1v-3c0-4.97-4.03-9-9-9z"/></symbol>
+<symbol id="icon-meshbody" viewBox="0 0 24 24"><path d="M12 2a4 4 0 100 8 4 4 0 000-8zm0 10c-4 0-7 2-7 5v3h14v-3c0-3-3-5-7-5z"/></symbol>
+<symbol id="icon-accessories" viewBox="0 0 24 24"><path d="M19 3H5L2 9l10 13L22 9l-3-6zM5.8 5h12.4l1.5 3H4.3l1.5-3zm6.2 14.5L5.6 10h12.8L12 19.5z"/></symbol>
+<symbol id="icon-skybox" viewBox="0 0 24 24"><path d="M12 3L2 12h3v8h14v-8h3L12 3zm3 10h-6v-2h6v2zm0-4h-6V7h6v2z"/></symbol>
+<symbol id="icon-houses" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></symbol>
+<symbol id="icon-decor" viewBox="0 0 24 24"><path d="M20 10h-2V7c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v6h2v-2h16v2h2v-6c0-1.1-.9-2-2-2zm-4 0H8V7h8v3z"/></symbol>
+<symbol id="icon-objects" viewBox="0 0 24 24"><path d="M21 16.5c0 .4-.2.7-.5.9l-7.9 4.4c-.2.1-.4.2-.6.2s-.4-.1-.6-.2l-7.9-4.4c-.3-.2-.5-.5-.5-.9V7.5c0-.4.2-.7.5-.9l7.9-4.4c.2-.1.4-.2.6-.2s.4.1.6.2l7.9 4.4c.3.2.5.5.5.9v9zM12 4.2L6 7.5l6 3.4 6-3.4-6-3.3z"/></symbol>
+<symbol id="icon-textures" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></symbol>
+<symbol id="icon-scripts" viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></symbol>
 </svg>
 
 <div class="container">
+    <header>
+        <h1>✦ PERSONAL INVENTORY</h1>
+        <div class="subtitle">powered by Saori Suki</div>
+    </header>
 
-<header>
-<h1>✦ PERSONAL INVENTORY</h1>
-<div class="subtitle">powered by Saori Suki</div>
-</header>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('inventory', this)">Inventory</button>
+        <button class="tab-btn" onclick="switchTab('categories', this)">Categories</button>
+        <button class="tab-btn" onclick="switchTab('search', this)">Search</button>
+    </div>
 
-<div class="tabs">
+    <div id="tab-inventory" class="tab-content active">
+        <div class="bulk-actions" id="bulkInv" style="display: none;">
+            <label class="checkbox-label"><input type="checkbox" id="select-all" class="item-cb"> Select All</label>
+            <button class="btn-bulk-deliver" onclick="deliverSelected()">Deliver Selected</button>
+        </div>
+        <ul class="item-list" id="inventory-list"><div class="loading">Loading inventory from SL server...</div></ul>
+    </div>
 
-<button class="tab-btn active" onclick="switchTab('inventory', this)">
-Inventory
-</button>
+    <div id="tab-categories" class="tab-content">
+        <div id="categories-home">
+            <div class="cat-grid" id="cat-grid"></div>
+        </div>
+        
+        <div id="category-view" class="hidden">
+            <div class="cat-view-header">
+                <div class="cat-view-title" id="catViewTitle">📁 CATEGORY: NAME</div>
+                <button class="back-btn" onclick="closeCategoryView()">← Back</button>
+            </div>
+            <ul class="item-list" id="category-items"></ul>
+        </div>
+    </div>
 
-<button class="tab-btn" onclick="switchTab('categories', this)">
-Categories
-</button>
+    <div id="tab-search" class="tab-content">
+        <input class="search-box" id="search-input" placeholder="Search inventory folders..." oninput="searchInventory(this.value)">
+        <ul class="item-list" id="search-results"></ul>
+    </div>
 
-<button class="tab-btn" onclick="switchTab('search', this)">
-Search
-</button>
-
-</div>
-
-<div id="tab-inventory" class="tab-content active">
-
-<div class="bulk-actions">
-
-<label class="checkbox-label">
-<input type="checkbox" id="select-all">
-Select All
-</label>
-
-<button class="btn-bulk-deliver" onclick="deliverSelected()">
-Deliver Selected
-</button>
-
-</div>
-
-<ul class="item-list" id="inventory-list"></ul>
-
-</div>
-
-<div id="tab-categories" class="tab-content">
-
-<div id="categories-home">
-
-<div class="cat-grid" id="cat-grid"></div>
-
-</div>
-
-<div id="category-view" class="hidden">
-
-<button class="back-btn" onclick="closeCategoryView()">← Back</button>
-
-<ul class="item-list" id="category-items"></ul>
-
-</div>
-
-</div>
-
-<div id="tab-search" class="tab-content">
-
-<input class="search-box" placeholder="Search inventory..." oninput="searchInventory(this.value)">
-
-<br><br>
-
-<ul class="item-list" id="search-results"></ul>
-
-</div>
-
-<div class="footer-status" id="status">
-Inventory connected successfully.
-</div>
-
+    <div class="footer-status" id="status">Initialising secure stream connection...</div>
 </div>
 
 <div class="modal" id="category-modal">
-
-<div class="modal-box">
-
-<div class="modal-title">
-Assign Category
-</div>
-
-<div class="modal-grid" id="modal-grid"></div>
-
-</div>
-
+    <div class="modal-box">
+        <div class="modal-title">Assign Category</div>
+        <div class="modal-grid" id="modal-grid"></div>
+        <button type="button" class="btn-panel" style="margin-top:20px; border-radius: 14px;" onclick="document.getElementById('category-modal').classList.remove('active')">Cancel</button>
+    </div>
 </div>
 
 <script>
+    const api = new URLSearchParams(window.location.search).get("api");
 
-const api = new URLSearchParams(window.location.search).get("api");
+    const categories = {
+        "Clothing": "icon-clothing", "Hair": "icon-hairs", "Face Skin": "icon-faceskin", "Body Skin": "icon-bodyskin",
+        "Mesh Head": "icon-meshhead", "Mesh Body": "icon-meshbody", "Accessories": "icon-accessories", "Skybox": "icon-skybox",
+        "Houses": "icon-houses", "Decor": "icon-decor", "Objects": "icon-objects", "Textures": "icon-textures", "Scripts": "icon-scripts"
+    };
 
-const categories = {
-    "Clothing":"icon-clothing",
-    "Hair":"icon-hairs",
-    "Face Skin":"icon-faceskin",
-    "Body Skin":"icon-bodyskin",
-    "Mesh Head":"icon-meshhead",
-    "Mesh Body":"icon-meshbody",
-    "Accessories":"icon-accessories",
-    "Skybox":"icon-skybox",
-    "Houses":"icon-houses",
-    "Decor":"icon-decor",
-    "Objects":"icon-objects",
-    "Textures":"icon-textures",
-    "Scripts":"icon-scripts"
-};
+    const catDisplayNames = {
+        'icon-clothing': 'CLOTHING', 'icon-hairs': 'HAIRS', 'icon-faceskin': 'FACE SKIN', 'icon-bodyskin': 'BODY SKIN',
+        'icon-meshhead': 'MESH HEAD', 'icon-meshbody': 'MESH BODY', 'icon-accessories': 'ACCESSORIES', 'icon-skybox': 'SKYBOX',
+        'icon-houses': 'HOUSES', 'icon-decor': 'DECOR', 'icon-objects': 'OBJECTS', 'icon-textures': 'TEXTURES', 'icon-scripts': 'SCRIPTS'
+    };
 
-let inventory = [];
-let selectedItem = null;
+    // Auto-Detector Inteligente de palavras-chave restaurado
+    const keywords = {
+        'Clothing': ['shirt', 'pants', 'dress', 'jacket', 'top', 'skirt', 'jeans', 'apparel', 'outfit', 'suit', 'hoodie', 'shorts', 'bra', 'lingerie', 'sweater'],
+        'Hair': ['hair', 'bangs', 'ponytail', 'braid', 'curls', 'updo', 'wig'],
+        'Face Skin': ['makeup', 'face', 'lipstick', 'eyeshadow', 'blush', 'eyebrows', 'lip', 'eye'],
+        'Body Skin': ['body skin', 'skin', 'tattoo', 'freckles', 'bom'],
+        'Mesh Head': ['head', 'lelutka', 'catwa', 'genus'],
+        'Mesh Body': ['body', 'maitreya', 'legacy', 'ebody', 'kupra', 'reborn'],
+        'Accessories': ['shoes', 'boots', 'sneakers', 'heels', 'necklace', 'ring', 'piercing', 'bag', 'glasses', 'hat', 'earrings', 'choker'],
+        'Skybox': ['skybox', 'backdrop', 'studio', 'surround'],
+        'Houses': ['house', 'cabin', 'mansion', 'cottage', 'building'],
+        'Decor': ['decor', 'furniture', 'couch', 'bed', 'lamp', 'rug', 'plant', 'chair', 'table', 'sofa'],
+        'Objects': ['object', 'prop', 'mesh'],
+        'Textures': ['texture', 'map', 'specular', 'normal', 'seamless'],
+        'Scripts': ['script', 'lsl', 'hud', 'tool', 'animation', 'pose', 'ao']
+    };
 
-function switchTab(tabId, btnElement){
+    let inventory = [];
+    let selectedItem = null;
 
-    document.querySelectorAll('.tab-btn').forEach(btn=>{
-        btn.classList.remove('active');
-    });
-
-    document.querySelectorAll('.tab-content').forEach(tab=>{
-        tab.classList.remove('active');
-    });
-
-    document.getElementById(`tab-${tabId}`).classList.add('active');
-
-    btnElement.classList.add('active');
-}
-
-function setStatus(text){
-    document.getElementById("status").innerText = text;
-}
-
-async function loadInventory(){
-
-    if(!api){
-        setStatus("Missing SL API.");
-        return;
+    function detectCategory(name) {
+        const saved = localStorage.getItem("cat_" + name);
+        if (saved) return saved;
+        
+        const lowerName = name.toLowerCase();
+        for (const [cat, words] of Object.entries(keywords)) {
+            if (words.some(word => lowerName.includes(word))) return cat;
+        }
+        return 'Objects';
     }
 
-    try{
-
-        const res = await fetch(api);
-        inventory = await res.json();
-
-        renderInventory(inventory);
-
-    }catch(e){
-
-        setStatus("Connection failed.");
-
+    function getEmptyStateHTML(title, sub) { 
+        return `<div class="empty-watermark"><div class="empty-watermark-title">${title}</div><div class="empty-watermark-sub">${sub}</div></div>`; 
     }
 
-}
+    function switchTab(tabId, btnElement){
+        document.querySelectorAll('.tab-btn').forEach(btn=>{ btn.classList.remove('active'); });
+        document.querySelectorAll('.tab-content').forEach(tab=>{ tab.classList.remove('active'); });
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+        btnElement.classList.add('active');
+        if(tabId === 'categories') closeCategoryView(); 
+    }
 
-function getCategory(item){
+    function setStatus(text){ document.getElementById("status").innerText = text; }
 
-    return localStorage.getItem("cat_"+item) || "Objects";
+    async function loadInventory(){
+        if(!api){ setStatus("Disconnected: Access via SL Menu."); return; }
+        try{
+            const res = await fetch(api);
+            inventory = await res.json();
+            inventory = inventory.map(i => decodeURIComponent(i));
+            renderInventory(inventory, "inventory-list", "bulkInv");
+        }catch(e){
+            setStatus("Connection failed.");
+        }
+    }
 
-}
+    function renderInventory(items, targetId, bulkId = null){
+        const target = document.getElementById(targetId);
+        const bulkEl = bulkId ? document.getElementById(bulkId) : null;
+        target.innerHTML = "";
 
-function setCategory(item,cat){
+        if(items.length === 0){
+            if(bulkEl) bulkEl.style.display = 'none';
+            target.innerHTML = getEmptyStateHTML("Nothing Found", "No matching folders to display.");
+            if(targetId === "inventory-list") setStatus("Total Folders Allocated: 0");
+            return;
+        }
 
-    localStorage.setItem("cat_"+item,cat);
+        if(bulkEl) bulkEl.style.display = 'flex';
 
-}
+        items.forEach(item=>{
+            const category = detectCategory(item);
+            const icon = categories[category] || "icon-objects";
 
-function renderInventory(items){
+            const li = document.createElement("li");
+            li.className = "item";
 
-    const list = document.getElementById("inventory-list");
+            // Sincronizado perfeitamente com todas as funções de escudos e botões duplos
+            li.innerHTML = `
+            <input type="checkbox" class="item-cb bulk-item" value="${item}">
+            <div class="item-name">${item}</div>
+            <div class="item-actions">
+                <div class="cat-badge" onclick="openCategoryModal('${encodeURIComponent(item)}')">
+                    <svg><use href="#${icon}"></use></svg>
+                    <div class="cat-tooltip">${catDisplayNames[icon] || 'OBJECTS'}</div>
+                </div>
+                <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(item)}', this)">Deliver</button>
+                <button class="action-btn delete-btn" onclick="deleteItem('${encodeURIComponent(item)}', this)">Delete</button>
+            </div>`;
 
-    list.innerHTML = "";
-
-    items.forEach(item=>{
-
-        const category = getCategory(item);
-        const icon = categories[category];
-
-        const li = document.createElement("li");
-        li.className = "item";
-
-        li.innerHTML = `
-        <input type="checkbox" class="bulk-item" value="${item}">
-
-        <div class="item-name">${item}</div>
-
-        <div class="item-actions">
-
-            <div class="cat-badge"
-                 title="${category}"
-                 onclick="openCategoryModal('${encodeURIComponent(item)}')">
-
-                <svg>
-                    <use href="#${icon}"></use>
-                </svg>
-
-            </div>
-
-            <button class="action-btn deliver-btn"
-                    onclick="deliverItem('${encodeURIComponent(item)}', this)">
-                    Deliver
-            </button>
-
-            <button class="action-btn delete-btn"
-                    onclick="deleteItem('${encodeURIComponent(item)}', this)">
-                    Delete
-            </button>
-
-        </div>
-        `;
-
-        list.appendChild(li);
-
-    });
-
-}
-
-async function deliverItem(itemEncoded,btn){
-
-    const item = decodeURIComponent(itemEncoded);
-
-    btn.innerText = "Wait...";
-
-    try{
-
-        await fetch(api,{
-            method:"POST",
-            body:item
+            target.appendChild(li);
         });
 
-        btn.innerText = "Done ✔";
-
-        setTimeout(()=>{
-            btn.innerText = "Deliver";
-        },1800);
-
-    }catch{
-
-        btn.innerText = "Error";
-
+        if(targetId === "inventory-list") setStatus(`Total Folders Allocated: ${inventory.length}`);
     }
 
-}
+    async function deliverItem(itemEncoded, btn){
+        const item = decodeURIComponent(itemEncoded);
+        const oldText = btn.innerText; btn.innerText = "Wait..."; btn.disabled = true;
+        try{
+            const res = await fetch(api, { method:"POST", body:item });
+            if(res.ok) { btn.innerText = "Done ✔"; } else { btn.innerText = "Error"; }
+        } catch { btn.innerText = "Failed"; }
+        setTimeout(()=>{ btn.innerText = oldText; btn.disabled = false; }, 1800);
+    }
 
-async function deleteItem(itemEncoded,btn){
+    async function deleteItem(itemEncoded, btn){
+        const item = decodeURIComponent(itemEncoded);
+        const oldText = btn.innerText; btn.innerText = "Wait..."; btn.disabled = true;
+        try{
+            const res = await fetch(api, { method:"POST", body:"MENU_DEL:" + item });
+            if(res.ok) { btn.innerText = "Check SL"; } else { btn.innerText = "Error"; }
+        } catch { btn.innerText = "Failed"; }
+        setTimeout(()=>{ btn.innerText = oldText; btn.disabled = false; }, 4000);
+    }
 
-    const item = decodeURIComponent(itemEncoded);
+    async function deliverSelected(){
+        const checked = [...document.querySelectorAll(".bulk-item:checked")];
+        if(!checked.length) return;
+        const items = checked.map(c=>c.value).join("\n");
+        const btn = document.querySelector(".btn-bulk-deliver");
+        const oldText = btn.innerText; btn.innerText = "Wait..."; btn.disabled = true;
+        try {
+            await fetch(api, { method:"POST", body:items });
+            btn.innerText = "Done ✔";
+        } catch { btn.innerText = "Failed"; }
+        setTimeout(()=>{ btn.innerText = oldText; btn.disabled = false; }, 1800);
+    }
 
-    btn.innerText = "Wait...";
+    document.getElementById("select-all").addEventListener("change", e=>{
+        document.querySelectorAll(".bulk-item").forEach(cb=>{ cb.checked = e.target.checked; });
+    });
 
-    try{
-
-        await fetch(api,{
-            method:"POST",
-            body:"MENU_DEL:"+item
+    function renderCategories(){
+        const grid = document.getElementById("cat-grid");
+        grid.innerHTML = "";
+        Object.entries(categories).forEach(([name,icon])=>{
+            const div = document.createElement("div"); div.className = "cat-circle";
+            div.innerHTML = `<div class="cat-icon-bg"><svg><use href="#${icon}"></use></svg></div><div class="cat-label">${name}</div>`;
+            div.onclick = ()=>openCategory(name);
+            grid.appendChild(div);
         });
-
-        btn.innerText = "Check SL";
-
-    }catch{
-
-        btn.innerText = "Error";
-
     }
 
-}
-
-async function deliverSelected(){
-
-    const checked = [...document.querySelectorAll(".bulk-item:checked")];
-
-    if(!checked.length) return;
-
-    const items = checked.map(c=>c.value).join("\n");
-
-    const btn = document.querySelector(".btn-bulk-deliver");
-
-    btn.innerText = "Wait...";
-
-    await fetch(api,{
-        method:"POST",
-        body:items
-    });
-
-    btn.innerText = "Done ✔";
-
-    setTimeout(()=>{
-        btn.innerText = "Deliver Selected";
-    },1800);
-
-}
-
-document.getElementById("select-all").addEventListener("change",e=>{
-
-    document.querySelectorAll(".bulk-item").forEach(cb=>{
-        cb.checked = e.target.checked;
-    });
-
-});
-
-function renderCategories(){
-
-    const grid = document.getElementById("cat-grid");
-
-    Object.entries(categories).forEach(([name,icon])=>{
-
-        const div = document.createElement("div");
-
-        div.className = "cat-circle";
-
-        div.innerHTML = `
-        <div class="cat-icon-bg">
-            <svg><use href="#${icon}"></use></svg>
-        </div>
-
-        <div class="cat-label">${name}</div>
-        `;
-
-        div.onclick = ()=>openCategory(name);
-
-        grid.appendChild(div);
-
-    });
-
-}
-
-function openCategory(category){
-
-    document.getElementById("categories-home").classList.add("hidden");
-
-    document.getElementById("category-view").classList.remove("hidden");
-
-    const list = document.getElementById("category-items");
-
-    list.innerHTML = "";
-
-    inventory
-    .filter(item=>getCategory(item)===category)
-    .forEach(item=>{
-
-        const li = document.createElement("li");
-
-        li.className = "item";
-
-        li.innerHTML = `
-        <div class="item-name">${item}</div>
-
-        <div class="item-actions">
-
-            <button class="action-btn deliver-btn"
-            onclick="deliverItem('${encodeURIComponent(item)}', this)">
-            Deliver
-            </button>
-
-        </div>
-        `;
-
-        list.appendChild(li);
-
-    });
-
-}
-
-function closeCategoryView(){
-
-    document.getElementById("categories-home").classList.remove("hidden");
-
-    document.getElementById("category-view").classList.add("hidden");
-
-}
-
-function openCategoryModal(itemEncoded){
-
-    selectedItem = decodeURIComponent(itemEncoded);
-
-    const modal = document.getElementById("category-modal");
-
-    const grid = document.getElementById("modal-grid");
-
-    grid.innerHTML = "";
-
-    Object.entries(categories).forEach(([name,icon])=>{
-
-        const div = document.createElement("div");
-
-        div.className = "modal-cat";
-
-        div.innerHTML = `
-        <svg width="22" height="22" style="margin-bottom:8px;">
-        <use href="#${icon}"></use>
-        </svg>
-        <br>
-        ${name}
-        `;
-
-        div.onclick = ()=>{
-
-            setCategory(selectedItem,name);
-
-            modal.classList.remove("active");
-
-            renderInventory(inventory);
-
-        };
-
-        grid.appendChild(div);
-
-    });
-
-    modal.classList.add("active");
-
-}
-
-document.getElementById("category-modal").addEventListener("click",e=>{
-
-    if(e.target.id==="category-modal"){
-
-        e.target.classList.remove("active");
-
+    function openCategory(category){
+        document.getElementById("categories-home").classList.add("hidden");
+        document.getElementById("category-view").classList.remove("hidden");
+        document.getElementById("catViewTitle").innerText = `📁 CATEGORY: ${category}`;
+        const filtered = inventory.filter(item => detectCategory(item) === category);
+        renderInventory(filtered, "category-items", "bulkCat");
     }
 
-});
+    function closeCategoryView(){
+        document.getElementById("categories-home").classList.remove("hidden");
+        document.getElementById("category-view").classList.add("hidden");
+    }
 
-function searchInventory(text){
+    function openCategoryModal(itemEncoded){
+        selectedItem = decodeURIComponent(itemEncoded);
+        const modal = document.getElementById("category-modal");
+        const grid = document.getElementById("modal-grid");
+        grid.innerHTML = "";
 
-    const result = inventory.filter(i=>
-        i.toLowerCase().includes(text.toLowerCase())
-    );
+        Object.entries(categories).forEach(([name,icon])=>{
+            const div = document.createElement("div"); div.className = "modal-cat";
+            div.innerHTML = `<svg width="22" height="22" style="margin-bottom:8px; fill:#fff;"><use href="#${icon}"></use></svg><br>${name}`;
+            div.onclick = ()=>{
+                localStorage.setItem("cat_" + selectedItem, name);
+                modal.classList.remove("active");
+                // Atualiza todas as abas abertas em tempo real
+                renderInventory(inventory, "inventory-list", "bulkInv");
+                if(!document.getElementById("category-view").classList.contains("hidden")) {
+                    const currentCat = document.getElementById("catViewTitle").innerText.replace("📁 CATEGORY: ", "");
+                    openCategory(currentCat);
+                }
+                const searchVal = document.getElementById("search-input").value;
+                if(searchVal) searchInventory(searchVal);
+            };
+            grid.appendChild(div);
+        });
+        modal.classList.add("active");
+    }
 
-    const list = document.getElementById("search-results");
-
-    list.innerHTML = "";
-
-    result.forEach(item=>{
-
-        const li = document.createElement("li");
-
-        li.className = "item";
-
-        li.innerHTML = `
-        <div class="item-name">${item}</div>
-
-        <div class="item-actions">
-
-            <button class="action-btn deliver-btn"
-            onclick="deliverItem('${encodeURIComponent(item)}', this)">
-            Deliver
-            </button>
-
-        </div>
-        `;
-
-        list.appendChild(li);
-
+    document.getElementById("category-modal").addEventListener("click", e=>{
+        if(e.target.id==="category-modal") e.target.classList.remove("active");
     });
 
-}
+    function searchInventory(text){
+        if(!text) { document.getElementById("search-results").innerHTML = ""; return; }
+        const result = inventory.filter(i=> i.toLowerCase().includes(text.toLowerCase()) );
+        renderInventory(result, "search-results", "bulkSearch");
+    }
 
-renderCategories();
-loadInventory();
-
+    renderCategories();
+    loadInventory();
 </script>
-
 </body>
 </html>
