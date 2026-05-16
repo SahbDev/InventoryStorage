@@ -265,8 +265,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             <label class="checkbox-label"><input type="checkbox" class="item-cb" id="select-all" onchange="toggleSelectAll('inventory-list', this)"> Select All</label>
             <div style="display:flex; gap:8px;">
                 <button class="btn btn-white" onclick="deliverSelected('inventory-list')">DELIVER SELECTED</button>
-                <button class="btn btn-dark" onclick="confirmBulkDelete('inventory-list')">DELETE SELECTED</button>
                 <button class="btn btn-white" onclick="rezzSelected('inventory-list')">REZZ SELECTED</button>
+                <button class="btn btn-dark" onclick="confirmBulkDelete('inventory-list')">DELETE SELECTED</button>
             </div>
         </div>
         <ul class="item-list" id="inventory-list"><div class="empty-watermark"><div class="empty-watermark-title">Loading</div><div class="empty-watermark-sub">Connecting to server...</div></div></ul>
@@ -288,8 +288,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 <label class="checkbox-label"><input type="checkbox" id="selectAllCat" class="item-cb" onclick="toggleSelectAll('category-items', this)"> Select All</label>
                 <div style="display:flex; gap:8px;">
                     <button class="btn btn-white" onclick="deliverSelected('category-items')">DELIVER SELECTED</button>
-                    <button class="btn btn-dark" onclick="confirmBulkDelete('category-items')">DELETE SELECTED</button>
                     <button class="btn btn-white" onclick="rezzSelected('category-items')">REZZ SELECTED</button>
+                    <button class="btn btn-dark" onclick="confirmBulkDelete('category-items')">DELETE SELECTED</button>
                 </div>
             </div>
             <ul class="item-list" id="category-items"></ul>
@@ -422,6 +422,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         return `<div class="empty-watermark"><div class="empty-watermark-title">${title}</div><div class="empty-watermark-sub">${sub}</div></div>`; 
     }
 
+    // Corrigido: Oculta a listagem e limpa estados fantasmas
     function switchTab(tabId, btnElement){
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -496,6 +497,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
             const li = document.createElement("li");
             li.className = "item";
+            // Nova ordenação simétrica dos botões individuais: Deliver -> Rezz -> Delete
             li.innerHTML = `
                 <input type="checkbox" class="item-cb item-select" value="${item}">
                 <div class="item-name-wrapper">
@@ -511,13 +513,13 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                         <svg><use href="#icon-send"></use></svg>
                         <div class="cat-tooltip">DELIVER</div>
                     </button>
-                    <button class="action-btn delete-btn" onclick="confirmDelete('${encodeURIComponent(item)}')">
-                        <svg><use href="#icon-trash"></use></svg>
-                        <div class="cat-tooltip">DELETE</div>
-                    </button>
                     <button class="action-btn rezz-btn" onclick="rezzItem('${encodeURIComponent(item)}', this)">
                         <svg><use href="#icon-objects"></use></svg>
                         <div class="cat-tooltip">REZZ</div>
+                    </button>
+                    <button class="action-btn delete-btn" onclick="confirmDelete('${encodeURIComponent(item)}')">
+                        <svg><use href="#icon-trash"></use></svg>
+                        <div class="cat-tooltip">DELETE</div>
                     </button>
                 </div>
             `;
