@@ -19,8 +19,8 @@
     --text:#f3f3f3;
     --soft:#a1a1a1;
     --dim:#666;
-    --green:#52ff9c;
-    --danger:#ff4b4b;
+    --green:#7eff7e; 
+    --danger:#ff3636;
     --accent-purple:#cfa3ff;
     --transition:all .22s ease;
 }
@@ -85,7 +85,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .search-box{ width:100%; margin-bottom:18px; }
 .search-input{
     width:100%; background:#0c0c0c; border:1px solid #242424; color:#fff;
-    padding:18px 20px; border-radius:18px; outline:none; font-size:.9rem; text-align: center;
+    padding:18px 20px; border-radius:18px; outline:none; font-size:.9rem; text-align: center; transition: var(--transition);
 }
 .search-input:focus{ border-color:#444; }
 
@@ -254,6 +254,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         <button class="tab-btn active" onclick="switchTab('inventory', this)">Inventory</button>
         <button class="tab-btn" onclick="switchTab('categories', this)">Categories</button>
         <button class="tab-btn" onclick="switchTab('tools', this)">Tools</button>
+        <button class="tab-btn" onclick="switchTab('config', this)">Config</button>
     </div>
 
     <div id="tab-inventory" class="tab-content active">
@@ -294,8 +295,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     </div>
 
     <div id="tab-tools" class="tab-content">
-        <div class="bulk-actions" style="margin-bottom: 30px; justify-content: center; width: max-content; padding: 16px 24px;">
-            <button class="btn btn-white" style="font-size: 0.75rem;" onclick="findDuplicatesWeb()">Scan Duplicates</button>
+        <div style="display: flex; justify-content: center; margin-bottom: 30px;">
+            <button class="btn btn-white" style="font-size: 0.75rem; padding: 12px 24px; border-radius: 999px;" onclick="findDuplicatesWeb()">Scan Duplicates</button>
         </div>
         
         <div id="dupContainer" class="hidden">
@@ -306,6 +307,21 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 </div>
             </div>
             <ul class="item-list" id="dup-list"></ul>
+        </div>
+    </div>
+
+    <div id="tab-config" class="tab-content">
+        <div style="background:#0c0c0c; border:1px solid #232323; border-radius:24px; padding:30px 20px; text-align:center; max-width: 400px; margin: 0 auto;">
+            <svg style="width:32px; height:32px; fill:#888; margin-bottom: 12px;"><use href="#icon-sync"></use></svg>
+            <div style="font-size: 0.75rem; color: #777; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase;">Server Hashtag</div>
+            
+            <div id="currentServerName" style="font-size: 1.05rem; font-weight: 800; color: #fff; margin-bottom: 24px; letter-spacing: 0.5px;">MMC - Inventory Storage [YOURNAMEHERE]</div>
+            
+            <div class="search-box" style="margin-bottom: 16px;">
+                <input type="text" class="search-input" id="renameInput" placeholder="Enter new hashtag..." style="background: #111;">
+            </div>
+            
+            <button class="btn btn-white" style="width: 100%; padding: 14px; border-radius: 16px; font-size: 0.75rem;" onclick="renameServer(this)">Update Server Name</button>
         </div>
     </div>
 
@@ -341,11 +357,9 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     let savedCategories = JSON.parse(localStorage.getItem('mmc_categories')) || {};
     let currentOpenCategoryViewId = "";
     
-    // Deleção
     let deleteMode = "";
     let deleteTarget = null;
     
-    // I.A. de Proteção de Duplicatas (Guarda as cópias matriz)
     let duplicateOriginals = []; 
 
     const categories = {
@@ -382,7 +396,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         setTimeout(() => t.classList.remove("show"), 2500);
     }
 
-    // REGEX DE LIMPEZA E EXTRAÇÃO DE DATA
     function formatItemName(rawName) {
         const dateMatch = rawName.match(/(\[\d{4}-\d{2}-\d{2}[^\]]*\])/i);
         let dateStr = "";
@@ -413,7 +426,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
         document.getElementById(`tab-${tabId}`).classList.add('active');
         btnElement.classList.add('active');
+        
         if(tabId === 'categories') closeCategoryView(); 
+        
+        // RECOLHER: Sempre esconde a lista de duplicados ao mudar de aba
+        document.getElementById('dupContainer').classList.add('hidden');
+        clearAllMasterCheckboxes();
     }
 
     function clearAllMasterCheckboxes() {
@@ -436,8 +454,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             const searchVal = document.getElementById("searchBar").value;
             if(searchVal) filterInventory(searchVal);
             else renderInventory(inventoryData, "inventory-list", "bulkInv");
-            
-            if(!document.getElementById('dupContainer').classList.contains('hidden')) { findDuplicatesWeb(); }
             
             toast("Sync Complete");
         }catch(e){
@@ -645,7 +661,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 } else if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") {
                     openCategory(currentOpenCategoryViewId);
                 }
-                if(!document.getElementById('dupContainer').classList.contains('hidden')) { findDuplicatesWeb(); }
                 toast("Category Saved");
             };
             grid.appendChild(div);
@@ -688,6 +703,28 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         dupContainer.classList.remove('hidden');
         renderInventory(dups, 'dup-list', 'bulkDup');
         toast(`Found ${dups.length} potential duplicates!`);
+    }
+
+    async function renameServer(btn) {
+        const newName = document.getElementById("renameInput").value.trim();
+        if(!newName) { toast("Enter a valid name"); return; }
+        
+        const oldText = btn.innerText;
+        btn.innerText = "Updating..."; btn.disabled = true;
+        
+        try {
+            // Comando que envia a tentativa de renomear para o LSL
+            await fetch(API, { method: "POST", body: "WEB_RENAME:" + newName });
+            
+            // Simula o sucesso visualmente no site (ideal seria o servidor retornar isso no loadInventory futuramente)
+            document.getElementById("currentServerName").innerText = "MMC - Inventory Storage [" + newName + "]";
+            document.getElementById("renameInput").value = "";
+            toast("Name updated successfully!");
+        } catch(e) {
+            toast("Failed to update name");
+        }
+        
+        btn.innerText = oldText; btn.disabled = false;
     }
 
     renderCategories();
