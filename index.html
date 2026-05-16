@@ -27,47 +27,33 @@
 *{ box-sizing:border-box; }
 
 body{
-    margin:0;
-    padding:40px 18px;
+    margin:0; padding:40px 18px;
     background: radial-gradient(circle at top, rgba(255,255,255,.03), transparent 30%), #060606;
-    font-family:'Inter',sans-serif;
-    color:var(--text);
-    display:flex; justify-content:center;
-    min-height:100vh;
+    font-family:'Inter',sans-serif; color:var(--text);
+    display:flex; justify-content:center; min-height:100vh;
     -webkit-font-smoothing:antialiased;
 }
 
 .container{
     width:100%; max-width:760px;
     background:linear-gradient(180deg,#111111,#0a0a0a);
-    border:1px solid var(--line); border-radius:34px;
-    padding:34px; box-shadow:0 30px 80px rgba(0,0,0,.65);
-    display: flex; flex-direction: column;
+    border:1px solid var(--line); border-radius:34px; padding:34px;
+    box-shadow:0 30px 80px rgba(0,0,0,.65); display: flex; flex-direction: column;
 }
 
-header{
-    text-align:center; padding-bottom:24px;
-    border-bottom:1px solid #1b1b1b; position:relative;
-}
+header{ text-align:center; padding-bottom:24px; border-bottom:1px solid #1b1b1b; position:relative; }
 
-.header-actions {
-    position: absolute; top: 0; left: 0; width: 100%;
-    display: flex; justify-content: space-between; align-items: center;
-}
+.header-actions { position: absolute; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; }
 
 .status-badge{
-    background:#0f0f0f; border:1px solid #2a2a2a;
-    padding:8px 12px; border-radius:999px;
-    display:flex; align-items:center; gap:8px;
-    font-size:.65rem; font-weight:700; letter-spacing:1px;
+    background:#0f0f0f; border:1px solid #2a2a2a; padding:8px 12px; border-radius:999px;
+    display:flex; align-items:center; gap:8px; font-size:.65rem; font-weight:700; letter-spacing:1px;
 }
 .status-dot{ width:8px; height:8px; border-radius:999px; background:var(--green); box-shadow:0 0 10px var(--green); }
 
 .resync-btn {
-    background:#0f0f0f; border:1px solid #2a2a2a; color: var(--text);
-    padding:8px 14px; border-radius:999px;
-    display:flex; align-items:center; gap:6px;
-    font-size:.65rem; font-weight:700; letter-spacing:1px;
+    background:#0f0f0f; border:1px solid #2a2a2a; color: var(--text); padding:8px 14px; border-radius:999px;
+    display:flex; align-items:center; gap:6px; font-size:.65rem; font-weight:700; letter-spacing:1px;
     cursor: pointer; transition: var(--transition);
 }
 .resync-btn:hover { border-color: #555; transform: translateY(-1px); }
@@ -83,12 +69,9 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
 .tabs{ display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin:26px 0; }
 .tab-btn{
-    background:linear-gradient(180deg,#181818,#111111);
-    border:1px solid #262626; color:#8d8d8d;
-    padding:12px 18px; border-radius:999px;
-    cursor:pointer; transition:var(--transition);
-    font-size:.7rem; font-weight:700; letter-spacing:1px;
-    text-transform:uppercase; outline: none;
+    background:linear-gradient(180deg,#181818,#111111); border:1px solid #262626; color:#8d8d8d;
+    padding:12px 18px; border-radius:999px; cursor:pointer; transition:var(--transition);
+    font-size:.7rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; outline: none;
 }
 .tab-btn:hover{ transform:translateY(-2px); color:#fff; border-color:#4a4a4a; }
 .tab-btn.active{ background:#fff; color:#000; border-color:#fff; }
@@ -98,13 +81,11 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
 .search-box{ width:100%; margin-bottom:18px; }
 .search-input{
-    width:100%; background:#0c0c0c; border:1px solid #242424;
-    color:#fff; padding:18px 20px; border-radius:18px;
-    outline:none; font-size:.9rem; text-align: center;
+    width:100%; background:#0c0c0c; border:1px solid #242424; color:#fff;
+    padding:18px 20px; border-radius:18px; outline:none; font-size:.9rem; text-align: center;
 }
 .search-input:focus{ border-color:#444; }
 
-/* CORREÇÃO DO SELECT ALL: Ajustado para o conteúdo, centralizado e sem buracos gigantes */
 .bulk-actions{
     display:flex; justify-content:center; align-items:center; gap:20px;
     background:#0c0c0c; border:1px solid #232323; border-radius:18px;
@@ -114,9 +95,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .item-cb{ accent-color:#fff; cursor: pointer; }
 
 .btn{
-    border:none; padding:8px 14px; border-radius:12px;
-    cursor:pointer; font-size:.62rem; font-weight:800;
-    text-transform:uppercase; letter-spacing:1px; transition:.2s;
+    border:none; padding:8px 14px; border-radius:12px; cursor:pointer; font-size:.62rem;
+    font-weight:800; text-transform:uppercase; letter-spacing:1px; transition:.2s;
 }
 .btn-white{ background:#fff; color:#000; }
 .btn-dark{ background:#110505; color:var(--danger); border:1px solid #381818; }
@@ -126,9 +106,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .cat-circle{ display:flex; flex-direction:column; align-items:center; gap:14px; cursor:pointer; transition:var(--transition); }
 .cat-circle:hover{ transform:translateY(-4px); }
 .cat-icon-bg{
-    width:88px; height:88px; border-radius:26px;
-    background:linear-gradient(180deg,#181818,#0d0d0d); border:1px solid #262626;
-    display:flex; justify-content:center; align-items:center;
+    width:88px; height:88px; border-radius:26px; background:linear-gradient(180deg,#181818,#0d0d0d);
+    border:1px solid #262626; display:flex; justify-content:center; align-items:center;
     transition:var(--transition); box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 18px 35px rgba(0,0,0,.45);
 }
 .cat-circle:hover .cat-icon-bg{ border-color:#4e4e4e; }
@@ -157,7 +136,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .item{ display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center; padding:18px 20px; border-bottom:1px solid rgba(255,255,255,.03); transition:.2s; }
 .item:hover{ background:#111; }
 .item:last-child{ border-bottom:none; }
-.item-name{ font-size:.88rem; font-weight:500; word-break:break-word; }
+.item-name{ font-size:.88rem; font-weight:500; word-break:break-word; line-height: 1.4;}
 .item-actions{ display:flex; align-items:center; gap:8px; }
 
 .cat-badge{
@@ -167,7 +146,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 }
 .cat-badge:hover{ border-color:#555; transform:translateY(-1px); }
 .cat-badge svg{ width:16px; height:16px; fill:#fff; }
-
 .cat-tooltip{
     position:absolute; bottom:-34px; left:50%; transform:translateX(-50%);
     background:#fff; color:#000; font-size:.55rem; font-weight:800;
@@ -188,9 +166,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
 .empty-watermark{ padding:80px 20px; text-align:center; }
 .empty-watermark-title{ font-size:1rem; font-weight:700; letter-spacing:2px; margin-bottom:10px; text-transform: uppercase; }
-.empty-watermark-sub{ color:#666; font-size: 0.85rem;}
+.empty-watermark-sub{ color:#666; font-size: 0.85rem; line-height: 1.5;}
 
-/* CORREÇÃO DO RODAPÉ: Mais espaço para não esmagar os ícones */
 .footer-status{ margin-top:55px; text-align:center; font-size:.75rem; color:#555; }
 
 .toast{
@@ -230,7 +207,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     <symbol id="icon-objects" viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44c-.32-.17-.53-.5-.53-.88V7.5c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.19v6.72zm14 0v-6.72l-6 3.39v6.71l6-3.38z"/></symbol>
     <symbol id="icon-textures" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></symbol>
     <symbol id="icon-scripts" viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></symbol>
-    
     <symbol id="icon-send" viewBox="0 0 24 24"><path d="M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z"/></symbol>
     <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></symbol>
     <symbol id="icon-sync" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></symbol>
@@ -272,10 +248,10 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             <input type="text" class="search-input" id="searchBar" placeholder="Search folders..." oninput="filterInventory(this.value)">
         </div>
         <div class="bulk-actions" id="bulkInv" style="display: none;">
-            <label class="checkbox-label"><input type="checkbox" class="item-cb" id="select-all"> Select All</label>
+            <label class="checkbox-label"><input type="checkbox" class="item-cb" id="select-all" onchange="toggleSelectAll('inventory-list', this)"> Select All</label>
             <div style="display:flex; gap:8px;">
-                <button class="btn btn-white" onclick="deliverSelected('inventory-list')">Deliver</button>
-                <button class="btn btn-dark" onclick="confirmBulkDelete('inventory-list')">Delete</button>
+                <button class="btn btn-white" onclick="deliverSelected('inventory-list')">Deliver Selected</button>
+                <button class="btn btn-dark" onclick="confirmBulkDelete('inventory-list')">Delete Selected</button>
             </div>
         </div>
         <ul class="item-list" id="inventory-list"><div class="empty-watermark"><div class="empty-watermark-title">Loading</div><div class="empty-watermark-sub">Connecting to server...</div></div></ul>
@@ -290,11 +266,14 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 <div class="cat-view-title" id="catViewTitle">📁 CATEGORY: NAME</div>
                 <button class="btn-back" onclick="closeCategoryView()">◀ Back</button>
             </div>
+            <div class="search-box">
+                <input type="text" class="search-input" id="catSearchBar" placeholder="Search inside category..." oninput="filterCategoryInventory(this.value)">
+            </div>
             <div class="bulk-actions" id="bulkCat" style="display: none;">
                 <label class="checkbox-label"><input type="checkbox" id="selectAllCat" class="item-cb" onclick="toggleSelectAll('category-items', this)"> Select All</label>
                 <div style="display:flex; gap:8px;">
-                    <button class="btn btn-white" onclick="deliverSelected('category-items')">Deliver</button>
-                    <button class="btn btn-dark" onclick="confirmBulkDelete('category-items')">Delete</button>
+                    <button class="btn btn-white" onclick="deliverSelected('category-items')">Deliver Selected</button>
+                    <button class="btn btn-dark" onclick="confirmBulkDelete('category-items')">Delete Selected</button>
                 </div>
             </div>
             <ul class="item-list" id="category-items"></ul>
@@ -303,9 +282,18 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
     <div id="tab-tools" class="tab-content">
         <div class="bulk-actions" style="margin-bottom: 30px; justify-content: center; width: max-content; padding: 16px 24px;">
-            <button class="btn btn-dark" style="font-size: 0.75rem;" onclick="findDuplicatesWeb()">Scan Duplicates</button>
+            <button class="btn btn-white" style="font-size: 0.75rem;" onclick="findDuplicatesWeb()">Scan Duplicates</button>
         </div>
-        <div class="item-list" id="dupDisplay" style="display: none; padding: 20px; border-radius: 18px; text-align: center; color: #aaa; font-size: 0.85rem;"></div>
+        
+        <div id="dupContainer" class="hidden">
+            <div class="bulk-actions" id="bulkDup" style="display: none;">
+                <label class="checkbox-label"><input type="checkbox" id="selectAllDup" class="item-cb" onclick="toggleSelectAll('dup-list', this)"> Select All</label>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn btn-dark" onclick="confirmBulkDelete('dup-list')">Delete Selected</button>
+                </div>
+            </div>
+            <ul class="item-list" id="dup-list"></ul>
+        </div>
     </div>
 
     <div class="footer-status">MMC Storage Remote Interface</div>
@@ -340,6 +328,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     let savedCategories = JSON.parse(localStorage.getItem('mmc_categories')) || {};
     let currentOpenCategoryViewId = "";
     
+    // Deleção
     let deleteMode = "";
     let deleteTarget = null;
 
@@ -347,6 +336,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         "Clothing": "icon-clothing", "Hair": "icon-hairs", "Face Skin": "icon-faceskin", "Body Skin": "icon-bodyskin",
         "Mesh Head": "icon-meshhead", "Mesh Body": "icon-meshbody", "Accessories": "icon-accessories", "Skybox": "icon-skybox",
         "Houses": "icon-houses", "Decor": "icon-decor", "Objects": "icon-objects", "Textures": "icon-textures", "Scripts": "icon-scripts"
+    };
+
+    const catDisplayNames = {
+        'icon-clothing': 'CLOTHING', 'icon-hairs': 'HAIRS', 'icon-faceskin': 'FACE SKIN', 'icon-bodyskin': 'BODY SKIN',
+        'icon-meshhead': 'MESH HEAD', 'icon-meshbody': 'MESH BODY', 'icon-accessories': 'ACCESSORIES', 'icon-skybox': 'SKYBOX',
+        'icon-houses': 'HOUSES', 'icon-decor': 'DECOR', 'icon-objects': 'OBJECTS', 'icon-textures': 'TEXTURES', 'icon-scripts': 'SCRIPTS'
     };
 
     const keywords = {
@@ -371,12 +366,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         setTimeout(() => t.classList.remove("show"), 2500);
     }
 
-    function switchTab(tabId, btnElement){
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        document.getElementById(`tab-${tabId}`).classList.add('active');
-        btnElement.classList.add('active');
-        if(tabId === 'categories') closeCategoryView(); 
+    // --- CLEAN NAMES ENGINE ---
+    // Remove as tags de data e os sufixos numericos para exibir o nome limpo no site
+    function formatItemName(rawName) {
+        const match = rawName.match(/(.*?)\s*(\[\d{4}-\d{2}-\d{2}.*)$/i);
+        if (match) { return { clean: match[1].trim(), date: match[2].trim() }; }
+        return { clean: rawName, date: "" };
     }
 
     function detectCategory(name) {
@@ -392,6 +387,14 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         return `<div class="empty-watermark"><div class="empty-watermark-title">${title}</div><div class="empty-watermark-sub">${sub}</div></div>`; 
     }
 
+    function switchTab(tabId, btnElement){
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+        btnElement.classList.add('active');
+        if(tabId === 'categories') closeCategoryView(); 
+    }
+
     async function loadInventory(){
         if(!API){ toast("Missing SL API URL"); document.getElementById("inventory-list").innerHTML = getEmptyStateHTML("Disconnected", "Access via SL Menu."); return; }
         toast("Syncing...");
@@ -403,6 +406,9 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             const searchVal = document.getElementById("searchBar").value;
             if(searchVal) filterInventory(searchVal);
             else renderInventory(inventoryData, "inventory-list", "bulkInv");
+            
+            // Re-executa scan de duplicatas se a aba de tools estiver aberta
+            if(!document.getElementById('dupContainer').classList.contains('hidden')) { findDuplicatesWeb(); }
             
             toast("Sync Complete");
         }catch(e){
@@ -427,16 +433,18 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         items.forEach(item => {
             const category = detectCategory(item);
             const icon = categories[category] || "icon-objects";
+            const parsed = formatItemName(item);
+            const nameAttr = parsed.date ? `title="Criado em: ${parsed.date}"` : '';
 
             const li = document.createElement("li");
             li.className = "item";
             li.innerHTML = `
                 <input type="checkbox" class="item-cb item-select" value="${item}">
-                <div class="item-name">${item}</div>
+                <div class="item-name" ${nameAttr}>${parsed.clean}</div>
                 <div class="item-actions">
                     <div class="cat-badge" onclick="openCategoryModal('${encodeURIComponent(item)}')">
                         <svg><use href="#${icon}"></use></svg>
-                        <div class="cat-tooltip">${category}</div>
+                        <div class="cat-tooltip">${catDisplayNames[icon] || 'OBJECTS'}</div>
                     </div>
                     <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(item)}', this)">
                         <svg><use href="#icon-send"></use></svg>
@@ -486,12 +494,13 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         updateSelectedCount();
         document.getElementById("select-all").checked = false;
         if(document.getElementById("selectAllCat")) document.getElementById("selectAllCat").checked = false;
+        if(document.getElementById("selectAllDup")) document.getElementById("selectAllDup").checked = false;
     }
 
     function confirmDelete(itemEncoded) {
         deleteMode = "single";
         deleteTarget = decodeURIComponent(itemEncoded);
-        document.getElementById("delete-item-name").innerText = deleteTarget;
+        document.getElementById("delete-item-name").innerText = formatItemName(deleteTarget).clean;
         document.getElementById("delete-modal").classList.add("active");
     }
 
@@ -531,10 +540,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         renderInventory(filtered, "inventory-list", "bulkInv");
     }
 
-    document.getElementById("select-all").addEventListener("change", e=>{
-        toggleSelectAll('inventory-list', e.target);
-    });
-
     function toggleSelectAll(containerId, masterCheckbox) {
         document.getElementById(containerId).querySelectorAll('.item-select').forEach(cb => { cb.checked = masterCheckbox.checked; });
         updateSelectedCount();
@@ -556,7 +561,18 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         document.getElementById("categories-home").classList.add("hidden");
         document.getElementById("category-view").classList.remove("hidden");
         document.getElementById("catViewTitle").innerText = `📁 CATEGORY: ${category}`;
+        document.getElementById("catSearchBar").value = ""; 
         const filtered = inventoryData.filter(item => detectCategory(item) === category);
+        renderInventory(filtered, "category-items", "bulkCat");
+    }
+
+    function filterCategoryInventory(query) {
+        const val = query.toLowerCase();
+        const filtered = inventoryData.filter(item => {
+            const matchesCat = detectCategory(item) === currentOpenCategoryViewId;
+            const matchesQuery = item.toLowerCase().includes(val);
+            return matchesCat && matchesQuery;
+        });
         renderInventory(filtered, "category-items", "bulkCat");
     }
 
@@ -581,11 +597,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 modal.classList.remove("active");
                 
                 if(document.getElementById('tab-inventory').classList.contains('active')) {
-                    const searchVal = document.querySelector('.search-input').value;
+                    const searchVal = document.getElementById("searchBar").value;
                     filterInventory(searchVal);
                 } else if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") {
                     openCategory(currentOpenCategoryViewId);
                 }
+                if(!document.getElementById('dupContainer').classList.contains('hidden')) { findDuplicatesWeb(); }
                 toast("Category Saved");
             };
             grid.appendChild(div);
@@ -593,22 +610,41 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         modal.classList.add("active");
     }
 
+    // --- DUPLICATES SCANNER ENGINE ---
+    // Extrai o nome base (ignorando a data e sufixos como " 1") para comparar quem é igual a quem
+    function getBaseName(rawName) {
+        let parsed = formatItemName(rawName);
+        let clean = parsed.clean.replace(/\s+\d+$/, '').trim();
+        return clean.toLowerCase();
+    }
+
     function findDuplicatesWeb() {
-        const disp = document.getElementById('dupDisplay');
-        if(inventoryData.length < 2) { disp.style.display = 'block'; disp.innerHTML = "Inventory clean.<br>No duplicates."; return; }
-        let sorted = [...inventoryData].sort(); let dups = []; let lastBase = "";
-        for(let i = 0; i < sorted.length; i++) {
-            let current = sorted[i];
-            if (i > 0) {
-                let prev = sorted[i-1];
-                if (current.startsWith(prev + " ")) dups.push(current);
-                else if (lastBase !== "" && current.startsWith(lastBase + " ")) dups.push(current);
-                else lastBase = current;
-            } else lastBase = current;
+        toast("Scanning for duplicates...");
+        const groups = {};
+        inventoryData.forEach(item => {
+            const base = getBaseName(item);
+            if(!groups[base]) groups[base] = [];
+            groups[base].push(item);
+        });
+        
+        let dups = [];
+        Object.values(groups).forEach(group => {
+            if(group.length > 1) {
+                group.sort(); // O original fica no topo, cópias descem
+                dups = dups.concat(group);
+            }
+        });
+
+        const dupContainer = document.getElementById('dupContainer');
+        if(dups.length === 0) {
+            toast("Inventory perfectly clean!");
+            dupContainer.classList.add('hidden');
+            return;
         }
-        disp.style.display = 'block';
-        if(dups.length > 0) disp.innerHTML = `<strong style="color:#fff;">Found ${dups.length} possible duplicates:</strong><br><br>` + dups.map(d => `• ${d}`).join('<br>');
-        else disp.innerHTML = "Inventory perfectly clean.<br>No duplicates found.";
+        
+        dupContainer.classList.remove('hidden');
+        renderInventory(dups, 'dup-list', 'bulkDup');
+        toast(`Found ${dups.length} potential duplicates!`);
     }
 
     renderCategories();
