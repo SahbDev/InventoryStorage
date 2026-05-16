@@ -1,520 +1,658 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MMC Personal Inventory</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MMC Inventory Storage</title>
 
 <style>
-
-:root{
-    --bg:#050505;
-    --panel:#101010;
-    --panel2:#141414;
-    --line:#202020;
-    --line2:#2a2a2a;
-    --text:#f3f3f3;
-    --soft:#a1a1a1;
-    --dim:#666;
-    --danger:#ff4b4b;
-    --transition:all .22s ease;
-}
-
 *{
+    margin:0;
+    padding:0;
     box-sizing:border-box;
 }
 
 body{
-    margin:0;
-    padding:40px 18px;
-    background:
-        radial-gradient(circle at top, rgba(255,255,255,.03), transparent 30%),
-        #060606;
-    font-family:'Inter',sans-serif;
-    color:var(--text);
-    display:flex;
-    justify-content:center;
-    min-height:100vh;
-    -webkit-font-smoothing:antialiased;
-}
-
-.container{
-    width:100%;
-    max-width:760px;
-    background:linear-gradient(180deg,#111111,#0a0a0a);
-    border:1px solid var(--line);
-    border-radius:34px;
-    padding:34px;
-    box-shadow:0 30px 80px rgba(0,0,0,.65);
+    background:#0b0b0d;
+    color:#fff;
+    font-family:Arial, Helvetica, sans-serif;
+    overflow-x:hidden;
 }
 
 header{
-    text-align:center;
-    padding-bottom:24px;
-    border-bottom:1px solid #1b1b1b;
-}
-
-h1{
-    margin:0;
-    font-size:1.05rem;
-    letter-spacing:4px;
-    font-weight:800;
-    text-transform:uppercase;
-}
-
-.subtitle{
-    margin-top:12px;
-    color:var(--dim);
-    font-size:.78rem;
-    letter-spacing:1px;
-}
-
-.tabs{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:12px;
-    margin:26px 0;
-}
-
-.tab-btn{
-    background:linear-gradient(180deg,#181818,#111111);
-    border:1px solid #262626;
-    color:#8d8d8d;
-    padding:12px 18px;
-    border-radius:999px;
-    cursor:pointer;
-    transition:var(--transition);
-    font-size:.7rem;
-    font-weight:700;
-    letter-spacing:1px;
-    text-transform:uppercase;
-}
-
-.tab-btn:hover{
-    transform:translateY(-2px);
-    color:#fff;
-    border-color:#4a4a4a;
-}
-
-.tab-btn.active{
-    background:#fff;
-    color:#000;
-    border-color:#fff;
-}
-
-.tab-content{
-    display:none;
-}
-
-.tab-content.active{
-    display:block;
-}
-
-.bulk-actions{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:14px;
-    background:#0c0c0c;
-    border:1px solid #232323;
-    border-radius:18px;
-    padding:12px 16px;
-    margin-bottom:18px;
-    width:fit-content;
-    margin-left:auto;
-    margin-right:auto;
-}
-
-.checkbox-label{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-size:.68rem;
-    font-weight:700;
-    letter-spacing:.5px;
-    color:#d8d8d8;
-}
-
-.item-cb{
-    accent-color:#fff;
-}
-
-.btn-bulk-deliver{
-    background:#fff;
-    color:#000;
-    border:none;
-    padding:10px 14px;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:.62rem;
-    font-weight:800;
-    text-transform:uppercase;
-    letter-spacing:1px;
-}
-
-.cat-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(105px,1fr));
-    gap:24px;
-}
-
-.cat-circle{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:14px;
-    cursor:pointer;
-    transition:var(--transition);
-}
-
-.cat-circle:hover{
-    transform:translateY(-4px);
-}
-
-.cat-icon-bg{
-    width:88px;
-    height:88px;
-    border-radius:26px;
-    background:linear-gradient(180deg,#181818,#0d0d0d);
-    border:1px solid #262626;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    transition:var(--transition);
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.03),
-        0 18px 35px rgba(0,0,0,.45);
-}
-
-.cat-circle:hover .cat-icon-bg{
-    border-color:#4e4e4e;
-}
-
-.cat-icon-bg svg{
-    width:42px;
-    height:42px;
-    fill:#f3f3f3;
-}
-
-.cat-label{
-    font-size:.65rem;
-    letter-spacing:1.4px;
-    font-weight:700;
-    text-transform:uppercase;
-    color:#9c9c9c;
+    padding:30px 20px 10px;
     text-align:center;
 }
 
-.item-list{
-    list-style:none;
-    margin:0;
-    padding:0;
-    border-radius:24px;
-    overflow:hidden;
-    border:1px solid #202020;
-    background:#0c0c0c;
-}
-
-.item{
-    display:grid;
-    grid-template-columns:auto 1fr auto;
-    gap:16px;
-    align-items:center;
-    padding:18px 20px;
-    border-bottom:1px solid rgba(255,255,255,.03);
-}
-
-.item:last-child{
-    border-bottom:none;
-}
-
-.item-name{
-    font-size:.88rem;
-    font-weight:500;
-    word-break:break-word;
-}
-
-.item-actions{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.cat-badge{
-    width:38px;
-    height:38px;
-    border-radius:14px;
-    border:1px solid #292929;
-    background:#070707;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
-    transition:all .2s ease;
-}
-
-.cat-badge:hover{
-    border-color:#555;
-    transform:translateY(-1px);
-}
-
-.cat-badge svg{
-    width:16px;
-    height:16px;
-    fill:#fff;
-}
-
-.empty-watermark{
-    padding:80px 20px;
-    text-align:center;
-}
-
-.empty-watermark-title{
-    font-size:1rem;
-    font-weight:700;
+header h1{
+    font-size:38px;
     letter-spacing:2px;
     margin-bottom:10px;
 }
 
-.empty-watermark-sub{
-    color:#666;
+header p{
+    opacity:.7;
+    font-size:14px;
 }
 
-.footer-status{
-    margin-top:24px;
+.topbar{
+    width:100%;
+    max-width:1200px;
+    margin:25px auto 0;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    padding:0 20px;
+}
+
+.search{
+    flex:1;
+    min-width:250px;
+    max-width:520px;
+}
+
+.search input{
+    width:100%;
+    height:48px;
+    border:none;
+    outline:none;
+    border-radius:14px;
+    background:#151519;
+    color:#fff;
+    padding:0 18px;
+    font-size:15px;
+}
+
+.select-all{
+    height:44px;
+    padding:0 18px;
+    border:none;
+    border-radius:12px;
+    background:#19191f;
+    color:#fff;
+    cursor:pointer;
+    font-weight:600;
+    font-size:13px;
+    transition:.2s;
+    white-space:nowrap;
+}
+
+.select-all:hover{
+    background:#23232c;
+}
+
+.delivery{
+    height:44px;
+    padding:0 20px;
+    border:none;
+    border-radius:12px;
+    background:#fff;
+    color:#000;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s;
+    font-size:13px;
+    white-space:nowrap;
+}
+
+.delivery:hover{
+    transform:translateY(-1px);
+}
+
+.categories{
+    width:100%;
+    max-width:1200px;
+    margin:35px auto 20px;
+    padding:0 20px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.category{
+    width:95px;
+    height:95px;
+    background:#141418;
+    border-radius:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:10px;
+    cursor:pointer;
+    transition:.25s;
+    position:relative;
+    border:1px solid #1e1e24;
+}
+
+.category:hover{
+    transform:translateY(-4px);
+    background:#1a1a20;
+}
+
+.category.active{
+    background:#fff;
+    color:#000;
+}
+
+.category .icon{
+    font-size:30px;
+}
+
+.category .label{
+    font-size:12px;
+    font-weight:600;
     text-align:center;
-    font-size:.75rem;
-    color:#666;
+    line-height:1.1;
 }
 
+.inventory{
+    width:100%;
+    max-width:1200px;
+    margin:30px auto 80px;
+    padding:0 20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:18px;
+}
+
+.card{
+    background:#131317;
+    border-radius:22px;
+    padding:18px;
+    border:1px solid #1e1e25;
+    transition:.25s;
+    position:relative;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+    background:#18181d;
+}
+
+.card-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:14px;
+}
+
+.item-icon{
+    width:46px;
+    height:46px;
+    border-radius:14px;
+    background:#202028;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    position:relative;
+}
+
+.item-icon::after{
+    content:attr(data-category);
+    position:absolute;
+    bottom:-34px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#fff;
+    color:#000;
+    padding:6px 10px;
+    border-radius:10px;
+    font-size:11px;
+    font-weight:700;
+    opacity:0;
+    pointer-events:none;
+    transition:.2s;
+    white-space:nowrap;
+    z-index:10;
+}
+
+.item-icon:hover::after{
+    opacity:1;
+}
+
+.checkbox{
+    width:22px;
+    height:22px;
+    border-radius:7px;
+    border:2px solid #4b4b57;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.checkbox.active{
+    background:#fff;
+    border-color:#fff;
+}
+
+.item-name{
+    font-size:14px;
+    font-weight:700;
+    line-height:1.4;
+    margin-bottom:18px;
+    word-break:break-word;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+}
+
+.actions button{
+    flex:1;
+    height:40px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.2s;
+    font-size:13px;
+}
+
+.receive{
+    background:#fff;
+    color:#000;
+}
+
+.delete{
+    background:#1d1d23;
+    color:#ff6b6b;
+}
+
+.actions button:hover{
+    transform:translateY(-1px);
+}
+
+.empty{
+    text-align:center;
+    opacity:.6;
+    padding:80px 20px;
+    font-size:14px;
+}
+
+.loading{
+    text-align:center;
+    padding:80px 20px;
+    opacity:.7;
+}
+
+@media(max-width:700px){
+
+    .category{
+        width:82px;
+        height:82px;
+    }
+
+    .inventory{
+        grid-template-columns:1fr;
+    }
+
+}
 </style>
 </head>
 <body>
 
-<svg style="display:none;">
-
-<symbol id="icon-clothing" viewBox="0 0 24 24">
-<path d="M12 3l4 3 3-1 2 4-3 2v8H6v-8L3 9l2-4 3 1z"/>
-</symbol>
-
-<!-- NEW FEMININE HAIR -->
-<symbol id="icon-hairs" viewBox="0 0 24 24">
-<path d="M12 2C7.5 2 4 5.5 4 10v2c0 5.2 3.2 10 8 10s8-4.8 8-10v-2c0-4.5-3.5-8-8-8zm-5 9c1.4-.5 3.2-1.8 4.5-3.8 1.4 2.6 4.2 4.2 7 4.7V13c0 4-2.4 7-6.5 7S5.5 17 5.5 13V11zm12-1.5c-3.4-.7-6-3-6.9-5.8-1.2 2.2-3.6 4.5-6.1 5.4C6.4 5.8 8.8 4 12 4c4 0 7 2.5 7 5.5z"/>
-<path d="M7 8c2-2.6 4.8-4 8.4-4-1.6 1.1-2.7 2.5-3.4 4.2 2 .2 3.7 1 5 2.3-2.2-.5-4.6-.2-6.8.7C9 10 8 9 7 8z"/>
-</symbol>
-
-<symbol id="icon-faceskin" viewBox="0 0 24 24">
-<path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-4 7a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm8 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm-4 8c-2 0-3.7-1-4.5-2.5h9C15.7 16 14 17 12 17z"/>
-</symbol>
-
-<symbol id="icon-bodyskin" viewBox="0 0 24 24">
-<path d="M12 2a3 3 0 013 3v2h2c1.7 0 3 1.3 3 3v9h-3v-5h-2v5H9v-5H7v5H4v-9c0-1.7 1.3-3 3-3h2V5a3 3 0 013-3z"/>
-</symbol>
-
-<!-- NEW MESH HEAD -->
-<symbol id="icon-meshhead" viewBox="0 0 24 24">
-<path d="M12 2C7 2 4 6 4 11v2c0 5 3 9 8 9s8-4 8-9v-2c0-5-3-9-8-9zm0 2c3.7 0 6 2.7 6 6v2c0 3.9-2.2 7-6 7s-6-3.1-6-7v-2c0-3.3 2.3-6 6-6z"/>
-<circle cx="9" cy="11" r="1"/>
-<circle cx="15" cy="11" r="1"/>
-<path d="M9.5 15c1.2 1 3.8 1 5 0" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-</symbol>
-
-<symbol id="icon-meshbody" viewBox="0 0 24 24">
-<path d="M12 2a4 4 0 100 8 4 4 0 000-8zm0 10c-4 0-7 2-7 5v3h14v-3c0-3-3-5-7-5z"/>
-</symbol>
-
-<symbol id="icon-accessories" viewBox="0 0 24 24">
-<path d="M12 2l9 7-9 13L3 9l9-7z"/>
-</symbol>
-
-<!-- NEW SKYBOX -->
-<symbol id="icon-skybox" viewBox="0 0 24 24">
-<path d="M12 3l5 4v3h2v2h-2v3H7v-3H5v-2h2V7l5-4z"/>
-<path d="M4 17c2.5-2 5.5-2 8 0 2.5-2 5.5-2 8 0-1 2.5-3.5 4-8 4s-7-1.5-8-4z"/>
-</symbol>
-
-<symbol id="icon-houses" viewBox="0 0 24 24">
-<path d="M12 3L3 11h3v9h12v-9h3z"/>
-</symbol>
-
-<symbol id="icon-decor" viewBox="0 0 24 24">
-<path d="M4 10h16v8H4zM7 6h10v2H7z"/>
-</symbol>
-
-<symbol id="icon-objects" viewBox="0 0 24 24">
-<path d="M12 2l8 4v12l-8 4-8-4V6z"/>
-</symbol>
-
-<symbol id="icon-textures" viewBox="0 0 24 24">
-<path d="M3 3h18v18H3zM7 7h4v4H7zm6 0h4v4h-4zm-6 6h4v4H7zm6 0h4v4h-4z"/>
-</symbol>
-
-<symbol id="icon-scripts" viewBox="0 0 24 24">
-<path d="M8 6L2 12l6 6 2-2-4-4 4-4zm8 0l-2 2 4 4-4 4 2 2 6-6z"/>
-</symbol>
-
-</svg>
-
-<div class="container">
-
 <header>
-<h1>✦ PERSONAL INVENTORY</h1>
-<div class="subtitle">powered by Saori Suki</div>
+    <h1>MMC STORAGE</h1>
+    <p>Personal Inventory Web Manager</p>
 </header>
 
-<div class="tabs">
+<div class="topbar">
 
-<button class="tab-btn active" onclick="switchTab('inventory', this)">
-Inventory
-</button>
+    <div class="search">
+        <input type="text" id="searchInput" placeholder="Search inventory...">
+    </div>
 
-<button class="tab-btn" onclick="switchTab('categories', this)">
-Categories
-</button>
+    <button class="select-all" id="selectAllBtn">
+        SELECT ALL
+    </button>
 
-<button class="tab-btn" onclick="switchTab('search', this)">
-Search
-</button>
-
-</div>
-
-<div id="tab-inventory" class="tab-content active">
-
-<div class="bulk-actions">
-
-<label class="checkbox-label">
-<input type="checkbox" class="item-cb">
-Select All
-</label>
-
-<button class="btn-bulk-deliver">
-Deliver Selected
-</button>
+    <button class="delivery" id="deliverBtn">
+        DELIVERY SELECTED
+    </button>
 
 </div>
 
-<ul class="item-list" id="inventory-list"></ul>
+<div class="categories">
+
+    <div class="category active" data-category="all">
+        <div class="icon">✨</div>
+        <div class="label">ALL</div>
+    </div>
+
+    <div class="category" data-category="hair">
+        <div class="icon">💇‍♀️</div>
+        <div class="label">HAIR</div>
+    </div>
+
+    <div class="category" data-category="meshhead">
+        <div class="icon">👩</div>
+        <div class="label">MESH HEAD</div>
+    </div>
+
+    <div class="category" data-category="skybox">
+        <div class="icon">🏝️</div>
+        <div class="label">SKYBOX</div>
+    </div>
+
+    <div class="category" data-category="houses">
+        <div class="icon">🏠</div>
+        <div class="label">HOUSES</div>
+    </div>
+
+    <div class="category" data-category="body">
+        <div class="icon">🧍</div>
+        <div class="label">BODY</div>
+    </div>
+
+    <div class="category" data-category="clothes">
+        <div class="icon">👗</div>
+        <div class="label">CLOTHES</div>
+    </div>
+
+    <div class="category" data-category="shoes">
+        <div class="icon">👠</div>
+        <div class="label">SHOES</div>
+    </div>
 
 </div>
 
-<div id="tab-categories" class="tab-content">
-
-<div class="cat-grid">
-
-<div class="cat-circle">
-<div class="cat-icon-bg"><svg><use href="#icon-clothing"></use></svg></div>
-<div class="cat-label">Clothing</div>
-</div>
-
-<div class="cat-circle">
-<div class="cat-icon-bg"><svg><use href="#icon-hairs"></use></svg></div>
-<div class="cat-label">Hair</div>
-</div>
-
-<div class="cat-circle">
-<div class="cat-icon-bg"><svg><use href="#icon-faceskin"></use></svg></div>
-<div class="cat-label">Face Skin</div>
-</div>
-
-<div class="cat-circle">
-<div class="cat-icon-bg"><svg><use href="#icon-bodyskin"></use></svg></div>
-<div class="cat-label">Body Skin</div>
-</div>
-
-<div class="cat-circle">
-<div class="cat-icon-bg"><svg><use href="#icon-meshhead"></use></svg></div>
-<div class="cat-label">Mesh Head</div>
-</div>
-
-<div class="cat-circle">
-<div class="cat-icon-bg"><svg><use href="#icon-meshbody"></use></svg></div>
-<div class="cat-label">Mesh Body</div>
-</div>
-
-<div class="cat-circle">
-<div class="cat-icon-bg"><svg><use href="#icon-accessories"></use></svg></div>
-<div class="cat-label">Accessories</div>
-</div>
-
-<div class="cat-circle">
-<div class="cat-icon-bg"><svg><use href="#icon-skybox"></use></svg></div>
-<div class="cat-label">Skybox</div>
-</div>
-
-<div class="cat-circle">
-<div class="cat-icon-bg"><svg><use href="#icon-houses"></use></svg></div>
-<div class="cat-label">Houses</div>
-</div>
-
-<div class="cat-circle">
-<div class="cat-icon-bg"><svg><use href="#icon-decor"></use></svg></div>
-<div class="cat-label">Decor</div>
-</div>
-
-<div class="cat-circle">
-<div class="cat-icon-bg"><svg><use href="#icon-objects"></use></svg></div>
-<div class="cat-label">Objects</div>
-</div>
-
-<div class="cat-circle">
-<div class="cat-icon-bg"><svg><use href="#icon-textures"></use></svg></div>
-<div class="cat-label">Textures</div>
-</div>
-
-<div class="cat-circle">
-<div class="cat-icon-bg"><svg><use href="#icon-scripts"></use></svg></div>
-<div class="cat-label">Scripts</div>
-</div>
-
-</div>
-
-</div>
-
-<div id="tab-search" class="tab-content">
-
-<div class="empty-watermark">
-
-<div class="empty-watermark-title">
-Search Engine
-</div>
-
-<div class="empty-watermark-sub">
-Type something to begin searching.
-</div>
-
-</div>
-
-</div>
-
-<div class="footer-status">
-Inventory connected successfully.
-</div>
-
+<div class="inventory" id="inventory">
+    <div class="loading">Loading inventory...</div>
 </div>
 
 <script>
+const inventoryEl = document.getElementById("inventory");
+const searchInput = document.getElementById("searchInput");
+const deliverBtn = document.getElementById("deliverBtn");
+const selectAllBtn = document.getElementById("selectAllBtn");
 
-function switchTab(tabId, btnElement){
+const params = new URLSearchParams(window.location.search);
+const apiUrl = params.get("api");
 
-    document.querySelectorAll('.tab-btn').forEach(btn=>{
-        btn.classList.remove('active');
-    });
+let inventory = [];
+let selectedItems = [];
+let currentCategory = "all";
 
-    document.querySelectorAll('.tab-content').forEach(tab=>{
-        tab.classList.remove('active');
-    });
+function getCategory(name){
 
-    document.getElementById(`tab-${tabId}`).classList.add('active');
+    const n = name.toLowerCase();
 
-    btnElement.classList.add('active');
+    if(n.includes("hair")) return "hair";
+    if(n.includes("mesh") || n.includes("head")) return "meshhead";
+    if(n.includes("skybox")) return "skybox";
+    if(n.includes("house")) return "houses";
+    if(n.includes("body")) return "body";
+    if(n.includes("shoe") || n.includes("heel")) return "shoes";
+    if(n.includes("dress") || n.includes("outfit") || n.includes("top")) return "clothes";
+
+    return "all";
 }
 
+function getIcon(category){
+
+    switch(category){
+
+        case "hair":
+            return "💇‍♀️";
+
+        case "meshhead":
+            return "👩";
+
+        case "skybox":
+            return "🏝️";
+
+        case "houses":
+            return "🏠";
+
+        case "body":
+            return "🧍";
+
+        case "clothes":
+            return "👗";
+
+        case "shoes":
+            return "👠";
+
+        default:
+            return "✨";
+    }
+}
+
+async function loadInventory(){
+
+    if(!apiUrl){
+        inventoryEl.innerHTML = `
+            <div class="empty">
+                Missing API URL.
+            </div>
+        `;
+        return;
+    }
+
+    try{
+
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        inventory = data.map(item => decodeURIComponent(item));
+
+        renderInventory();
+
+    }catch(err){
+
+        inventoryEl.innerHTML = `
+            <div class="empty">
+                Failed to connect to Second Life server.
+            </div>
+        `;
+    }
+}
+
+function renderInventory(){
+
+    const search = searchInput.value.toLowerCase();
+
+    let filtered = inventory.filter(item => {
+
+        const matchesSearch = item.toLowerCase().includes(search);
+
+        const itemCategory = getCategory(item);
+
+        const matchesCategory =
+            currentCategory === "all" ||
+            itemCategory === currentCategory;
+
+        return matchesSearch && matchesCategory;
+    });
+
+    if(filtered.length === 0){
+
+        inventoryEl.innerHTML = `
+            <div class="empty">
+                No inventory found.
+            </div>
+        `;
+
+        return;
+    }
+
+    inventoryEl.innerHTML = "";
+
+    filtered.forEach(item => {
+
+        const category = getCategory(item);
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const isSelected = selectedItems.includes(item);
+
+        card.innerHTML = `
+            <div class="card-top">
+
+                <div 
+                    class="item-icon"
+                    data-category="${category.toUpperCase()}"
+                >
+                    ${getIcon(category)}
+                </div>
+
+                <div 
+                    class="checkbox ${isSelected ? "active" : ""}"
+                    onclick='toggleSelect(${JSON.stringify(item)})'
+                ></div>
+
+            </div>
+
+            <div class="item-name">
+                ${item}
+            </div>
+
+            <div class="actions">
+
+                <button 
+                    class="receive"
+                    onclick='deliverItem(${JSON.stringify(item)})'
+                >
+                    RECEIVE
+                </button>
+
+                <button 
+                    class="delete"
+                    onclick='deleteItem(${JSON.stringify(item)})'
+                >
+                    DELETE
+                </button>
+
+            </div>
+        `;
+
+        inventoryEl.appendChild(card);
+
+    });
+
+}
+
+function toggleSelect(item){
+
+    if(selectedItems.includes(item)){
+
+        selectedItems = selectedItems.filter(i => i !== item);
+
+    }else{
+
+        selectedItems.push(item);
+
+    }
+
+    renderInventory();
+}
+
+async function deliverItem(item){
+
+    if(!apiUrl) return;
+
+    await fetch(apiUrl,{
+        method:"POST",
+        body:item
+    });
+
+    alert("Delivered: " + item);
+}
+
+async function deleteItem(item){
+
+    if(!apiUrl) return;
+
+    await fetch(apiUrl,{
+        method:"POST",
+        body:"MENU_DEL:" + item
+    });
+
+    alert("Delete confirmation opened in Second Life.");
+}
+
+deliverBtn.addEventListener("click", async () => {
+
+    if(selectedItems.length === 0){
+        alert("No items selected.");
+        return;
+    }
+
+    await fetch(apiUrl,{
+        method:"POST",
+        body:selectedItems.join("\n")
+    });
+
+    alert(selectedItems.length + " items delivered.");
+});
+
+selectAllBtn.addEventListener("click", () => {
+
+    const visibleItems = inventory.filter(item => {
+
+        const matchesSearch =
+            item.toLowerCase().includes(
+                searchInput.value.toLowerCase()
+            );
+
+        const itemCategory = getCategory(item);
+
+        const matchesCategory =
+            currentCategory === "all" ||
+            itemCategory === currentCategory;
+
+        return matchesSearch && matchesCategory;
+    });
+
+    const allSelected = visibleItems.every(item =>
+        selectedItems.includes(item)
+    );
+
+    if(allSelected){
+
+        selectedItems = selectedItems.filter(
+            item => !visibleItems.includes(item)
+        );
+
+    }else{
+
+        visibleItems.forEach(item => {
+
+            if(!selectedItems.includes(item)){
+                selectedItems.push(item);
+            }
+
+        });
+    }
+
+    renderInventory();
+});
+
+searchInput.addEventListener("input", renderInventory);
+
+document.querySelectorAll(".category").forEach(cat => {
+
+    cat.addEventListener("click", () => {
+
+        document
+            .querySelectorAll(".category")
+            .forEach(c => c.classList.remove("active"));
+
+        cat.classList.add("active");
+
+        currentCategory = cat.dataset.category;
+
+        renderInventory();
+    });
+});
+
+loadInventory();
 </script>
 
 </body>
