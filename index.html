@@ -29,46 +29,51 @@
 body{
     margin:0;
     padding:40px 18px;
-    background:
-        radial-gradient(circle at top, rgba(255,255,255,.03), transparent 30%),
-        #060606;
+    background: radial-gradient(circle at top, rgba(255,255,255,.03), transparent 30%), #060606;
     font-family:'Inter',sans-serif;
     color:var(--text);
-    display:flex;
-    justify-content:center;
+    display:flex; justify-content:center;
     min-height:100vh;
     -webkit-font-smoothing:antialiased;
 }
 
 .container{
-    width:100%;
-    max-width:760px;
+    width:100%; max-width:760px;
     background:linear-gradient(180deg,#111111,#0a0a0a);
-    border:1px solid var(--line);
-    border-radius:34px;
-    padding:34px;
-    box-shadow:0 30px 80px rgba(0,0,0,.65);
-    display: flex;
-    flex-direction: column;
+    border:1px solid var(--line); border-radius:34px;
+    padding:34px; box-shadow:0 30px 80px rgba(0,0,0,.65);
+    display: flex; flex-direction: column;
 }
 
 header{
-    text-align:center;
-    padding-bottom:24px;
-    border-bottom:1px solid #1b1b1b;
-    position:relative;
+    text-align:center; padding-bottom:24px;
+    border-bottom:1px solid #1b1b1b; position:relative;
+}
+
+.header-actions {
+    position: absolute; top: 0; left: 0; width: 100%;
+    display: flex; justify-content: space-between; align-items: center;
 }
 
 .status-badge{
-    position:absolute; top:0; right:0;
     background:#0f0f0f; border:1px solid #2a2a2a;
-    padding:10px 14px; border-radius:999px;
+    padding:8px 12px; border-radius:999px;
     display:flex; align-items:center; gap:8px;
-    font-size:.68rem; font-weight:700; letter-spacing:1px;
+    font-size:.65rem; font-weight:700; letter-spacing:1px;
 }
 .status-dot{ width:8px; height:8px; border-radius:999px; background:var(--green); box-shadow:0 0 10px var(--green); }
 
-h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-transform:uppercase; }
+.resync-btn {
+    background:#0f0f0f; border:1px solid #2a2a2a; color: var(--text);
+    padding:8px 14px; border-radius:999px;
+    display:flex; align-items:center; gap:6px;
+    font-size:.65rem; font-weight:700; letter-spacing:1px;
+    cursor: pointer; transition: var(--transition);
+}
+.resync-btn:hover { border-color: #555; transform: translateY(-1px); }
+.resync-btn svg { width: 14px; height: 14px; fill: #fff; }
+
+h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-transform:uppercase; }
 .subtitle{ margin-top:12px; color:var(--dim); font-size:.78rem; letter-spacing:1px; }
 
 .top-stats{ display:flex; justify-content:center; gap:14px; margin-top:22px; flex-wrap:wrap; }
@@ -100,21 +105,20 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
 .search-input:focus{ border-color:#444; }
 
 .bulk-actions{
-    display:flex; justify-content:center; align-items:center; gap:14px;
+    display:flex; justify-content:space-between; align-items:center;
     background:#0c0c0c; border:1px solid #232323; border-radius:18px;
-    padding:12px 16px; margin-bottom:18px; width:fit-content;
-    margin-left:auto; margin-right:auto; flex-wrap:wrap;
+    padding:12px 16px; margin: 0 auto 18px auto; width: 100%; max-width: 380px;
 }
 .checkbox-label{ display:flex; align-items:center; gap:8px; font-size:.68rem; font-weight:700; letter-spacing:.5px; color:#d8d8d8; cursor:pointer;}
 .item-cb{ accent-color:#fff; cursor: pointer; }
 
 .btn{
-    border:none; padding:10px 14px; border-radius:12px;
+    border:none; padding:8px 14px; border-radius:12px;
     cursor:pointer; font-size:.62rem; font-weight:800;
-    text-transform:uppercase; letter-spacing:1px; transition:var(--transition);
+    text-transform:uppercase; letter-spacing:1px; transition:.2s;
 }
 .btn-white{ background:#fff; color:#000; }
-.btn-dark{ background:#111; border:1px solid #252525; color:#fff; }
+.btn-dark{ background:#110505; color:var(--danger); border:1px solid #381818; }
 .btn:hover{ transform:translateY(-1px); }
 
 .cat-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(105px,1fr)); gap:24px; }
@@ -122,8 +126,8 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
 .cat-circle:hover{ transform:translateY(-4px); }
 .cat-icon-bg{
     width:88px; height:88px; border-radius:26px;
-    background:linear-gradient(180deg,#181818,#0d0d0d);
-    border:1px solid #262626; display:flex; justify-content:center; align-items:center;
+    background:linear-gradient(180deg,#181818,#0d0d0d); border:1px solid #262626;
+    display:flex; justify-content:center; align-items:center;
     transition:var(--transition); box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 18px 35px rgba(0,0,0,.45);
 }
 .cat-circle:hover .cat-icon-bg{ border-color:#4e4e4e; }
@@ -132,20 +136,11 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
 .cat-label{ font-size:.65rem; letter-spacing:1.4px; font-weight:700; text-transform:uppercase; color:#9c9c9c; text-align:center; }
 .cat-circle:hover .cat-label { color:#ffffff; }
 
-/* Category Drawer View Header */
-.cat-view-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #202020;
-}
+.cat-view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #202020; }
 .cat-view-title { font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
 .btn-back {
     background: #111; color: #888; border: 1px solid #262626; padding: 8px 14px;
-    font-size: 0.7rem; font-weight: 700; text-transform: uppercase; cursor: pointer; border-radius: 20px;
-    transition: var(--transition);
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase; cursor: pointer; border-radius: 20px; transition: var(--transition);
 }
 .btn-back:hover { border-color: #fff; color: #fff; }
 
@@ -162,7 +157,7 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
 .item:hover{ background:#111; }
 .item:last-child{ border-bottom:none; }
 .item-name{ font-size:.88rem; font-weight:500; word-break:break-word; }
-.item-actions{ display:flex; align-items:center; gap:10px; }
+.item-actions{ display:flex; align-items:center; gap:8px; }
 
 .cat-badge{
     width:38px; height:38px; border-radius:14px; border:1px solid #292929;
@@ -171,6 +166,7 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
 }
 .cat-badge:hover{ border-color:#555; transform:translateY(-1px); }
 .cat-badge svg{ width:16px; height:16px; fill:#fff; }
+
 .cat-tooltip{
     position:absolute; bottom:-34px; left:50%; transform:translateX(-50%);
     background:#fff; color:#000; font-size:.55rem; font-weight:800;
@@ -182,10 +178,12 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
 .action-btn{
     width:38px; height:38px; border-radius:14px; border:1px solid #292929;
     background:#070707; color:#fff; display:flex; justify-content:center; align-items:center;
-    cursor:pointer; transition:all .2s ease; font-size:.85rem; font-weight:700;
+    cursor:pointer; transition:all .2s ease;
 }
+.action-btn svg { width: 18px; height: 18px; fill: currentColor; }
 .action-btn:hover{ border-color:#555; transform:translateY(-1px); }
-.action-btn.delete-btn:hover { border-color: var(--danger); color: var(--danger); }
+.action-btn.delete-btn { color: var(--danger); border-color: #381818; background: #110505;}
+.action-btn.delete-btn:hover { border-color: var(--danger); background: var(--danger); color: #fff; }
 
 .empty-watermark{ padding:80px 20px; text-align:center; }
 .empty-watermark-title{ font-size:1rem; font-weight:700; letter-spacing:2px; margin-bottom:10px; text-transform: uppercase; }
@@ -201,7 +199,7 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
 .toast.show{ opacity:1; bottom:40px; }
 .hidden { display: none !important; }
 
-/* Modal Engine */
+/* Modals */
 .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
 .modal.active { display: flex; }
 .modal-box { width: 95%; max-width: 420px; background: #0e0e0e; border: 1px solid #252525; border-radius: 28px; padding: 24px; }
@@ -231,13 +229,23 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
     <symbol id="icon-objects" viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44c-.32-.17-.53-.5-.53-.88V7.5c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.19v6.72zm14 0v-6.72l-6 3.39v6.71l6-3.38z"/></symbol>
     <symbol id="icon-textures" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></symbol>
     <symbol id="icon-scripts" viewBox="0 0 24 24"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></symbol>
+    
+    <symbol id="icon-send" viewBox="0 0 24 24"><path d="M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z"/></symbol>
+    <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></symbol>
+    <symbol id="icon-sync" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></symbol>
 </svg>
 
 <div class="container">
     <header>
-        <div class="status-badge">
-            <div class="status-dot"></div> CONNECTED
+        <div class="header-actions">
+            <div class="status-badge">
+                <div class="status-dot"></div> CONNECTED
+            </div>
+            <div class="resync-btn" onclick="loadInventory()">
+                <svg><use href="#icon-sync"></use></svg> RESYNC
+            </div>
         </div>
+        
         <h1>✦ PERSONAL INVENTORY</h1>
         <div class="subtitle">powered by Saori Suki</div>
         <div class="top-stats">
@@ -255,19 +263,21 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('inventory', this)">Inventory</button>
         <button class="tab-btn" onclick="switchTab('categories', this)">Categories</button>
-        <button class="tab-btn" onclick="switchTab('search', this)">Search</button>
         <button class="tab-btn" onclick="switchTab('tools', this)">Tools</button>
     </div>
 
     <div id="tab-inventory" class="tab-content active">
         <div class="search-box">
-            <input type="text" class="search-input" placeholder="Search folders..." oninput="filterInventory(this.value)">
+            <input type="text" class="search-input" id="searchBar" placeholder="Search folders..." oninput="filterInventory(this.value)">
         </div>
         <div class="bulk-actions" id="bulkInv" style="display: none;">
             <label class="checkbox-label"><input type="checkbox" class="item-cb" id="select-all"> Select All</label>
-            <button class="btn btn-white" onclick="deliverSelected('inventory-list')">Deliver Selected</button>
+            <div style="display:flex; gap:8px;">
+                <button class="btn btn-white" onclick="deliverSelected('inventory-list')">Deliver</button>
+                <button class="btn btn-dark" onclick="confirmBulkDelete('inventory-list')">Delete</button>
+            </div>
         </div>
-        <ul class="item-list" id="inventory-list"><div class="loading">Loading inventory from SL server...</div></ul>
+        <ul class="item-list" id="inventory-list"><div class="empty-watermark"><div class="empty-watermark-title">Loading</div><div class="empty-watermark-sub">Connecting to server...</div></div></ul>
     </div>
 
     <div id="tab-categories" class="tab-content">
@@ -281,22 +291,17 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
             </div>
             <div class="bulk-actions" id="bulkCat" style="display: none;">
                 <label class="checkbox-label"><input type="checkbox" id="selectAllCat" class="item-cb" onclick="toggleSelectAll('category-items', this)"> Select All</label>
-                <button class="btn btn-white" onclick="deliverSelected('category-items')">Deliver Selected</button>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn btn-white" onclick="deliverSelected('category-items')">Deliver</button>
+                    <button class="btn btn-dark" onclick="confirmBulkDelete('category-items')">Delete</button>
+                </div>
             </div>
             <ul class="item-list" id="category-items"></ul>
         </div>
     </div>
 
-    <div id="tab-search" class="tab-content">
-        <div class="empty-watermark">
-            <div class="empty-watermark-title">Search Engine Merged</div>
-            <div class="empty-watermark-sub">The search bar is now integrated directly into the Inventory Tab for a better experience!</div>
-        </div>
-    </div>
-
     <div id="tab-tools" class="tab-content">
         <div class="bulk-actions" style="margin-bottom: 30px;">
-            <button class="btn btn-dark" onclick="sendCommand('CMD:RESET')">Reset Script</button>
             <button class="btn btn-dark" onclick="findDuplicatesWeb()">Scan Duplicates</button>
         </div>
         <div class="dup-list" id="dupDisplay"></div>
@@ -315,12 +320,28 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
     </div>
 </div>
 
+<div class="modal" id="delete-modal">
+    <div class="modal-box" style="max-width: 360px;">
+        <div class="modal-title" style="color: var(--danger);">⚠️ CAUTION</div>
+        <div style="font-size: 0.85rem; color: #888; margin-bottom: 24px;">
+            Are you sure you want to permanently delete <br><strong id="delete-item-name" style="color:#fff;">this item</strong>?<br><br>This action cannot be undone.
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-dark" style="flex: 1; border-radius: 14px;" onclick="closeDeleteModal()">Cancel</button>
+            <button class="btn" style="flex: 1; background: var(--danger); color: #fff; border-radius: 14px;" id="confirm-delete-btn" onclick="executeDelete()">Yes, Delete</button>
+        </div>
+    </div>
+</div>
+
 <script>
     const API = new URLSearchParams(window.location.search).get("api");
     let inventoryData = [];
     let savedCategories = JSON.parse(localStorage.getItem('mmc_categories')) || {};
-    let itemToAssign = "";
     let currentOpenCategoryViewId = "";
+    
+    // Engine de Deleção
+    let deleteMode = "";
+    let deleteTarget = null;
 
     const categories = {
         "Clothing": "icon-clothing", "Hair": "icon-hairs", "Face Skin": "icon-faceskin", "Body Skin": "icon-bodyskin",
@@ -373,14 +394,19 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
 
     async function loadInventory(){
         if(!API){ toast("Missing SL API URL"); document.getElementById("inventory-list").innerHTML = getEmptyStateHTML("Disconnected", "Access via SL Menu."); return; }
+        toast("Syncing...");
         try{
             const res = await fetch(API);
             const data = await res.json();
             inventoryData = data.map(i => decodeURIComponent(i));
-            renderInventory(inventoryData, "inventory-list", "bulkInv");
+            
+            const searchVal = document.getElementById("searchBar").value;
+            if(searchVal) filterInventory(searchVal);
+            else renderInventory(inventoryData, "inventory-list", "bulkInv");
+            
+            toast("Sync Complete");
         }catch(e){
             toast("Connection failed");
-            document.getElementById("inventory-list").innerHTML = getEmptyStateHTML("Error", "Could not reach SL Server.");
         }
     }
 
@@ -412,8 +438,12 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
                         <svg><use href="#${icon}"></use></svg>
                         <div class="cat-tooltip">${category}</div>
                     </div>
-                    <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(item)}', this)">↗</button>
-                    <button class="action-btn delete-btn" onclick="deleteItem('${encodeURIComponent(item)}', this)">✕</button>
+                    <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(item)}', this)">
+                        <svg><use href="#icon-send"></use></svg>
+                    </button>
+                    <button class="action-btn delete-btn" onclick="confirmDelete('${encodeURIComponent(item)}')">
+                        <svg><use href="#icon-trash"></use></svg>
+                    </button>
                 </div>
             `;
             list.appendChild(li);
@@ -432,44 +462,68 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
         document.getElementById("selectedCount").innerText = total;
     }
 
+    // --- ENGINES DE ENTREGA E DELEÇÃO ---
     async function deliverItem(itemEncoded, btn){
         const item = decodeURIComponent(itemEncoded);
-        btn.innerText = "..."; btn.disabled = true;
+        btn.innerHTML = "..."; btn.disabled = true;
         try{
             const res = await fetch(API, { method:"POST", body:item });
-            if(res.ok) { btn.innerText = "✔"; toast("Delivered"); } else { btn.innerText = "X"; }
-        }catch{ btn.innerText = "X"; }
-        setTimeout(()=>{ btn.innerText = "↗"; btn.disabled = false; }, 1800);
-    }
-
-    async function deleteItem(itemEncoded, btn){
-        const item = decodeURIComponent(itemEncoded);
-        btn.innerText = "..."; btn.disabled = true;
-        try{
-            const res = await fetch(API, { method:"POST", body:"MENU_DEL:" + item });
-            if(res.ok) { btn.innerText = "✔"; toast("Check SL Popup"); } else { btn.innerText = "X"; }
-        }catch{ btn.innerText = "X"; }
-        setTimeout(()=>{ btn.innerText = "✕"; btn.disabled = false; }, 4000);
-    }
-
-    async function sendCommand(cmd){
-        toast("Sending command...");
-        await fetch(API, { method:"POST", body:cmd });
-        toast("Executed");
+            if(res.ok) { btn.innerHTML = "✔"; toast("Delivered"); } else { btn.innerHTML = "X"; }
+        }catch{ btn.innerHTML = "X"; }
+        setTimeout(()=>{ btn.innerHTML = `<svg><use href="#icon-send"></use></svg>`; btn.disabled = false; }, 1800);
     }
 
     async function deliverSelected(containerId = "inventory-list"){
         const checked = [...document.getElementById(containerId).querySelectorAll(".item-select:checked")];
         if(!checked.length){ toast("Nothing selected"); return; }
         const items = checked.map(c => c.value).join("\n");
-        toast("Delivering bulk...");
-        await fetch(API, { method:"POST", body:items });
-        toast("Bulk delivery completed ✔");
+        toast("Delivering...");
+        try {
+            await fetch(API, { method:"POST", body:items });
+            toast("Bulk delivery sent ✔");
+        } catch { toast("Delivery failed"); }
         
         checked.forEach(c => c.checked = false);
         updateSelectedCount();
         document.getElementById("select-all").checked = false;
         if(document.getElementById("selectAllCat")) document.getElementById("selectAllCat").checked = false;
+    }
+
+    // Modal Caution Web Deletion Flow
+    function confirmDelete(itemEncoded) {
+        deleteMode = "single";
+        deleteTarget = decodeURIComponent(itemEncoded);
+        document.getElementById("delete-item-name").innerText = deleteTarget;
+        document.getElementById("delete-modal").classList.add("active");
+    }
+
+    function confirmBulkDelete(containerId = "inventory-list") {
+        const checked = [...document.getElementById(containerId).querySelectorAll(".item-select:checked")];
+        if(!checked.length){ toast("Nothing selected"); return; }
+        deleteMode = "bulk";
+        deleteTarget = checked.map(c => c.value);
+        document.getElementById("delete-item-name").innerText = `${checked.length} selected folders`;
+        document.getElementById("delete-modal").classList.add("active");
+    }
+
+    function closeDeleteModal() { document.getElementById("delete-modal").classList.remove("active"); }
+
+    async function executeDelete() {
+        const btn = document.getElementById("confirm-delete-btn");
+        btn.innerText = "Wait..."; btn.disabled = true;
+        try {
+            if(deleteMode === "single") {
+                await fetch(API, { method: "POST", body: "WEB_DEL:" + deleteTarget });
+            } else {
+                await fetch(API, { method: "POST", body: "WEB_BULK_DEL:" + deleteTarget.join('\n') });
+            }
+            toast("Deleted successfully");
+            closeDeleteModal();
+            loadInventory(); // Resync para atualizar a tela
+        } catch(e) {
+            toast("Delete failed");
+        }
+        btn.innerText = "Yes, Delete"; btn.disabled = false;
     }
 
     function filterInventory(query){
@@ -488,6 +542,7 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
         updateSelectedCount();
     }
 
+    // Categorias 
     function renderCategories(){
         const grid = document.getElementById("cat-grid");
         grid.innerHTML = "";
@@ -515,7 +570,7 @@ h1{ margin:0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-trans
     }
 
     function openCategoryModal(itemEncoded){
-        selectedItem = decodeURIComponent(itemEncoded);
+        let selectedItem = decodeURIComponent(itemEncoded);
         const modal = document.getElementById("category-modal");
         const grid = document.getElementById("modal-grid");
         grid.innerHTML = "";
