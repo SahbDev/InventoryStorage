@@ -156,7 +156,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); 
     left: 0 !important; transform: none !important; transition: opacity 0.2s;
 }
-/* MÁGICA: Esconde a data pequenininha da lista quando passamos o mouse na FOTO */
 .item-name-wrapper:has(.photo-icon:hover) .date-tooltip { opacity: 0 !important; }
 
 .photo-icon { font-size: 14px; cursor: help; opacity: 0.8; transition: .2s; }
@@ -457,10 +456,10 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         
         <div style="font-size: 0.75rem; color: #aaa; margin-bottom: 20px;">
             <span data-i18n="photo_desc1">Link a photo to this product</span><br>
-            <span data-i18n="photo_desc2">Drop a Texture UUID below.</span>
+            <span data-i18n="photo_desc2">Drop a Texture UUID or Gyazo link below.</span>
         </div>
         
-        <input type="text" class="search-input" id="photo-uuid-input" data-i18n="enter_uuid" placeholder="Enter Texture UUID..." style="margin-bottom: 20px;">
+        <input type="text" class="search-input" id="photo-uuid-input" data-i18n="enter_uuid" placeholder="Enter Texture UUID or Link..." style="margin-bottom: 20px;">
         
         <div style="display: flex; gap: 10px;">
             <button class="btn btn-dark" style="flex: 1; border-radius: 14px;" onclick="removePhoto()" data-i18n="remove">REMOVE</button>
@@ -535,8 +534,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             toast_rename_req: "Enter a valid name", toast_rename_ok: "Name updated successfully!", toast_rename_fail: "Failed to update name",
             btn_wait: "WAIT...", btn_yes_del: "YES, DELETE", no_sel: "Nothing selected",
             tooltip_photo: "PHOTO", toast_photo_ok: "Photo saved!", toast_photo_fail: "Failed to save photo", 
-            assign_photo: "LINK PHOTO", enter_uuid: "Enter Texture UUID...", save: "SAVE", remove: "REMOVE",
-            photo_desc1: "Link a photo to this product", photo_desc2: "Drop a Texture UUID below.",
+            assign_photo: "LINK PHOTO", enter_uuid: "Enter Texture UUID or Link...", save: "SAVE", remove: "REMOVE",
+            photo_desc1: "Link a photo to this product", photo_desc2: "Drop a Texture UUID or Gyazo link below.",
             cat_clothing: "CLOTHING", cat_hair: "HAIR", cat_faceskin: "FACE SKIN", cat_bodyskin: "BODY SKIN", cat_meshhead: "MESH HEAD", cat_meshbody: "MESH BODY", cat_accessories: "ACCESSORIES", cat_skybox: "SKYBOX", cat_houses: "HOUSES", cat_decor: "DECOR", cat_objects: "OBJECTS", cat_textures: "TEXTURES", cat_scripts: "SCRIPTS"
         },
         pt: {
@@ -558,8 +557,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             toast_rename_req: "Digite um nome válido", toast_rename_ok: "Nome atualizado com sucesso!", toast_rename_fail: "Falha ao atualizar nome",
             btn_wait: "AGUARDE...", btn_yes_del: "SIM, DELETAR", no_sel: "Nada selecionado",
             tooltip_photo: "FOTO", toast_photo_ok: "Foto salva!", toast_photo_fail: "Falha ao salvar foto", 
-            assign_photo: "VINCULAR FOTO", enter_uuid: "Digite o UUID da Textura...", save: "SALVAR", remove: "REMOVER",
-            photo_desc1: "Vincule uma foto a este produto", photo_desc2: "Solte um UUID de Textura abaixo.",
+            assign_photo: "VINCULAR FOTO", enter_uuid: "Digite o UUID da Textura ou Link...", save: "SALVAR", remove: "REMOVER",
+            photo_desc1: "Vincule uma foto a este produto", photo_desc2: "Solte um UUID de Textura ou link do Gyazo abaixo.",
             cat_clothing: "ROUPAS", cat_hair: "CABELOS", cat_faceskin: "PELE ROSTO", cat_bodyskin: "PELE CORPO", cat_meshhead: "CABEÇA MESH", cat_meshbody: "CORPO MESH", cat_accessories: "ACESSÓRIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORAÇÃO", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS"
         },
         es: {
@@ -581,8 +580,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             toast_rename_req: "Ingrese un nombre válido", toast_rename_ok: "¡Nombre actualizado con éxito!", toast_rename_fail: "Fallo al actualizar nombre",
             btn_wait: "ESPERE...", btn_yes_del: "SÍ, ELIMINAR", no_sel: "Nada seleccionado",
             tooltip_photo: "FOTO", toast_photo_ok: "¡Foto guardada!", toast_photo_fail: "Error al guardar foto", 
-            assign_photo: "VINCULAR FOTO", enter_uuid: "Ingrese el UUID de Textura...", save: "GUARDAR", remove: "ELIMINAR",
-            photo_desc1: "Vincule una foto a este producto", photo_desc2: "Suelte un UUID de Textura a continuación.",
+            assign_photo: "VINCULAR FOTO", enter_uuid: "Ingrese el UUID de Textura o Link...", save: "GUARDAR", remove: "ELIMINAR",
+            photo_desc1: "Vincule una foto a este producto", photo_desc2: "Suelte un UUID de Textura o link de Gyazo a continuación.",
             cat_clothing: "ROPA", cat_hair: "CABELLO", cat_faceskin: "PIEL ROSTRO", cat_bodyskin: "PIEL CUERPO", cat_meshhead: "CABEZA MESH", cat_meshbody: "CUERPO MESH", cat_accessories: "ACCESORIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORACIÓN", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS"
         }
     };
@@ -636,15 +635,26 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         }
     }
 
-    // --- LÓGICA DO BALÃO FLUTUANTE GLOBAL DA FOTO ---
+    // --- LÓGICA DO BALÃO FLUTUANTE GLOBAL DA FOTO (COM SUPORTE A LINKS EXTERNOS) ---
     const globalPreview = document.getElementById('global-photo-preview');
     const globalPreviewImg = document.getElementById('global-preview-img');
     const globalPreviewDate = document.getElementById('global-preview-date');
 
-    function showPhotoPreview(e, photoUUID, dateStr) {
-        globalPreviewImg.src = `https://picture-service.secondlife.com/${photoUUID}/320x240.jpg`;
+    function showPhotoPreview(e, photoData, dateStr) {
+        let finalUrl = photoData;
         
-        // Se a pasta tiver a data, mostra o balãozinho atracado na foto flutuante!
+        // Auto-corretor Mágico do Gyazo
+        if(finalUrl.includes("gyazo.com") && !finalUrl.includes("i.gyazo.com")) {
+            finalUrl = finalUrl.replace("gyazo.com", "i.gyazo.com") + ".png";
+        }
+        
+        // Se NÃO tiver HTTP, assumimos que é um UUID do SL
+        if(!finalUrl.startsWith("http")) {
+            finalUrl = `https://picture-service.secondlife.com/${photoData}/320x240.jpg`;
+        }
+
+        globalPreviewImg.src = finalUrl;
+        
         if(dateStr && dateStr !== 'undefined' && dateStr.trim() !== '') {
             globalPreviewDate.innerText = t('tooltip_create') + " " + dateStr;
             globalPreviewDate.style.display = 'block';
@@ -854,7 +864,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         document.getElementById("selectedCount").innerText = total;
     }
 
-    // AÇÕES DO MODAL DE FOTO
     function openPhotoModal(nameEncoded, currentPhoto) {
         currentPhotoTarget = decodeURIComponent(nameEncoded);
         document.getElementById('photo-item-name').innerText = currentPhotoTarget;
