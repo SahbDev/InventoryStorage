@@ -271,9 +271,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .flag-circle { width: 56px; height: 56px; border-radius: 50%; border: 3px solid #1a1a1a; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #111; }
 .flag-circle svg { width: 100%; height: 100%; display: block; }
 
-/* =========================================
-   NOVA TELA DE ERRO DE SEGURANÇA FULLSCREEN
-========================================== */
+/* TELA DE ERRO DE SEGURANÇA FULLSCREEN */
 #auth-error-screen {
     display: none;
     position: fixed;
@@ -347,7 +345,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 <div id="auth-error-screen">
     <svg class="auth-error-icon"><use href="#icon-lock"></use></svg>
     <div class="auth-error-title" data-i18n="auth_err_title">ACCESS EXPIRED / UNAUTHORIZED</div>
-    <div class="auth-error-sub" data-i18n="auth_err_sub">For your security, this session has been invalidated.<br>Please generate a new link from your Second Life server.</div>
+    <div class="auth-error-sub" data-i18n="auth_err_sub">This session has been invalidated / expired.<br>Please generate a new link from your Second Life server.</div>
 </div>
 
 <div class="container" id="main-app-container">
@@ -583,7 +581,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             assign_photo: "LINK PHOTO", enter_uuid: "Enter Texture UUID or Link...", save: "SAVE", remove: "REMOVE",
             photo_desc1: "Link a photo to this product", photo_desc2: "Drop a Texture UUID or Gyazo link below.",
             gyazo_desc1: "Use Gyazo to add Prints/Photos to your products.", gyazo_desc2: "Download Gyazo", here: "HERE",
-            auth_err_title: "ACCESS EXPIRED / UNAUTHORIZED", auth_err_sub: "For your security, this session has been invalidated.<br>Please generate a new link from your Second Life server.",
+            auth_err_title: "ACCESS EXPIRED / UNAUTHORIZED", auth_err_sub: "This session has been invalidated / expired.<br>Please generate a new link from your Second Life server.",
             cat_clothing: "CLOTHING", cat_hair: "HAIR", cat_faceskin: "FACE SKIN", cat_bodyskin: "BODY SKIN", cat_meshhead: "MESH HEAD", cat_meshbody: "MESH BODY", cat_accessories: "ACCESSORIES", cat_skybox: "SKYBOX", cat_houses: "HOUSES", cat_decor: "DECOR", cat_objects: "OBJECTS", cat_textures: "TEXTURES", cat_scripts: "SCRIPTS"
         },
         pt: {
@@ -608,7 +606,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             assign_photo: "VINCULAR FOTO", enter_uuid: "Digite o UUID da Textura ou Link...", save: "SALVAR", remove: "REMOVER",
             photo_desc1: "Vincule uma foto a este produto", photo_desc2: "Solte um UUID de Textura ou link do Gyazo abaixo.",
             gyazo_desc1: "Use o Gyazo para adicionar Prints/Fotos aos seus produtos.", gyazo_desc2: "Baixar Gyazo", here: "AQUI",
-            auth_err_title: "ACESSO EXPIRADO / NÃO AUTORIZADO", auth_err_sub: "Por segurança, esta sessão foi invalidada.<br>Por favor, gere um novo link no seu servidor do Second Life.",
+            auth_err_title: "ACESSO EXPIRADO / NÃO AUTORIZADO", auth_err_sub: "Esta sessão foi invalidada / expirada.<br>Por favor, gere um novo link no seu servidor do Second Life.",
             cat_clothing: "ROUPAS", cat_hair: "CABELOS", cat_faceskin: "PELE ROSTO", cat_bodyskin: "PELE CORPO", cat_meshhead: "CABEÇA MESH", cat_meshbody: "CORPO MESH", cat_accessories: "ACESSÓRIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORAÇÃO", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS"
         },
         es: {
@@ -633,7 +631,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             assign_photo: "VINCULAR FOTO", enter_uuid: "Ingrese el UUID de Textura o Link...", save: "GUARDAR", remove: "ELIMINAR",
             photo_desc1: "Vincule una foto a este producto", photo_desc2: "Suelte un UUID de Textura o link de Gyazo a continuación.",
             gyazo_desc1: "Usa Gyazo para agregar Prints/Fotos a tus productos.", gyazo_desc2: "Descargar Gyazo", here: "AQUÍ",
-            auth_err_title: "ACCESO EXPIRADO / NO AUTORIZADO", auth_err_sub: "Por tu seguridad, esta sesión ha sido invalidada.<br>Por favor, genera un nuevo enlace en tu servidor de Second Life.",
+            auth_err_title: "ACCESO EXPIRADO / NO AUTORIZADO", auth_err_sub: "Esta sesión ha sido invalidada / expirada.<br>Por favor, genera un nuevo enlace en tu servidor de Second Life.",
             cat_clothing: "ROPA", cat_hair: "CABELLO", cat_faceskin: "PIEL ROSTRO", cat_bodyskin: "PIEL CUERPO", cat_meshhead: "CABEZA MESH", cat_meshbody: "CUERPO MESH", cat_accessories: "ACCESORIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORACIÓN", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS"
         }
     };
@@ -788,7 +786,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
     function getEmptyStateHTML(title, sub) { return `<div class="empty-watermark"><div class="empty-watermark-title">${title}</div><div class="empty-watermark-sub">${sub}</div></div>`; }
     
-    // NOVO: Função para esconder tudo e mostrar APENAS o alerta fullscreen de segurança
     function showAuthError() {
         document.getElementById('main-app-container').style.display = 'none';
         document.getElementById('auth-error-screen').classList.add('active');
