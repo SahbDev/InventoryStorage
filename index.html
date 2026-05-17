@@ -151,18 +151,36 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .item-name{ font-size:.88rem; font-weight:500; word-break:break-word; line-height: 1.4; transition: color 0.2s;}
 .item:has(.item-select:checked) .item-name { color: var(--accent-purple); text-shadow: 0 0 8px rgba(207, 163, 255, 0.2); }
 
-/* ESTILOS DO HOVER DA FOTO */
+/* ESTILOS DO NOVO PREVIEW FLUTUANTE GLOBAL */
 .photo-icon { font-size: 14px; cursor: help; opacity: 0.8; transition: .2s; }
-.photo-icon:hover { opacity: 1; filter: drop-shadow(0 0 5px rgba(207,163,255,0.5)); }
-.photo-preview {
-    position: absolute; bottom: 150%; left: 0;
-    width: 220px; height: auto; aspect-ratio: 4/3;
-    background: #111; border: 1px solid #333; border-radius: 12px;
-    opacity: 0; pointer-events: none; transition: 0.2s; z-index: 50;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    transform: translateY(10px); object-fit: cover;
+.photo-icon:hover { opacity: 1; filter: drop-shadow(0 0 5px rgba(207,163,255,0.8)); }
+
+.global-preview {
+    position: fixed;
+    width: 320px;
+    height: 240px;
+    background: #0d0d0d url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="%23333"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>') no-repeat center center;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.05);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: scale(0.95);
+    z-index: 99999; /* Sobrepõe tudo no site */
+    overflow: hidden;
 }
-.item-name-wrapper:hover .photo-preview { opacity: 1; transform: translateY(0); }
+.global-preview.show {
+    opacity: 1;
+    transform: scale(1);
+}
+.global-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0; left: 0;
+}
 
 .item-actions{ display:flex; align-items:center; gap:8px; }
 
@@ -396,6 +414,10 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
 <div class="toast" id="toast"></div>
 
+<div id="global-photo-preview" class="global-preview">
+    <img id="global-preview-img" src="" alt="">
+</div>
+
 <div class="modal" id="photo-modal">
     <div class="modal-box" style="max-width: 400px; text-align: center;">
         <div class="modal-title" data-i18n="assign_photo">LINK PHOTO</div>
@@ -522,13 +544,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
     let currentLang = localStorage.getItem('mmc_lang') || 'en';
 
-    function t(key) {
-        return i18n[currentLang][key] || key;
-    }
-
-    function catToKey(categoryName) {
-        return "cat_" + categoryName.toLowerCase().replace(" ", "");
-    }
+    function t(key) { return i18n[currentLang][key] || key; }
+    function catToKey(categoryName) { return "cat_" + categoryName.toLowerCase().replace(" ", ""); }
 
     function openLangModal() {
         document.getElementById('lang-modal').classList.add('active');
@@ -554,18 +571,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 el.innerText = t(key);
             }
         });
-        
         renderCategories();
-        
         if (inventoryData.length > 0) {
             const searchVal = document.getElementById("searchBar").value;
-            if (document.getElementById('tab-inventory').classList.contains('active')) {
-                filterInventory(searchVal);
-            } else if (document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") {
-                openCategory(currentOpenCategoryViewId);
-            } else if (document.getElementById('tab-tools').classList.contains('active') && !document.getElementById('dupContainer').classList.contains('hidden')) {
-                findDuplicatesWeb();
-            }
+            if (document.getElementById('tab-inventory').classList.contains('active')) filterInventory(searchVal);
+            else if (document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") openCategory(currentOpenCategoryViewId);
+            else if (document.getElementById('tab-tools').classList.contains('active') && !document.getElementById('dupContainer').classList.contains('hidden')) findDuplicatesWeb();
         } else {
             document.getElementById("inventory-list").innerHTML = getEmptyStateHTML(t('loading'), t('connecting'));
         }
@@ -580,12 +591,39 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         }
     }
 
-    // ----- SISTEMA CORE (INVENTÁRIO E LÓGICA) -----
+    // --- LÓGICA DO BALÃO FLUTUANTE (FOTO) ---
+    const globalPreview = document.getElementById('global-photo-preview');
+    const globalPreviewImg = document.getElementById('global-preview-img');
+
+    function showPhotoPreview(e, photoUUID) {
+        globalPreviewImg.src = `https://picture-service.secondlife.com/${photoUUID}/320x240.jpg`;
+        globalPreview.classList.add('show');
+        movePreview(e);
+        document.addEventListener('mousemove', movePreview);
+    }
+
+    function hidePhotoPreview() {
+        globalPreview.classList.remove('show');
+        document.removeEventListener('mousemove', movePreview);
+    }
+
+    function movePreview(e) {
+        let x = e.clientX + 20; 
+        let y = e.clientY - 120;
+        
+        // Evita que o balão saia da tela
+        if (x + 320 > window.innerWidth) x = e.clientX - 340;
+        if (y + 240 > window.innerHeight) y = window.innerHeight - 260;
+        if (y < 0) y = 20;
+
+        globalPreview.style.left = x + 'px';
+        globalPreview.style.top = y + 'px';
+    }
+
     const API = new URLSearchParams(window.location.search).get("api");
-    let inventoryData = []; // Array de Objetos {name, photo, raw}
+    let inventoryData = []; 
     let savedCategories = JSON.parse(localStorage.getItem('mmc_categories')) || {};
     let currentOpenCategoryViewId = "";
-    
     let deleteMode = "";
     let deleteTarget = null;
     let duplicateOriginals = []; 
@@ -639,9 +677,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         return 'Objects';
     }
 
-    function getEmptyStateHTML(title, sub) { 
-        return `<div class="empty-watermark"><div class="empty-watermark-title">${title}</div><div class="empty-watermark-sub">${sub}</div></div>`; 
-    }
+    function getEmptyStateHTML(title, sub) { return `<div class="empty-watermark"><div class="empty-watermark-title">${title}</div><div class="empty-watermark-sub">${sub}</div></div>`; }
 
     function switchTab(tabId, btnElement){
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -667,30 +703,19 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             const res = await fetch(API);
             const data = await res.json();
             
-            // Lógica ajustada para separar NOME e UUID da FOTO que o servidor envia
             inventoryData = data.map(i => {
                 let decoded = decodeURIComponent(i);
                 let parts = decoded.split("||");
-                return {
-                    name: parts[0],
-                    photo: parts[1] || "",
-                    raw: decoded
-                };
+                return { name: parts[0], photo: parts[1] || "", raw: decoded };
             });
             
             clearAllMasterCheckboxes();
 
-            if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") {
-                openCategory(currentOpenCategoryViewId);
-            } else {
-                document.getElementById("category-items").innerHTML = "";
-            }
+            if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") openCategory(currentOpenCategoryViewId);
+            else document.getElementById("category-items").innerHTML = "";
 
-            if(!document.getElementById('dupContainer').classList.contains('hidden')) {
-                findDuplicatesWeb();
-            } else {
-                document.getElementById("dup-list").innerHTML = "";
-            }
+            if(!document.getElementById('dupContainer').classList.contains('hidden')) findDuplicatesWeb();
+            else document.getElementById("dup-list").innerHTML = "";
             
             const searchVal = document.getElementById("searchBar").value;
             if(searchVal) filterInventory(searchVal);
@@ -734,10 +759,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 <input type="checkbox" class="item-cb item-select" value="${itemObj.name}">
                 
                 <div class="item-name-wrapper">
-                    ${itemObj.photo ? `
-                        <span class="photo-icon" style="color:var(--accent-purple);">🖼️</span>
-                        <img src="https://picture-service.secondlife.com/${itemObj.photo}/320x240.jpg" loading="lazy" class="photo-preview">
-                    ` : ''}
+                    ${itemObj.photo ? `<span class="photo-icon" style="color:var(--accent-purple);" onmouseenter="showPhotoPreview(event, '${itemObj.photo}')" onmouseleave="hidePhotoPreview()">🖼️</span>` : ''}
                     <div class="item-name">${parsed.clean}</div>
                     ${parsed.date ? `<div class="cat-tooltip date-tooltip">${t('tooltip_create')} ${parsed.date}</div>` : ''}
                 </div>
@@ -778,7 +800,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         document.getElementById("selectedCount").innerText = total;
     }
 
-    // --- FUNÇÕES DE FOTO ---
     function openPhotoModal(nameEncoded, currentPhoto) {
         currentPhotoTarget = decodeURIComponent(nameEncoded);
         document.getElementById('photo-item-name').innerText = currentPhotoTarget;
@@ -867,12 +888,10 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         if(!checked.length){ toast(t('no_sel')); return; }
         deleteMode = "bulk";
         deleteTarget = checked.map(c => c.value);
-        
         let suffix = " selected folders";
         if (currentLang === 'pt') suffix = " pastas selecionadas";
         if (currentLang === 'es') suffix = " carpetas seleccionadas";
         document.getElementById("delete-item-name").innerText = checked.length + suffix;
-        
         document.getElementById("delete-modal").classList.add("active");
     }
 
@@ -906,11 +925,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     function toggleSelectAll(containerId, masterCheckbox) {
         const isChecked = masterCheckbox.checked;
         document.getElementById(containerId).querySelectorAll('.item-select').forEach(cb => { 
-            if (containerId === 'dup-list' && isChecked && duplicateOriginals.includes(cb.value)) {
-                cb.checked = false; 
-            } else {
-                cb.checked = isChecked; 
-            }
+            if (containerId === 'dup-list' && isChecked && duplicateOriginals.includes(cb.value)) cb.checked = false; 
+            else cb.checked = isChecked; 
         });
         updateSelectedCount();
     }
@@ -957,7 +973,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         const modal = document.getElementById("category-modal");
         const grid = document.getElementById("modal-grid");
         grid.innerHTML = "";
-
         Object.entries(categories).forEach(([name, icon])=>{
             const div = document.createElement("div"); div.className = "modal-cat";
             div.innerHTML = `<span style="font-size: 26px; display: block; margin-bottom: 6px;">${icon}</span>${t(catToKey(name))}`;
@@ -965,14 +980,9 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 savedCategories[selectedItem] = name;
                 localStorage.setItem("mmc_categories", JSON.stringify(savedCategories));
                 modal.classList.remove("active");
-                
-                if(document.getElementById('tab-inventory').classList.contains('active')) {
-                    const searchVal = document.getElementById("searchBar").value;
-                    filterInventory(searchVal);
-                } else if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") {
-                    openCategory(currentOpenCategoryViewId);
-                }
-                if(!document.getElementById('dupContainer').classList.contains('hidden')) { findDuplicatesWeb(); }
+                if(document.getElementById('tab-inventory').classList.contains('active')) filterInventory(document.getElementById("searchBar").value);
+                else if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") openCategory(currentOpenCategoryViewId);
+                if(!document.getElementById('dupContainer').classList.contains('hidden')) findDuplicatesWeb();
                 toast(t('toast_cat_saved'));
             };
             grid.appendChild(div);
@@ -994,7 +1004,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             if(!groups[base]) groups[base] = [];
             groups[base].push(item);
         });
-        
         let dups = [];
         duplicateOriginals = [];
         Object.values(groups).forEach(group => {
@@ -1004,14 +1013,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 dups = dups.concat(group);
             }
         });
-
         const dupContainer = document.getElementById('dupContainer');
         if(dups.length === 0) {
             toast(t('toast_dup_clean'));
             dupContainer.classList.add('hidden');
             return;
         }
-        
         dupContainer.classList.remove('hidden');
         renderInventory(dups, 'dup-list', 'bulkDup');
         toast(`${dups.length} ${t('toast_dup_found')}`);
@@ -1020,10 +1027,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     async function renameServer(btn) {
         const newName = document.getElementById("renameInput").value.trim();
         if(!newName) { toast(t('toast_rename_req')); return; }
-        
         const oldText = btn.innerText;
         btn.innerText = t('btn_wait'); btn.disabled = true;
-        
         try {
             await fetch(API, { method: "POST", body: "WEB_RENAME:" + newName });
             document.getElementById("currentServerName").innerText = "MMC - Inventory Storage [" + newName + "]";
