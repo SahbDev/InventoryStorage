@@ -60,13 +60,12 @@ header{ text-align:center; padding-bottom:24px; border-bottom:1px solid #1b1b1b;
 .resync-btn:hover { border-color: #555; transform: translateY(-1px); }
 .resync-btn svg { width: 14px; height: 14px; fill: #fff; }
 
-/* ESTILOS PARA OS GLOBOS MINIMALISTAS */
-.minimalist-globe-btn svg {
-    transition: opacity 0.2s;
-}
-.minimalist-globe-btn:hover svg {
-    opacity: 1;
-}
+/* ESTILOS DA SOBREPOSIÇÃO DAS BANDEIRAS */
+.flag-group { position: relative; width: 34px; height: 20px; }
+.flag-icon { position: absolute; width: 20px; height: 20px; border-radius: 50%; overflow: hidden; border: 2px solid #0f0f0f; background: #111; }
+.flag-icon.us { right: 0; z-index: 1; }
+.flag-icon.br { left: 0; z-index: 2; }
+.flag-icon svg { width: 100%; height: 100%; display: block; }
 
 h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-transform:uppercase; }
 .subtitle{ margin-top:12px; color:var(--dim); font-size:.78rem; letter-spacing:1px; }
@@ -219,17 +218,40 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .lang-card:hover { background: #111; border-color: #444; }
 .lang-card.active { border-color: var(--green); box-shadow: inset 0 0 20px rgba(82, 255, 156, 0.05); }
 .flag-circle { width: 56px; height: 56px; border-radius: 50%; border: 3px solid #1a1a1a; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #111; }
-.flag-circle svg { width: 100%; height: 100%; }
+.flag-circle svg { width: 100%; height: 100%; display: block; }
 </style>
 </head>
 <body>
 
 <svg style="display:none;">
+    <clipPath id="usa-clip"><circle cx="256" cy="256" r="256"/></clipPath>
+    <symbol id="flag-br" viewBox="0 0 512 512">
+        <circle cx="256" cy="256" r="256" fill="#4caf50"/>
+        <polygon points="256,80 432,256 256,432 80,256" fill="#ffeb3b"/>
+        <circle cx="256" cy="256" r="100" fill="#1e88e5"/>
+        <path d="M 180 256 Q 256 200 332 256" stroke="#fff" stroke-width="12" fill="none"/>
+    </symbol>
+    <symbol id="flag-us" viewBox="0 0 512 512">
+        <circle cx="256" cy="256" r="256" fill="#fff"/>
+        <g clip-path="url(#usa-clip)">
+            <rect width="512" height="512" fill="#fff"/>
+            <rect y="51" width="512" height="41" fill="#d32f2f"/>
+            <rect y="153" width="512" height="41" fill="#d32f2f"/>
+            <rect y="256" width="512" height="41" fill="#d32f2f"/>
+            <rect y="358" width="512" height="41" fill="#d32f2f"/>
+            <rect y="460" width="512" height="41" fill="#d32f2f"/>
+            <rect width="256" height="270" fill="#1e88e5"/>
+            <circle cx="64" cy="64" r="12" fill="#fff"/><circle cx="128" cy="64" r="12" fill="#fff"/><circle cx="192" cy="64" r="12" fill="#fff"/>
+            <circle cx="96" cy="118" r="12" fill="#fff"/><circle cx="160" cy="118" r="12" fill="#fff"/>
+            <circle cx="64" cy="172" r="12" fill="#fff"/><circle cx="128" cy="172" r="12" fill="#fff"/><circle cx="192" cy="172" r="12" fill="#fff"/>
+            <circle cx="96" cy="226" r="12" fill="#fff"/><circle cx="160" cy="226" r="12" fill="#fff"/>
+        </g>
+    </symbol>
+
     <symbol id="icon-objects" viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44c-.32-.17-.53-.5-.53-.88V7.5c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.19v6.72zm14 0v-6.72l-6 3.39v6.71l6-3.38z"/></symbol>
     <symbol id="icon-send" viewBox="0 0 24 24"><path d="M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z"/></symbol>
     <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></symbol>
     <symbol id="icon-sync" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></symbol>
-    <symbol id="icon-globe" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></symbol>
 </svg>
 
 <div class="container">
@@ -239,9 +261,11 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 <div class="status-badge">
                     <div class="status-dot"></div> <span data-i18n="live">LIVE</span>
                 </div>
-                <div class="resync-btn minimalist-globe-btn" onclick="openLangModal()" style="display: flex; align-items: center; gap: 4px; padding: 8px 12px;">
-                    <svg style="width: 16px; height: 16px; fill: #fff; opacity: 0.8;"><use href="#icon-globe"></use></svg>
-                    <svg style="width: 16px; height: 16px; fill: #fff; opacity: 0.8;"><use href="#icon-globe"></use></svg>
+                <div class="resync-btn" onclick="openLangModal()" style="padding: 6px 12px;">
+                    <div class="flag-group">
+                        <div class="flag-icon us"><svg><use href="#flag-us"></use></svg></div>
+                        <div class="flag-icon br"><svg><use href="#flag-br"></use></svg></div>
+                    </div>
                 </div>
             </div>
             
@@ -375,35 +399,14 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top: 24px;">
             <div class="lang-card" id="lang-pt" onclick="setLanguage('pt')">
                 <div class="flag-circle">
-                    <svg viewBox="0 0 512 512">
-                        <circle cx="256" cy="256" r="256" fill="#4caf50"/>
-                        <polygon points="256,80 432,256 256,432 80,256" fill="#ffeb3b"/>
-                        <circle cx="256" cy="256" r="100" fill="#1e88e5"/>
-                        <path d="M 180 256 Q 256 200 332 256" stroke="#fff" stroke-width="12" fill="none"/>
-                    </svg>
+                    <svg><use href="#flag-br"></use></svg>
                 </div>
                 <div>Português</div>
             </div>
             
             <div class="lang-card" id="lang-en" onclick="setLanguage('en')">
                 <div class="flag-circle">
-                    <svg viewBox="0 0 512 512">
-                        <circle cx="256" cy="256" r="256" fill="#fff"/>
-                        <g clip-path="url(#circle-clip)">
-                            <rect width="512" height="512" fill="#fff"/>
-                            <rect y="51" width="512" height="41" fill="#d32f2f"/>
-                            <rect y="153" width="512" height="41" fill="#d32f2f"/>
-                            <rect y="256" width="512" height="41" fill="#d32f2f"/>
-                            <rect y="358" width="512" height="41" fill="#d32f2f"/>
-                            <rect y="460" width="512" height="41" fill="#d32f2f"/>
-                            <rect width="256" height="270" fill="#1e88e5"/>
-                            <circle cx="64" cy="64" r="12" fill="#fff"/><circle cx="128" cy="64" r="12" fill="#fff"/><circle cx="192" cy="64" r="12" fill="#fff"/>
-                            <circle cx="96" cy="118" r="12" fill="#fff"/><circle cx="160" cy="118" r="12" fill="#fff"/>
-                            <circle cx="64" cy="172" r="12" fill="#fff"/><circle cx="128" cy="172" r="12" fill="#fff"/><circle cx="192" cy="172" r="12" fill="#fff"/>
-                            <circle cx="96" cy="226" r="12" fill="#fff"/><circle cx="160" cy="226" r="12" fill="#fff"/>
-                        </g>
-                        <defs><clipPath id="circle-clip"><circle cx="256" cy="256" r="256"/></clipPath></defs>
-                    </svg>
+                    <svg><use href="#flag-us"></use></svg>
                 </div>
                 <div>English</div>
             </div>
@@ -413,10 +416,10 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
 <script>
     // ----- SISTEMA DE TRADUÇÃO (I18N) -----
-    // A chave "language" continua aqui para o modal, mas foi removida do botão do cabeçalho.
+    // INGLÊS DEFINIDO COMO PRIMEIRO IDIOMA PADRÃO
     const i18n = {
         en: {
-            live: "LIVE", language: "LANGUAGE", resync: "RESYNC",
+            live: "LIVE", resync: "RESYNC",
             title: "✦ PERSONAL INVENTORY ✦", powered: "powered by",
             folders: "Folders", selected: "Selected",
             tab_inv: "Inventory", tab_cat: "Categories", tab_tools: "Tools", tab_config: "Config",
@@ -444,7 +447,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             cat_houses: "HOUSES", cat_decor: "DECOR", cat_objects: "OBJECTS", cat_textures: "TEXTURES", cat_scripts: "SCRIPTS"
         },
         pt: {
-            live: "AO VIVO", language: "IDIOMA", resync: "SINCRONIZAR",
+            live: "AO VIVO", resync: "SINCRONIZAR",
             title: "✦ INVENTÁRIO PESSOAL ✦", powered: "desenvolvido por",
             folders: "Pastas", selected: "Selecionados",
             tab_inv: "Inventário", tab_cat: "Categorias", tab_tools: "Ferramentas", tab_config: "Config",
