@@ -151,35 +151,67 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .item-name{ font-size:.88rem; font-weight:500; word-break:break-word; line-height: 1.4; transition: color 0.2s;}
 .item:has(.item-select:checked) .item-name { color: var(--accent-purple); text-shadow: 0 0 8px rgba(207, 163, 255, 0.2); }
 
-/* ESTILOS DO NOVO PREVIEW FLUTUANTE GLOBAL */
+/* ESTILOS DO HOVER E TOOLTIP DA DATA LOCAL */
+.date-tooltip { 
+    background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); 
+    left: 0 !important; transform: none !important; transition: opacity 0.2s;
+}
+/* MÁGICA: Esconde a data pequenininha da lista quando passamos o mouse na FOTO */
+.item-name-wrapper:has(.photo-icon:hover) .date-tooltip { opacity: 0 !important; }
+
 .photo-icon { font-size: 14px; cursor: help; opacity: 0.8; transition: .2s; }
 .photo-icon:hover { opacity: 1; filter: drop-shadow(0 0 5px rgba(207,163,255,0.8)); }
 
+/* ESTRUTURA GLOBAL DA FOTO + DATA FLUTUANTE */
 .global-preview {
     position: fixed;
     width: 320px;
     height: 240px;
-    background: #0d0d0d url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="%23333"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>') no-repeat center center;
-    border: 1px solid #2a2a2a;
-    border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.05);
-    opacity: 0;
     pointer-events: none;
+    opacity: 0;
     transition: opacity 0.2s ease, transform 0.2s ease;
     transform: scale(0.95);
     z-index: 99999;
-    overflow: hidden;
 }
 .global-preview.show {
     opacity: 1;
     transform: scale(1);
 }
-.global-preview img {
+.global-preview-img-wrapper {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.05);
+    overflow: hidden;
+    position: relative;
+    background: #0d0d0d url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="%23333"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>') no-repeat center center;
+}
+.global-preview-img-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     position: absolute;
     top: 0; left: 0;
+}
+.global-preview-date {
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+    color: #000;
+    font-size: .6rem;
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: 8px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    z-index: 10;
+    display: none;
 }
 
 .item-actions{ display:flex; align-items:center; gap:8px; }
@@ -198,11 +230,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     pointer-events:none; transition:.18s; white-space:nowrap; text-transform:uppercase; z-index:20;
 }
 .cat-badge:hover .cat-tooltip, .action-btn:hover .cat-tooltip, .item-name-wrapper:hover .cat-tooltip { opacity:1; bottom:-30px; }
-
-.date-tooltip { 
-    background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); 
-    left: 0 !important; transform: none !important;
-}
 
 .action-btn{
     width:38px; height:38px; border-radius:14px; border:1px solid #292929;
@@ -415,7 +442,10 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 <div class="toast" id="toast"></div>
 
 <div id="global-photo-preview" class="global-preview">
-    <img id="global-preview-img" src="" alt="">
+    <div class="global-preview-img-wrapper">
+        <img id="global-preview-img" src="" alt="">
+    </div>
+    <div id="global-preview-date" class="global-preview-date"></div>
 </div>
 
 <div class="modal" id="photo-modal">
@@ -501,7 +531,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             toast_deliv: "Delivering...", toast_deliv_ok: "Bulk delivery sent ✔", toast_deliv_fail: "Delivery failed",
             toast_rezz: "Rezzing...", toast_rezz_ok: "Bulk rezz sent ✔", toast_rezz_fail: "Rezz failed",
             toast_del_ok: "Deleted successfully", toast_del_fail: "Delete failed", toast_cat_saved: "Category Saved", toast_dup_scan: "Scanning for duplicates...",
-            toast_dup_clean: "Inventory perfectly clean!", toast_dup_found: "potential duplicates!",
+            toast_dup_clean: "No duplicates found", toast_dup_found: "potential duplicates!",
             toast_rename_req: "Enter a valid name", toast_rename_ok: "Name updated successfully!", toast_rename_fail: "Failed to update name",
             btn_wait: "WAIT...", btn_yes_del: "YES, DELETE", no_sel: "Nothing selected",
             tooltip_photo: "PHOTO", toast_photo_ok: "Photo saved!", toast_photo_fail: "Failed to save photo", 
@@ -524,7 +554,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             toast_deliv: "Entregando...", toast_deliv_ok: "Entrega enviada ✔", toast_deliv_fail: "Falha na entrega",
             toast_rezz: "Rezzando...", toast_rezz_ok: "Rezz enviado ✔", toast_rezz_fail: "Falha ao rezzar",
             toast_del_ok: "Deletado com sucesso", toast_del_fail: "Falha ao deletar", toast_cat_saved: "Categoria Salva", toast_dup_scan: "Buscando duplicatas...",
-            toast_dup_clean: "Inventário perfeitamente limpo!", toast_dup_found: "possíveis duplicatas!",
+            toast_dup_clean: "Nenhum duplicado encontrado", toast_dup_found: "possíveis duplicatas!",
             toast_rename_req: "Digite um nome válido", toast_rename_ok: "Nome atualizado com sucesso!", toast_rename_fail: "Falha ao atualizar nome",
             btn_wait: "AGUARDE...", btn_yes_del: "SIM, DELETAR", no_sel: "Nada selecionado",
             tooltip_photo: "FOTO", toast_photo_ok: "Foto salva!", toast_photo_fail: "Falha ao salvar foto", 
@@ -547,7 +577,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             toast_deliv: "Entregando...", toast_deliv_ok: "Entrega enviada ✔", toast_deliv_fail: "Fallo en la entrega",
             toast_rezz: "Rezzando...", toast_rezz_ok: "Rezz enviado ✔", toast_rezz_fail: "Fallo al rezzar",
             toast_del_ok: "Eliminado con éxito", toast_del_fail: "Fallo al eliminar", toast_cat_saved: "Categoría Guardada", toast_dup_scan: "Buscando duplicados...",
-            toast_dup_clean: "¡Inventario perfectamente limpio!", toast_dup_found: "posibles duplicados!",
+            toast_dup_clean: "Ningún duplicado encontrado", toast_dup_found: "posibles duplicados!",
             toast_rename_req: "Ingrese un nombre válido", toast_rename_ok: "¡Nombre actualizado con éxito!", toast_rename_fail: "Fallo al actualizar nombre",
             btn_wait: "ESPERE...", btn_yes_del: "SÍ, ELIMINAR", no_sel: "Nada seleccionado",
             tooltip_photo: "FOTO", toast_photo_ok: "¡Foto guardada!", toast_photo_fail: "Error al guardar foto", 
@@ -606,12 +636,22 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         }
     }
 
-    // --- LÓGICA DO BALÃO FLUTUANTE (FOTO) ---
+    // --- LÓGICA DO BALÃO FLUTUANTE GLOBAL DA FOTO ---
     const globalPreview = document.getElementById('global-photo-preview');
     const globalPreviewImg = document.getElementById('global-preview-img');
+    const globalPreviewDate = document.getElementById('global-preview-date');
 
-    function showPhotoPreview(e, photoUUID) {
+    function showPhotoPreview(e, photoUUID, dateStr) {
         globalPreviewImg.src = `https://picture-service.secondlife.com/${photoUUID}/320x240.jpg`;
+        
+        // Se a pasta tiver a data, mostra o balãozinho atracado na foto flutuante!
+        if(dateStr && dateStr !== 'undefined' && dateStr.trim() !== '') {
+            globalPreviewDate.innerText = t('tooltip_create') + " " + dateStr;
+            globalPreviewDate.style.display = 'block';
+        } else {
+            globalPreviewDate.style.display = 'none';
+        }
+        
         globalPreview.classList.add('show');
         movePreview(e);
         document.addEventListener('mousemove', movePreview);
@@ -773,7 +813,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 <input type="checkbox" class="item-cb item-select" value="${itemObj.name}">
                 
                 <div class="item-name-wrapper">
-                    ${itemObj.photo ? `<span class="photo-icon" style="color:var(--accent-purple);" onmouseenter="showPhotoPreview(event, '${itemObj.photo}')" onmouseleave="hidePhotoPreview()">🖼️</span>` : ''}
+                    ${itemObj.photo ? `<span class="photo-icon" style="color:var(--accent-purple);" onmouseenter="showPhotoPreview(event, '${itemObj.photo}', '${parsed.date ? parsed.date : ''}')" onmouseleave="hidePhotoPreview()">🖼️</span>` : ''}
                     <div class="item-name">${parsed.clean}</div>
                     ${parsed.date ? `<div class="cat-tooltip date-tooltip">${t('tooltip_create')} ${parsed.date}</div>` : ''}
                 </div>
@@ -837,7 +877,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         btn.innerText = t('save'); btn.disabled = false;
     }
 
-    // NOVA FUNÇÃO: REMOVER FOTO (Manda UUID vazio pro LSL limpar da memória)
     async function removePhoto() {
         const btn = document.querySelector('#photo-modal .btn-dark');
         btn.innerText = t('btn_wait'); btn.disabled = true;
