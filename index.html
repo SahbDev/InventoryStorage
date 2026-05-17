@@ -155,7 +155,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); 
     left: 0 !important; transform: none !important; transition: opacity 0.2s;
 }
-.item-name-wrapper:has(.photo-icon:hover) .date-tooltip { opacity: 0 !important; }
 
 .photo-icon { font-size: 14px; cursor: help; opacity: 0.8; transition: .2s; }
 .photo-icon:hover { opacity: 1; filter: drop-shadow(0 0 5px rgba(207,163,255,0.8)); }
@@ -808,7 +807,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 <div class="item-name-wrapper">
                     ${itemObj.photo ? `<span class="photo-icon" style="color:var(--accent-purple);" onmouseenter="showPhotoPreview(event, '${itemObj.photo}', '${parsed.date ? parsed.date : ''}')" onmouseleave="hidePhotoPreview()">🖼️</span>` : ''}
                     <div class="item-name">${parsed.clean}</div>
-                    ${parsed.date ? `<div class="cat-tooltip date-tooltip">${t('tooltip_create')} ${parsed.date}</div>` : ''}
+                    ${(!itemObj.photo && parsed.date) ? `<div class="cat-tooltip date-tooltip">${t('tooltip_create')} ${parsed.date}</div>` : ''}
                 </div>
                 
                 <div class="item-actions">
