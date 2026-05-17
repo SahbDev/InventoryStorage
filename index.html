@@ -1,1 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MMC Personal Inventory</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#050505;
+    --panel:#101010;
+    --panel2:#141414;
+    --line:#202020;
+    --line2:#2a2a2a;
+    --text:#f3f3f3;
+    --soft:#a1a1a1;
+    --dim:#666;
+    --green:#52ff9c;
+    --danger:#ff4b4b;
+    --accent-purple:#cfa3ff;
+    --transition:all .22s ease;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+    margin:0; padding:40px 18px;
+    background: radial-gradient(circle at top, rgba(255,255,255,.03), transparent 30%), #060606;
+    font-family:'Inter',sans-serif; color:var(--text);
+    display:flex; justify-content:center; min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+}
+
+.container{
+    width:100%; 
+    max-width:1280px; /* <--- EXPANDIDO AQUI DE 760 PARA 1280px */
+    min-height: 85vh;
+    background:linear-gradient(180deg,#111111,#0a0a0a);
+    border:1px solid var(--line); border-radius:34px; padding:34px;
+    box-shadow:0 30px 80px rgba(0,0,0,.65); display: flex; flex-direction: column;
+}
+
+header{ text-align:center; padding-bottom:24px; border-bottom:1px solid #1b1b1b; position:relative; }
+
+.header-actions { position: absolute; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+
+.status-badge{
+    background:#0f0f0f; border:1px solid #2a2a2a; padding:8px 12px; border-radius:999px;
+    display:flex; align-items:center; gap:8px; font-size:.65rem; font-weight:700; letter-spacing:1px;
+}
+.status-dot{ width:8px; height:8px; border-radius:999px; background:var(--green); box-shadow:0 0 10px var(--green); }
+
+.resync-btn {
+    background:#0f0f0f; border:1px solid #2a2a2a; color: var(--text); padding:8px 14px; border-radius:999px;
+    display:flex; align-items:center; gap:6px; font-size:.65rem; font-weight:700; letter-spacing:1px;
+    cursor: pointer; transition: var(--transition);
+}
+.resync-btn:hover { border-color: #555; transform: translateY(-1px); }
+.resync-btn svg { width: 14px; height: 14px; fill: #fff; }
+
+.flag-group { position: relative; width: 48px; height: 20px; }
+.flag-icon { position: absolute; width: 20px; height: 20px; border-radius: 50%; overflow: hidden; border: 2px solid #0f0f0f; background: #111; }
+.flag-icon.us { left: 0; z-index: 3; }
+.flag-icon.br { left: 14px; z-index: 2; }
+.flag-icon.es { left: 28px; z-index: 1; }
+.flag-icon svg { width: 100%; height: 100%; display: block; }
+
+h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-transform:uppercase; }
+.subtitle{ margin-top:12px; color:var(--dim); font-size:.78rem; letter-spacing:1px; }
+.subtitle a { color: inherit; text-decoration: none; font-weight: 700; transition: var(--transition); }
+.subtitle a:hover { color: var(--text); text-shadow: 0 0 8px rgba(255,255,255,0.2); }
+
+.top-stats{ display:flex; justify-content:center; gap:14px; margin-top:22px; flex-wrap:wrap; }
+.stat-card{ background:#0d0d0d; border:1px solid #202020; border-radius:18px; padding:14px 18px; min-width:120px; text-align: center; }
+.stat-label{ color:#777; font-size:.62rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+.stat-value{ font-size:1rem; font-weight:700; }
+
+.tabs{ display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin:26px 0; }
+.tab-btn{
+    background:linear-gradient(180deg,#181818,#111111); border:1px solid #262626; color:#8d8d8d;
+    padding:12px 18px; border-radius:999px; cursor:pointer; transition:var(--transition);
+    font-size:.7rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; outline: none;
+}
+.tab-btn:hover{ transform:translateY(-2px); color:#fff; border-color:#4a4a4a; }
+.tab-btn.active{ background:#fff; color:#000; border-color:#fff; }
+
+.tab-content{ display:none; }
+.tab-content.active{ display:block; }
+
+.search-box{ width:100%; margin-bottom:18px; }
+.search-input{
+    width:100%; background:#0c0c0c; border:1px solid #242424; color:#fff;
+    padding:18px 20px; border-radius:18px; outline:none; font-size:.9rem; text-align: center; transition: var(--transition);
+}
+.search-input:focus{ border-color:#444; }
+
+.bulk-actions{
+    display:flex; justify-content:center; align-items:center; gap:20px;
+    background:#0c0c0c; border:1px solid #232323; border-radius:18px;
+    padding:12px 20px; margin: 0 auto 18px auto; width: max-content;
+}
+.checkbox-label{ display:flex; align-items:center; gap:8px; font-size:.68rem; font-weight:700; letter-spacing:.5px; color:#d8d8d8; cursor:pointer;}
+.item-cb{ accent-color:#fff; cursor: pointer; }
+
+.btn{
+    border:none; padding:8px 14px; border-radius:12px; cursor:pointer; font-size:.62rem;
+    font-weight:800; text-transform:uppercase; letter-spacing:1px; transition:.2s;
+}
+.btn-white{ background:#fff; color:#000; }
+.btn-dark{ background:#110505; color:var(--danger); border:1px solid #381818; }
+.btn:hover{ transform:translateY(-1px); }
+
+.cat-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(105px,1fr)); gap:24px; }
+.cat-circle{ display:flex; flex-direction:column; align-items:center; gap:14px; cursor:pointer; transition:var(--transition); }
+.cat-circle:hover{ transform:translateY(-4px); }
+.cat-icon-bg{
+    width:88px; height:88px; border-radius:26px; background:linear-gradient(180deg,#181818,#0d0d0d);
+    border:1px solid #262626; display:flex; justify-content:center; align-items:center;
+    transition:var(--transition); box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 18px 35px rgba(0,0,0,.45);
+    font-size: 38px;
+}
+.cat-circle:hover .cat-icon-bg{ border-color:#4e4e4e; }
+.cat-label{ font-size:.65rem; letter-spacing:1.4px; font-weight:700; text-transform:uppercase; color:#9c9c9c; text-align:center; transition:.2s; }
+.cat-circle:hover .cat-label { color:#ffffff; }
+
+.cat-view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #202020; }
+.cat-view-title { font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.btn-back {
+    background: #111; color: #888; border: 1px solid #262626; padding: 8px 14px;
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase; cursor: pointer; border-radius: 20px; transition: var(--transition);
+}
+.btn-back:hover { border-color: #fff; color: #fff; }
+
+#catGridView { display: block; }
+#catListViewContainer { display: none; }
+
+/* <--- SISTEMA DE LISTA NOVO: FORMATO GRID RESPONSIVO ---> */
+.item-list{
+    list-style:none; margin:0; padding:4px 4px 40px 4px; border-radius:24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+    gap: 16px;
+    max-height: 68vh; /* Altura Dinâmica Crescida */
+    overflow-y:auto; overflow-x:hidden;
+    align-content: start;
+}
+.item-list::-webkit-scrollbar { width: 8px; }
+.item-list::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 4px; }
+
+/* O item virou um "Card" flutuante lindo com sombras */
+.item{ 
+    display:grid; grid-template-columns:auto auto 1fr auto; gap:14px; align-items:center; 
+    padding:18px 20px; background:#0c0c0c; border:1px solid #202020; border-radius:20px; transition:.2s; 
+}
+.item:hover{ background:#111; border-color:#333; transform:translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+
+.item-name-wrapper { position: relative; width: max-content; display: flex; align-items: center; gap: 8px; cursor: default; }
+.item-name{ font-size:.88rem; font-weight:500; word-break:break-word; line-height: 1.4; transition: color 0.2s;}
+.item:has(.item-select:checked) .item-name { color: var(--accent-purple); text-shadow: 0 0 8px rgba(207, 163, 255, 0.2); }
+
+.date-tooltip { 
+    background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); 
+    left: 0 !important; transform: none !important; transition: opacity 0.2s;
+}
+.item-name-wrapper:has(.photo-icon:hover) .date-tooltip { opacity: 0 !important; }
+
+.photo-icon { font-size: 14px; cursor: help; opacity: 0.8; transition: .2s; }
+.photo-icon:hover { opacity: 1; filter: drop-shadow(0 0 5px rgba(207,163,255,0.8)); }
+
+.global-preview {
+    position: fixed;
+    width: 320px;
+    height: 240px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: scale(0.95);
+    z-index: 99999;
+}
+.global-preview.show {
+    opacity: 1;
+    transform: scale(1);
+}
+.global-preview-img-wrapper {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.05);
+    overflow: hidden;
+    position: relative;
+    background: #0d0d0d url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="%23333"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>') no-repeat center center;
+}
+.global-preview-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0; left: 0;
+}
+.global-preview-date {
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+    color: #000;
+    font-size: .6rem;
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: 8px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    z-index: 10;
+    display: none;
+}
+
+.item-actions{ display:flex; align-items:center; gap:8px; }
+
+.cat-badge{
+    width:38px; height:38px; border-radius:14px; border:1px solid #292929;
+    background:#070707; display:flex; justify-content:center; align-items:center;
+    cursor:pointer; transition:all .2s ease; position:relative;
+}
+.cat-badge:hover{ border-color:#555; transform:translateY(-1px); }
+
+.cat-tooltip{
+    position:absolute; bottom:-34px; left:50%; transform:translateX(-50%);
+    background:#fff; color:#000; font-size:.55rem; font-weight:800;
+    padding:6px 8px; border-radius:8px; letter-spacing:1px; opacity:0;
+    pointer-events:none; transition:.18s; white-space:nowrap; text-transform:uppercase; z-index:20;
+}
+.cat-badge:hover .cat-tooltip, .action-btn:hover .cat-tooltip, .item-name-wrapper:hover .cat-tooltip { opacity:1; bottom:-30px; }
+
+.action-btn{
+    width:38px; height:38px; border-radius:14px; border:1px solid #292929;
+    background:#070707; color:#fff; display:flex; justify-content:center; align-items:center;
+    cursor:pointer; transition:all .2s ease; position:relative;
+}
+.action-btn svg { width: 18px; height: 18px; fill: currentColor; }
+.action-btn:hover{ border-color:#555; transform:translateY(-1px); }
+.action-btn.delete-btn { color: var(--danger); border-color: #381818; background: #110505;}
+.action-btn.delete-btn:hover { border-color: var(--danger); background: var(--danger); color: #fff; }
+
+/* Ajuste da marca d'água vazia para abraçar todo o grid */
+.empty-watermark{ 
+    grid-column: 1 / -1; 
+    background: #0c0c0c; border: 1px solid #202020; border-radius: 24px;
+    padding:80px 20px; text-align:center; 
+}
+.empty-watermark-title{ font-size:1rem; font-weight:700; letter-spacing:2px; margin-bottom:10px; text-transform: uppercase; }
+.empty-watermark-sub{ color:#666; font-size: 0.85rem; line-height: 1.5;}
+
+.footer-status{ margin-top: auto; padding-top: 40px; text-align: center; font-size: .75rem; color: #555; }
+
+.toast{
+    position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
+    background:#111; border:1px solid #2a2a2a; color:#fff;
+    padding:14px 18px; border-radius:16px; opacity:0; pointer-events:none;
+    transition:all .3s ease; z-index:999; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
+}
+.toast.show{ opacity:1; bottom:40px; }
+.hidden { display: none !important; }
+
+/* Modals */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
+.modal.active { display: flex; }
+.modal-box { width: 95%; max-width: 420px; background: #0e0e0e; border: 1px solid #252525; border-radius: 28px; padding: 24px; position: relative; }
+.modal-title { font-size: .95rem; font-weight: 700; margin-bottom: 18px; text-align: center; text-transform: uppercase; letter-spacing: 1px; color: #fff;}
+.modal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-height: 280px; overflow-y: auto; padding: 4px; }
+.modal-cat { background: #141414; border: 1px solid #262626; border-radius: 18px; padding: 16px 10px; cursor: pointer; text-align: center; font-size: .65rem; font-weight: 700; text-transform: uppercase; color: #888; transition: .2s;}
+.modal-cat:hover { border-color: #fff; background: #1a1a1a; color: #fff; }
+
+.close-btn { position: absolute; top: 18px; right: 22px; cursor: pointer; color: #666; font-size: 1.3rem; transition: .2s; }
+.close-btn:hover { color: #fff; }
+.lang-card {
+    background: #0d0d0d; border: 1px solid #252525; border-radius: 12px; padding: 24px 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    cursor: pointer; transition: var(--transition); font-weight: 700; font-size: 0.85rem; color: #f3f3f3;
+}
+.lang-card:hover { background: #111; border-color: #444; }
+.lang-card.active { border-color: var(--green); box-shadow: inset 0 0 20px rgba(82, 255, 156, 0.05); }
+.flag-circle { width: 56px; height: 56px; border-radius: 50%; border: 3px solid #1a1a1a; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #111; }
+.flag-circle svg { width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+
+<svg style="display:none;">
+    <clipPath id="usa-clip"><circle cx="256" cy="256" r="256"/></clipPath>
+    <clipPath id="es-clip"><circle cx="256" cy="256" r="256"/></clipPath>
+    
+    <symbol id="flag-br" viewBox="0 0 512 512">
+        <circle cx="256" cy="256" r="256" fill="#4caf50"/>
+        <polygon points="256,80 432,256 256,432 80,256" fill="#ffeb3b"/>
+        <circle cx="256" cy="256" r="100" fill="#1e88e5"/>
+        <path d="M 180 256 Q 256 200 332 256" stroke="#fff" stroke-width="12" fill="none"/>
+    </symbol>
+    
+    <symbol id="flag-us" viewBox="0 0 512 512">
+        <circle cx="256" cy="256" r="256" fill="#fff"/>
+        <g clip-path="url(#usa-clip)">
+            <rect width="512" height="512" fill="#fff"/>
+            <rect y="51" width="512" height="41" fill="#d32f2f"/>
+            <rect y="153" width="512" height="41" fill="#d32f2f"/>
+            <rect y="256" width="512" height="41" fill="#d32f2f"/>
+            <rect y="358" width="512" height="41" fill="#d32f2f"/>
+            <rect y="460" width="512" height="41" fill="#d32f2f"/>
+            <rect width="256" height="270" fill="#1e88e5"/>
+            <circle cx="64" cy="64" r="12" fill="#fff"/><circle cx="128" cy="64" r="12" fill="#fff"/><circle cx="192" cy="64" r="12" fill="#fff"/>
+            <circle cx="96" cy="118" r="12" fill="#fff"/><circle cx="160" cy="118" r="12" fill="#fff"/>
+            <circle cx="64" cy="172" r="12" fill="#fff"/><circle cx="128" cy="172" r="12" fill="#fff"/><circle cx="192" cy="172" r="12" fill="#fff"/>
+            <circle cx="96" cy="226" r="12" fill="#fff"/><circle cx="160" cy="226" r="12" fill="#fff"/>
+        </g>
+    </symbol>
+    
+    <symbol id="flag-es" viewBox="0 0 512 512">
+        <circle cx="256" cy="256" r="256" fill="#d32f2f"/>
+        <g clip-path="url(#es-clip)">
+            <rect width="512" height="512" fill="#d32f2f"/>
+            <rect y="128" width="512" height="256" fill="#ffeb3b"/>
+            <circle cx="180" cy="256" r="50" fill="#d32f2f"/>
+        </g>
+    </symbol>
+
+    <symbol id="icon-photo" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></symbol>
+    <symbol id="icon-edit" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 11.18l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></symbol>
+    <symbol id="icon-objects" viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44c-.32-.17-.53-.5-.53-.88V7.5c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.19v6.72zm14 0v-6.72l-6 3.39v6.71l6-3.38z"/></symbol>
+    <symbol id="icon-send" viewBox="0 0 24 24"><path d="M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z"/></symbol>
+    <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></symbol>
+    <symbol id="icon-sync" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></symbol>
+</svg>
+
+<div class="container">
+    <header>
+        <div class="header-actions">
+            <div style="display:flex; gap:10px;">
+                <div class="status-badge">
+                    <div class="status-dot"></div> <span data-i18n="live">LIVE</span>
+                </div>
+                <div class="resync-btn" onclick="openLangModal()" style="padding: 6px 12px;">
+                    <div class="flag-group">
+                        <div class="flag-icon us"><svg><use href="#flag-us"></use></svg></div>
+                        <div class="flag-icon br"><svg><use href="#flag-br"></use></svg></div>
+                        <div class="flag-icon es"><svg><use href="#flag-es"></use></svg></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="resync-btn" onclick="loadInventory()">
+                <svg><use href="#icon-sync"></use></svg> <span data-i18n="resync">RESYNC</span>
+            </div>
+        </div>
+        
+        <h1 data-i18n="title">✦ PERSONAL INVENTORY ✦</h1>
+        <div class="subtitle"><span data-i18n="powered">powered by</span> <a href="https://my.secondlife.com/saori.suki" target="_blank">Saori Suki</a></div>
+        <div class="top-stats">
+            <div class="stat-card">
+                <div class="stat-label" data-i18n="folders">Folders</div>
+                <div class="stat-value" id="folderCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label" data-i18n="selected">Selected</div>
+                <div class="stat-value" id="selectedCount">0</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('inventory', this)" data-i18n="tab_inv">Inventory</button>
+        <button class="tab-btn" onclick="switchTab('categories', this)" data-i18n="tab_cat">Categories</button>
+        <button class="tab-btn" onclick="switchTab('tools', this)" data-i18n="tab_tools">Tools</button>
+        <button class="tab-btn" onclick="switchTab('config', this)" data-i18n="tab_config">Config</button>
+    </div>
+
+    <div id="tab-inventory" class="tab-content active">
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchBar" data-i18n="search_inv" placeholder="Search folders..." autocomplete="off" oninput="filterInventory(this.value)">
+        </div>
+        <div class="bulk-actions" id="bulkInv" style="display: none;">
+            <label class="checkbox-label"><input type="checkbox" class="item-cb" id="select-all" onchange="toggleSelectAll('inventory-list', this)"><span data-i18n="select_all">Select All</span></label>
+            <div style="display:flex; gap:8px;">
+                <button class="btn btn-white" onclick="deliverSelected('inventory-list')" data-i18n="deliver_sel">DELIVER SELECTED</button>
+                <button class="btn btn-white" onclick="rezzSelected('inventory-list')" data-i18n="rezz_sel">REZZ SELECTED</button>
+                <button class="btn btn-dark" onclick="confirmBulkDelete('inventory-list')" data-i18n="del_sel">DELETE SELECTED</button>
+            </div>
+        </div>
+        <ul class="item-list" id="inventory-list"></ul>
+    </div>
+
+    <div id="tab-categories" class="tab-content">
+        <div id="categories-home">
+            <div class="cat-grid" id="cat-grid"></div>
+        </div>
+        <div id="category-view" class="hidden">
+            <div class="cat-view-header">
+                <div class="cat-view-title" id="catViewTitle">📁 CATEGORY: NAME</div>
+                <button class="btn-back" onclick="closeCategoryView()" data-i18n="btn_back">◀ Back</button>
+            </div>
+            <div class="search-box">
+                <input type="text" class="search-input" id="catSearchBar" data-i18n="search_cat" placeholder="Search inside category..." autocomplete="off" oninput="filterCategoryInventory(this.value)">
+            </div>
+            <div class="bulk-actions" id="bulkCat" style="display: none;">
+                <label class="checkbox-label"><input type="checkbox" id="selectAllCat" class="item-cb" onclick="toggleSelectAll('category-items', this)"> <span data-i18n="select_all">Select All</span></label>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn btn-white" onclick="deliverSelected('category-items')" data-i18n="deliver_sel">DELIVER SELECTED</button>
+                    <button class="btn btn-white" onclick="rezzSelected('category-items')" data-i18n="rezz_sel">REZZ SELECTED</button>
+                    <button class="btn btn-dark" onclick="confirmBulkDelete('category-items')" data-i18n="del_sel">DELETE SELECTED</button>
+                </div>
+            </div>
+            <ul class="item-list" id="category-items"></ul>
+        </div>
+    </div>
+
+    <div id="tab-tools" class="tab-content">
+        <div style="display: flex; justify-content: center; margin-bottom: 30px;">
+            <button class="btn btn-white" style="font-size: 0.75rem; padding: 12px 24px; border-radius: 999px;" onclick="findDuplicatesWeb()" data-i18n="scan_dup">Scan Duplicates</button>
+        </div>
+        
+        <div id="dupContainer" class="hidden">
+            <div class="bulk-actions" id="bulkDup" style="display: none;">
+                <label class="checkbox-label"><input type="checkbox" id="selectAllDup" class="item-cb" onclick="toggleSelectAll('dup-list', this)"> <span data-i18n="select_all">Select All</span></label>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn btn-dark" onclick="confirmBulkDelete('dup-list')" data-i18n="del_sel">DELETE SELECTED</button>
+                </div>
+            </div>
+            <ul class="item-list" id="dup-list"></ul>
+        </div>
+    </div>
+
+    <div id="tab-config" class="tab-content">
+        <div style="background:#0c0c0c; border:1px solid #232323; border-radius:24px; padding:30px 20px; text-align:center; max-width: 400px; margin: 0 auto;">
+            <svg style="width:32px; height:32px; fill:#888; margin-bottom: 12px;"><use href="#icon-sync"></use></svg>
+            <div style="font-size: 0.75rem; color: #777; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase;" data-i18n="server_hash">Server Hashtag</div>
+            
+            <div id="currentServerName" style="font-size: 1.05rem; font-weight: 800; color: #fff; margin-bottom: 24px; letter-spacing: 0.5px;">MMC - Inventory Storage [YOURNAMEHERE]</div>
+            
+            <div class="search-box" style="margin-bottom: 16px;">
+                <input type="text" class="search-input" id="renameInput" data-i18n="enter_hash" placeholder="Enter new hashtag..." autocomplete="off" style="background: #111;">
+            </div>
+            
+            <button class="btn btn-white" style="width: 100%; padding: 14px; border-radius: 16px; font-size: 0.75rem;" onclick="renameServer(this)" data-i18n="update_name">Update Server Name</button>
+        </div>
+    </div>
+
+    <div class="footer-status" data-i18n="footer">MMC Storage Remote Interface</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div id="global-photo-preview" class="global-preview">
+    <div class="global-preview-img-wrapper">
+        <img id="global-preview-img" src="" alt="">
+    </div>
+    <div id="global-preview-date" class="global-preview-date"></div>
+</div>
+
+<div class="modal" id="photo-modal">
+    <div class="modal-box" style="max-width: 400px; text-align: center;">
+        <div class="close-btn" onclick="document.getElementById('photo-modal').classList.remove('active')">✕</div>
+        <div class="modal-title" data-i18n="assign_photo">LINK PHOTO</div>
+        
+        <div style="font-size: 0.8rem; color: #888; margin-bottom: 8px;" id="photo-item-name">Item Name</div>
+        
+        <div style="font-size: 0.75rem; color: #aaa; margin-bottom: 20px;">
+            <span data-i18n="photo_desc1">Link a photo to this product</span><br>
+            <span data-i18n="photo_desc2">Drop a Texture UUID or Gyazo link below.</span>
+        </div>
+        
+        <input type="text" class="search-input" id="photo-uuid-input" data-i18n="enter_uuid" placeholder="Enter Texture UUID or Link..." autocomplete="off" style="margin-bottom: 20px;">
+        
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-dark" style="flex: 1; border-radius: 14px;" onclick="removePhoto()" data-i18n="remove">REMOVE</button>
+            <button class="btn btn-white" style="flex: 1; border-radius: 14px;" id="save-photo-btn" onclick="savePhoto()" data-i18n="save">SAVE</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="category-modal">
+    <div class="modal-box">
+        <div class="modal-title" data-i18n="assign_cat">Assign Category</div>
+        <div class="modal-grid" id="modal-grid"></div>
+        <button class="btn btn-dark" style="width: 100%; margin-top: 20px; border-radius: 14px;" onclick="document.getElementById('category-modal').classList.remove('active')" data-i18n="cancel">Cancel</button>
+    </div>
+</div>
+
+<div class="modal" id="delete-modal">
+    <div class="modal-box" style="max-width: 360px;">
+        <div class="modal-title" style="color: var(--danger);" data-i18n="caution">⚠️ CAUTION</div>
+        <div style="font-size: 0.85rem; color: #888; margin-bottom: 24px;">
+            <span data-i18n="sure_del">Are you sure you want to permanently delete</span> <br><strong id="delete-item-name" style="color:#fff;" data-i18n="this_item">this item</strong>?<br><br><span data-i18n="cannot_undone">This action cannot be undone.</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-dark" style="flex: 1; border-radius: 14px;" onclick="closeDeleteModal()" data-i18n="cancel">Cancel</button>
+            <button class="btn" style="flex: 1; background: var(--danger); color: #fff; border-radius: 14px;" id="confirm-delete-btn" onclick="executeDelete()" data-i18n="yes_del">Yes, Delete</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="lang-modal">
+    <div class="modal-box" style="max-width: 500px;">
+        <div class="close-btn" onclick="document.getElementById('lang-modal').classList.remove('active')">✕</div>
+        <div class="modal-title" data-i18n="change_lang">CHANGE LANGUAGE</div>
+        
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top: 24px;">
+            <div class="lang-card" id="lang-en" onclick="setLanguage('en')">
+                <div class="flag-circle"><svg><use href="#flag-us"></use></svg></div>
+                <div>English</div>
+            </div>
+            
+            <div class="lang-card" id="lang-pt" onclick="setLanguage('pt')">
+                <div class="flag-circle"><svg><use href="#flag-br"></use></svg></div>
+                <div>Português</div>
+            </div>
+            
+            <div class="lang-card" id="lang-es" onclick="setLanguage('es')">
+                <div class="flag-circle"><svg><use href="#flag-es"></use></svg></div>
+                <div>Español</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const i18n = {
+        en: {
+            live: "LIVE", resync: "RESYNC", title: "✦ PERSONAL INVENTORY ✦", powered: "powered by",
+            folders: "Folders", selected: "Selected", tab_inv: "Inventory", tab_cat: "Categories", tab_tools: "Tools", tab_config: "Config",
+            search_inv: "Search folders...", search_cat: "Search inside category...", select_all: "Select All", 
+            deliver_sel: "DELIVER SELECTED", rezz_sel: "REZZ SELECTED", del_sel: "DELETE SELECTED",
+            scan_dup: "Scan Duplicates", server_hash: "Server Hashtag", enter_hash: "Enter new hashtag...", update_name: "Update Server Name",
+            assign_cat: "Assign Category", cancel: "CANCEL", caution: "⚠️ CAUTION", sure_del: "Are you sure you want to permanently delete", 
+            this_item: "this item", cannot_undone: "This action cannot be undone.", yes_del: "YES, DELETE",
+            footer: "MMC Storage Remote Interface", loading: "Loading", connecting: "Connecting to server...",
+            cat_name: "📁 CATEGORY: ", btn_back: "◀ Back", change_lang: "CHANGE LANGUAGE",
+            tooltip_deliv: "DELIVER", tooltip_rezz: "REZZ", tooltip_del: "DELETE", tooltip_create: "CREATED ON: ",
+            empty_title: "Nothing Found", empty_sub: "No matching folders.", toast_sync: "Syncing...", toast_sync_ok: "Sync Complete", toast_conn_fail: "Connection failed",
+            toast_deliv: "Delivering...", toast_deliv_ok: "Bulk delivery sent ✔", toast_deliv_fail: "Delivery failed",
+            toast_rezz: "Rezzing...", toast_rezz_ok: "Bulk rezz sent ✔", toast_rezz_fail: "Rezz failed",
+            toast_del_ok: "Deleted successfully", toast_del_fail: "Delete failed", toast_cat_saved: "Category Saved", toast_dup_scan: "Scanning for duplicates...",
+            toast_dup_clean: "No duplicates found", toast_dup_found: "potential duplicates!",
+            toast_rename_req: "Enter a valid name", toast_rename_ok: "Name updated successfully!", toast_rename_fail: "Failed to update name",
+            btn_wait: "WAIT...", btn_yes_del: "YES, DELETE", no_sel: "Nothing selected",
+            tooltip_photo: "PHOTO", toast_photo_ok: "Photo saved!", toast_photo_fail: "Failed to save photo", 
+            assign_photo: "LINK PHOTO", enter_uuid: "Enter Texture UUID or Link...", save: "SAVE", remove: "REMOVE",
+            photo_desc1: "Link a photo to this product", photo_desc2: "Drop a Texture UUID or Gyazo link below.",
+            cat_clothing: "CLOTHING", cat_hair: "HAIR", cat_faceskin: "FACE SKIN", cat_bodyskin: "BODY SKIN", cat_meshhead: "MESH HEAD", cat_meshbody: "MESH BODY", cat_accessories: "ACCESSORIES", cat_skybox: "SKYBOX", cat_houses: "HOUSES", cat_decor: "DECOR", cat_objects: "OBJECTS", cat_textures: "TEXTURES", cat_scripts: "SCRIPTS"
+        },
+        pt: {
+            live: "LIVE", resync: "SINCRONIZAR", title: "✦ INVENTÁRIO PESSOAL ✦", powered: "desenvolvido por",
+            folders: "Pastas", selected: "Selecionados", tab_inv: "Inventário", tab_cat: "Categorias", tab_tools: "Ferramentas", tab_config: "Config",
+            search_inv: "Buscar pastas...", search_cat: "Buscar na categoria...", select_all: "Selecionar Tudo", 
+            deliver_sel: "ENTREGAR SELEÇÃO", rezz_sel: "REZZAR SELEÇÃO", del_sel: "DELETAR SELEÇÃO",
+            scan_dup: "Buscar Duplicatas", server_hash: "Hashtag do Servidor", enter_hash: "Digite a nova hashtag...", update_name: "Atualizar Nome do Servidor",
+            assign_cat: "Atribuir Categoria", cancel: "CANCELAR", caution: "⚠️ ATENÇÃO", sure_del: "Tem certeza que deseja deletar permanentemente", 
+            this_item: "este item", cannot_undone: "Esta ação não pode ser desfeita.", yes_del: "SIM, DELETAR",
+            footer: "Interface Remota MMC Storage", loading: "Carregando", connecting: "Conectando ao servidor...",
+            cat_name: "📁 CATEGORIA: ", btn_back: "◀ Voltar", change_lang: "ALTERAR IDIOMA",
+            tooltip_deliv: "ENTREGAR", tooltip_rezz: "REZZAR", tooltip_del: "DELETAR", tooltip_create: "CRIADO EM: ",
+            empty_title: "Nada Encontrado", empty_sub: "Nenhuma pasta correspondente.", toast_sync: "Sincronizando...", toast_sync_ok: "Sincronização Concluída", toast_conn_fail: "Falha na conexão",
+            toast_deliv: "Entregando...", toast_deliv_ok: "Entrega enviada ✔", toast_deliv_fail: "Falha na entrega",
+            toast_rezz: "Rezzando...", toast_rezz_ok: "Rezz enviado ✔", toast_rezz_fail: "Falha ao rezzar",
+            toast_del_ok: "Deletado com sucesso", toast_del_fail: "Falha ao deletar", toast_cat_saved: "Categoria Salva", toast_dup_scan: "Buscando duplicatas...",
+            toast_dup_clean: "Nenhum duplicado encontrado", toast_dup_found: "possíveis duplicatas!",
+            toast_rename_req: "Digite um nome válido", toast_rename_ok: "Nome atualizado com sucesso!", toast_rename_fail: "Falha ao atualizar nome",
+            btn_wait: "AGUARDE...", btn_yes_del: "SIM, DELETAR", no_sel: "Nada selecionado",
+            tooltip_photo: "FOTO", toast_photo_ok: "Foto salva!", toast_photo_fail: "Falha ao salvar foto", 
+            assign_photo: "VINCULAR FOTO", enter_uuid: "Digite o UUID da Textura ou Link...", save: "SALVAR", remove: "REMOVER",
+            photo_desc1: "Vincule uma foto a este produto", photo_desc2: "Solte um UUID de Textura ou link do Gyazo abaixo.",
+            cat_clothing: "ROUPAS", cat_hair: "CABELOS", cat_faceskin: "PELE ROSTO", cat_bodyskin: "PELE CORPO", cat_meshhead: "CABEÇA MESH", cat_meshbody: "CORPO MESH", cat_accessories: "ACESSÓRIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORAÇÃO", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS"
+        },
+        es: {
+            live: "LIVE", resync: "SINCRONIZAR", title: "✦ INVENTARIO PERSONAL ✦", powered: "desarrollado por",
+            folders: "Carpetas", selected: "Seleccionados", tab_inv: "Inventario", tab_cat: "Categorías", tab_tools: "Herramientas", tab_config: "Config",
+            search_inv: "Buscar carpetas...", search_cat: "Buscar en categoría...", select_all: "Seleccionar Todo", 
+            deliver_sel: "ENTREGAR SELECCIÓN", rezz_sel: "REZZAR SELECCIÓN", del_sel: "ELIMINAR SELECCIÓN",
+            scan_dup: "Buscar Duplicados", server_hash: "Hashtag del Servidor", enter_hash: "Ingrese nuevo hashtag...", update_name: "Actualizar Nombre",
+            assign_cat: "Asignar Categoría", cancel: "CANCELAR", caution: "⚠️ ATENCIÓN", sure_del: "¿Estás seguro de que deseas eliminar", 
+            this_item: "este elemento?", cannot_undone: "Esta acción no se puede deshacer.", yes_del: "SÍ, ELIMINAR",
+            footer: "Interfaz Remota MMC Storage", loading: "Cargando", connecting: "Conectando al servidor...",
+            cat_name: "📁 CATEGORÍA: ", btn_back: "◀ Volver", change_lang: "CAMBIAR IDIOMA",
+            tooltip_deliv: "ENTREGAR", tooltip_rezz: "REZZAR", tooltip_del: "ELIMINAR", tooltip_create: "CREADO EN: ",
+            empty_title: "Nada Encontrado", empty_sub: "Ninguna carpeta coincidente.", toast_sync: "Sincronizando...", toast_sync_ok: "Sincronización Completa", toast_conn_fail: "Fallo en la conexión",
+            toast_deliv: "Entregando...", toast_deliv_ok: "Entrega enviada ✔", toast_deliv_fail: "Fallo en la entrega",
+            toast_rezz: "Rezzando...", toast_rezz_ok: "Rezz enviado ✔", toast_rezz_fail: "Fallo al rezzar",
+            toast_del_ok: "Eliminado con éxito", toast_del_fail: "Fallo al eliminar", toast_cat_saved: "Categoría Guardada", toast_dup_scan: "Buscando duplicados...",
+            toast_dup_clean: "Ningún duplicado encontrado", toast_dup_found: "posibles duplicados!",
+            toast_rename_req: "Ingrese un nombre válido", toast_rename_ok: "¡Nombre actualizado con éxito!", toast_rename_fail: "Fallo al actualizar nombre",
+            btn_wait: "ESPERE...", btn_yes_del: "SÍ, ELIMINAR", no_sel: "Nada seleccionado",
+            tooltip_photo: "FOTO", toast_photo_ok: "¡Foto guardada!", toast_photo_fail: "Error al guardar foto", 
+            assign_photo: "VINCULAR FOTO", enter_uuid: "Ingrese el UUID de Textura o Link...", save: "GUARDAR", remove: "ELIMINAR",
+            photo_desc1: "Vincule una foto a este producto", photo_desc2: "Suelte un UUID de Textura o link de Gyazo a continuación.",
+            cat_clothing: "ROPA", cat_hair: "CABELLO", cat_faceskin: "PIEL ROSTRO", cat_bodyskin: "PIEL CUERPO", cat_meshhead: "CABEZA MESH", cat_meshbody: "CUERPO MESH", cat_accessories: "ACCESORIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORACIÓN", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS"
+        }
+    };
+
+    let currentLang = localStorage.getItem('mmc_lang') || 'en';
+
+    function t(key) { return i18n[currentLang][key] || key; }
+    function catToKey(categoryName) { return "cat_" + categoryName.toLowerCase().replace(" ", ""); }
+
+    function openLangModal() {
+        document.getElementById('lang-modal').classList.add('active');
+        document.getElementById('lang-pt').classList.remove('active');
+        document.getElementById('lang-en').classList.remove('active');
+        document.getElementById('lang-es').classList.remove('active');
+        document.getElementById('lang-' + currentLang).classList.add('active');
+    }
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('mmc_lang', currentLang);
+        applyTranslations();
+        document.getElementById('lang-modal').classList.remove('active');
+    }
+
+    function applyTranslations() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
+                el.setAttribute('placeholder', t(key));
+            } else {
+                el.innerText = t(key);
+            }
+        });
+        renderCategories();
+        if (inventoryData.length > 0) {
+            const searchVal = document.getElementById("searchBar").value;
+            if (document.getElementById('tab-inventory').classList.contains('active')) filterInventory(searchVal);
+            else if (document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") openCategory(currentOpenCategoryViewId);
+            else if (document.getElementById('tab-tools').classList.contains('active') && !document.getElementById('dupContainer').classList.contains('hidden')) findDuplicatesWeb();
+        } else {
+            document.getElementById("inventory-list").innerHTML = getEmptyStateHTML(t('loading'), t('connecting'));
+        }
+
+        let delName = document.getElementById("delete-item-name").innerText;
+        if(delName.includes("selected folders") || delName.includes("pastas selecionadas") || delName.includes("carpetas seleccionadas")) {
+            let num = delName.split(" ")[0];
+            let suffix = " selected folders";
+            if (currentLang === 'pt') suffix = " pastas selecionadas";
+            if (currentLang === 'es') suffix = " carpetas seleccionadas";
+            document.getElementById("delete-item-name").innerText = num + suffix;
+        }
+    }
+
+    const globalPreview = document.getElementById('global-photo-preview');
+    const globalPreviewImg = document.getElementById('global-preview-img');
+    const globalPreviewDate = document.getElementById('global-preview-date');
+
+    function showPhotoPreview(e, photoData, dateStr) {
+        let finalUrl = photoData;
+        if(finalUrl.includes("gyazo.com") && !finalUrl.includes("i.gyazo.com")) finalUrl = finalUrl.replace("gyazo.com", "i.gyazo.com") + ".png";
+        if(!finalUrl.startsWith("http")) finalUrl = `https://picture-service.secondlife.com/${photoData}/320x240.jpg`;
+        globalPreviewImg.src = finalUrl;
+        
+        if(dateStr && dateStr !== 'undefined' && dateStr.trim() !== '') {
+            globalPreviewDate.innerText = t('tooltip_create') + " " + dateStr;
+            globalPreviewDate.style.display = 'block';
+        } else {
+            globalPreviewDate.style.display = 'none';
+        }
+        globalPreview.classList.add('show');
+        movePreview(e);
+        document.addEventListener('mousemove', movePreview);
+    }
+
+    function hidePhotoPreview() {
+        globalPreview.classList.remove('show');
+        document.removeEventListener('mousemove', movePreview);
+    }
+
+    function movePreview(e) {
+        let x = e.clientX + 20; let y = e.clientY - 120;
+        if (x + 320 > window.innerWidth) x = e.clientX - 340;
+        if (y + 240 > window.innerHeight) y = window.innerHeight - 260;
+        if (y < 0) y = 20;
+        globalPreview.style.left = x + 'px'; globalPreview.style.top = y + 'px';
+    }
+
+    const API = new URLSearchParams(window.location.search).get("api");
+    let inventoryData = []; 
+    let savedCategories = JSON.parse(localStorage.getItem('mmc_categories')) || {};
+    let currentOpenCategoryViewId = "";
+    let deleteMode = "";
+    let deleteTarget = null;
+    let duplicateOriginals = []; 
+    let currentPhotoTarget = "";
+
+    const categories = {
+        "Clothing": "👗", "Hair": "💇", "Face Skin": "🙂", "Body Skin": "🧍",
+        "Mesh Head": "👤", "Mesh Body": "🧍‍♀️", "Accessories": "🕶️", "Skybox": "☁️",
+        "Houses": "🏠", "Decor": "🪴", "Objects": "📦", "Textures": "🖼️", "Scripts": "🖥️"
+    };
+
+    const keywords = {
+        'Clothing': ['shirt', 'pants', 'dress', 'jacket', 'top', 'skirt', 'jeans', 'apparel', 'outfit', 'suit', 'hoodie', 'shorts', 'bra', 'lingerie', 'sweater'],
+        'Hair': ['hair', 'bangs', 'ponytail', 'braid', 'curls', 'updo', 'wig'],
+        'Face Skin': ['makeup', 'face', 'lipstick', 'eyeshadow', 'blush', 'eyebrows', 'lip', 'eye'],
+        'Body Skin': ['body skin', 'skin', 'tattoo', 'freckles', 'bom'],
+        'Mesh Head': ['head', 'lelutka', 'catwa', 'genus'],
+        'Mesh Body': ['body', 'maitreya', 'legacy', 'ebody', 'kupra', 'reborn'],
+        'Accessories': ['shoes', 'boots', 'sneakers', 'heels', 'necklace', 'ring', 'piercing', 'bag', 'glasses', 'hat', 'earrings', 'choker'],
+        'Skybox': ['skybox', 'backdrop', 'studio', 'surround'],
+        'Houses': ['house', 'cabin', 'mansion', 'cottage', 'building'],
+        'Decor': ['decor', 'furniture', 'couch', 'bed', 'lamp', 'rug', 'plant', 'chair', 'table', 'sofa'],
+        'Objects': ['object', 'prop', 'mesh'],
+        'Textures': ['texture', 'map', 'specular', 'normal', 'seamless'],
+        'Scripts': ['script', 'lsl', 'hud', 'tool', 'animation', 'pose', 'ao']
+    };
+
+    function toast(msg){
+        const t_element = document.getElementById("toast");
+        t_element.innerText = msg; t_element.classList.add("show");
+        setTimeout(() => t_element.classList.remove("show"), 2500);
+    }
+
+    function formatItemName(rawName) {
+        const dateMatch = rawName.match(/(\[\d{4}-\d{2}-\d{2}[^\]]*\])/i);
+        let dateStr = ""; let cleanStr = rawName;
+        if (dateMatch) {
+            dateStr = dateMatch[1].trim();
+            cleanStr = rawName.replace(dateStr, '').replace(/\s{2,}/g, ' ').trim();
+        }
+        return { clean: cleanStr, date: dateStr };
+    }
+
+    function detectCategory(name) {
+        if (savedCategories[name]) return savedCategories[name];
+        const lowerName = name.toLowerCase();
+        for (const [cat, words] of Object.entries(keywords)) {
+            if (words.some(word => lowerName.includes(word))) return cat;
+        }
+        return 'Objects';
+    }
+
+    function getEmptyStateHTML(title, sub) { return `<div class="empty-watermark"><div class="empty-watermark-title">${title}</div><div class="empty-watermark-sub">${sub}</div></div>`; }
+
+    function switchTab(tabId, btnElement){
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+        btnElement.classList.add('active');
+        if(tabId === 'categories') closeCategoryView(); 
+        document.getElementById('dupContainer').classList.add('hidden');
+        clearAllMasterCheckboxes();
+    }
+
+    function clearAllMasterCheckboxes() {
+        ['select-all', 'selectAllCat', 'selectAllDup'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.checked = false;
+        });
+    }
+
+    async function loadInventory(){
+        if(!API){ toast("Missing SL API URL"); document.getElementById("inventory-list").innerHTML = getEmptyStateHTML(t('empty_title'), "Access via SL Menu."); return; }
+        toast(t('toast_sync'));
+        try{
+            const res = await fetch(API);
+            const data = await res.json();
+            
+            inventoryData = data.map(i => {
+                let decoded = decodeURIComponent(i);
+                let parts = decoded.split("||");
+                return { name: parts[0], photo: parts[1] || "", raw: decoded };
+            });
+            
+            clearAllMasterCheckboxes();
+
+            if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") openCategory(currentOpenCategoryViewId);
+            else document.getElementById("category-items").innerHTML = "";
+
+            if(!document.getElementById('dupContainer').classList.contains('hidden')) findDuplicatesWeb();
+            else document.getElementById("dup-list").innerHTML = "";
+            
+            const searchVal = document.getElementById("searchBar").value;
+            if(searchVal) filterInventory(searchVal);
+            else renderInventory(inventoryData, "inventory-list", "bulkInv");
+            
+            updateSelectedCount(); 
+            toast(t('toast_sync_ok'));
+        }catch(e){
+            toast(t('toast_conn_fail'));
+        }
+    }
+
+    function renderInventory(items, targetId, bulkId = null){
+        const list = document.getElementById(targetId);
+        const bulkEl = bulkId ? document.getElementById(bulkId) : null;
+        list.innerHTML = "";
+        
+        if(items.length === 0){
+            if(bulkEl) bulkEl.style.display = 'none';
+            list.innerHTML = getEmptyStateHTML(t('empty_title'), t('empty_sub'));
+            if(targetId === "inventory-list") updateCounts(0);
+            updateSelectedCount();
+            return;
+        }
+
+        if(bulkEl) bulkEl.style.display = 'flex';
+
+        items.forEach(itemObj => {
+            const category = detectCategory(itemObj.name);
+            const icon = categories[category] || "📦";
+            const parsed = formatItemName(itemObj.name);
+            const categoryTranslated = t(catToKey(category));
+
+            const li = document.createElement("li");
+            li.className = "item";
+            li.innerHTML = `
+                <div class="cat-badge" style="font-size:18px;" onclick="openCategoryModal('${encodeURIComponent(itemObj.name)}')">
+                    ${icon}
+                    <div class="cat-tooltip">${categoryTranslated}</div>
+                </div>
+                <input type="checkbox" class="item-cb item-select" value="${itemObj.name}">
+                
+                <div class="item-name-wrapper">
+                    ${itemObj.photo ? `<span class="photo-icon" style="color:var(--accent-purple);" onmouseenter="showPhotoPreview(event, '${itemObj.photo}', '${parsed.date ? parsed.date : ''}')" onmouseleave="hidePhotoPreview()">🖼️</span>` : ''}
+                    <div class="item-name">${parsed.clean}</div>
+                    ${(!itemObj.photo && parsed.date) ? `<div class="cat-tooltip date-tooltip">${t('tooltip_create')} ${parsed.date}</div>` : ''}
+                </div>
+                
+                <div class="item-actions">
+                    <button class="action-btn photo-btn" onclick="openPhotoModal('${encodeURIComponent(itemObj.name)}', '${itemObj.photo}')">
+                        <svg><use href="${itemObj.photo ? '#icon-edit' : '#icon-photo'}"></use></svg>
+                        <div class="cat-tooltip">${t('tooltip_photo')}</div>
+                    </button>
+                    <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(itemObj.name)}', this)">
+                        <svg><use href="#icon-send"></use></svg>
+                        <div class="cat-tooltip">${t('tooltip_deliv')}</div>
+                    </button>
+                    <button class="action-btn rezz-btn" onclick="rezzItem('${encodeURIComponent(itemObj.name)}', this)">
+                        <svg><use href="#icon-objects"></use></svg>
+                        <div class="cat-tooltip">${t('tooltip_rezz')}</div>
+                    </button>
+                    <button class="action-btn delete-btn" onclick="confirmDelete('${encodeURIComponent(itemObj.name)}')">
+                        <svg><use href="#icon-trash"></use></svg>
+                        <div class="cat-tooltip">${t('tooltip_del')}</div>
+                    </button>
+                </div>
+            `;
+            list.appendChild(li);
+        });
+
+        if(targetId === "inventory-list") updateCounts(items.length);
+        
+        document.querySelectorAll(`#${targetId} .item-select`).forEach(cb => {
+            cb.addEventListener('change', updateSelectedCount);
+        });
+        updateSelectedCount();
+    }
+
+    function updateCounts(total) { document.getElementById("folderCount").innerText = total; }
+    function updateSelectedCount() { 
+        const total = document.querySelectorAll(".item-select:checked").length;
+        document.getElementById("selectedCount").innerText = total;
+    }
+
+    function openPhotoModal(nameEncoded, currentPhoto) {
+        currentPhotoTarget = decodeURIComponent(nameEncoded);
+        document.getElementById('photo-item-name').innerText = currentPhotoTarget;
+        document.getElementById('photo-uuid-input').value = currentPhoto || "";
+        document.getElementById('photo-modal').classList.add('active');
+    }
+
+    async function savePhoto() {
+        const uuid = document.getElementById('photo-uuid-input').value.trim();
+        const btn = document.getElementById('save-photo-btn');
+        btn.innerText = t('btn_wait'); btn.disabled = true;
+        try {
+            await fetch(API, { method: "POST", body: "WEB_PHOTO:" + currentPhotoTarget + "||" + uuid });
+            toast(t('toast_photo_ok'));
+            document.getElementById('photo-modal').classList.remove('active');
+            loadInventory();
+        } catch(e) {
+            toast(t('toast_photo_fail'));
+        }
+        btn.innerText = t('save'); btn.disabled = false;
+    }
+
+    async function removePhoto() {
+        const btn = document.querySelector('#photo-modal .btn-dark');
+        btn.innerText = t('btn_wait'); btn.disabled = true;
+        try {
+            await fetch(API, { method: "POST", body: "WEB_PHOTO:" + currentPhotoTarget + "||" });
+            toast(t('toast_photo_ok'));
+            document.getElementById('photo-modal').classList.remove('active');
+            loadInventory();
+        } catch(e) {
+            toast(t('toast_photo_fail'));
+        }
+        btn.innerText = t('remove'); btn.disabled = false;
+    }
+
+    async function deliverItem(itemEncoded, btn){
+        const item = decodeURIComponent(itemEncoded);
+        btn.innerHTML = "..."; btn.disabled = true;
+        try{
+            const res = await fetch(API, { method:"POST", body:item });
+            if(res.ok) { btn.innerHTML = "✔"; toast(t('toast_deliv_ok').split(" ")[0]); } else { btn.innerHTML = "X"; }
+        }catch{ btn.innerHTML = "X"; }
+        setTimeout(()=>{ 
+            btn.innerHTML = `<svg><use href="#icon-send"></use></svg><div class="cat-tooltip">${t('tooltip_deliv')}</div>`; 
+            btn.disabled = false; 
+        }, 1800);
+    }
+
+    async function deliverSelected(containerId = "inventory-list"){
+        const checked = [...document.getElementById(containerId).querySelectorAll(".item-select:checked")];
+        if(!checked.length){ toast(t('no_sel')); return; }
+        const items = checked.map(c => c.value).join("\n");
+        toast(t('toast_deliv'));
+        try {
+            await fetch(API, { method:"POST", body:items });
+            toast(t('toast_deliv_ok'));
+        } catch { toast(t('toast_deliv_fail')); }
+        clearAllMasterCheckboxes();
+        checked.forEach(c => c.checked = false);
+        updateSelectedCount();
+    }
+
+    async function rezzItem(itemEncoded, btn){
+        const item = decodeURIComponent(itemEncoded);
+        btn.innerHTML = "..."; btn.disabled = true;
+        try{
+            const res = await fetch(API, { method:"POST", body:"WEB_REZZ:" + item });
+            if(res.ok) { btn.innerHTML = "✔"; toast(t('toast_rezz_ok').split(" ")[0]); } else { btn.innerHTML = "X"; }
+        }catch{ btn.innerHTML = "X"; }
+        setTimeout(()=>{ 
+            btn.innerHTML = `<svg><use href="#icon-objects"></use></svg><div class="cat-tooltip">${t('tooltip_rezz')}</div>`; 
+            btn.disabled = false; 
+        }, 1800);
+    }
+
+    async function rezzSelected(containerId = "inventory-list"){
+        const checked = [...document.getElementById(containerId).querySelectorAll(".item-select:checked")];
+        if(!checked.length){ toast(t('no_sel')); return; }
+        const items = checked.map(c => c.value).join("\n");
+        toast(t('toast_rezz'));
+        try {
+            await fetch(API, { method:"POST", body:"WEB_BULK_REZZ:" + items });
+            toast(t('toast_rezz_ok'));
+        } catch { toast(t('toast_rezz_fail')); }
+        clearAllMasterCheckboxes();
+        checked.forEach(c => c.checked = false);
+        updateSelectedCount();
+    }
+
+    function confirmDelete(itemEncoded) {
+        deleteMode = "single";
+        deleteTarget = decodeURIComponent(itemEncoded);
+        document.getElementById("delete-item-name").innerText = formatItemName(deleteTarget).clean;
+        document.getElementById("delete-modal").classList.add("active");
+    }
+
+    function confirmBulkDelete(containerId = "inventory-list") {
+        const checked = [...document.getElementById(containerId).querySelectorAll(".item-select:checked")];
+        if(!checked.length){ toast(t('no_sel')); return; }
+        deleteMode = "bulk";
+        deleteTarget = checked.map(c => c.value);
+        let suffix = " selected folders";
+        if (currentLang === 'pt') suffix = " pastas selecionadas";
+        if (currentLang === 'es') suffix = " carpetas seleccionadas";
+        document.getElementById("delete-item-name").innerText = checked.length + suffix;
+        document.getElementById("delete-modal").classList.add("active");
+    }
+
+    function closeDeleteModal() { document.getElementById("delete-modal").classList.remove("active"); }
+
+    async function executeDelete() {
+        const btn = document.getElementById("confirm-delete-btn");
+        btn.innerText = t('btn_wait'); btn.disabled = true;
+        try {
+            if(deleteMode === "single") {
+                await fetch(API, { method: "POST", body: "WEB_DEL:" + deleteTarget });
+            } else {
+                await fetch(API, { method: "POST", body: "WEB_BULK_DEL:" + deleteTarget.join('\n') });
+            }
+            toast(t('toast_del_ok'));
+            closeDeleteModal();
+            loadInventory(); 
+        } catch(e) {
+            toast(t('toast_del_fail'));
+        }
+        btn.innerText = t('btn_yes_del'); btn.disabled = false;
+    }
+
+    function filterInventory(query){
+        const val = query.toLowerCase();
+        if(!val) { renderInventory(inventoryData, "inventory-list", "bulkInv"); return; }
+        const filtered = inventoryData.filter(x => x.name.toLowerCase().includes(val));
+        renderInventory(filtered, "inventory-list", "bulkInv");
+    }
+
+    function toggleSelectAll(containerId, masterCheckbox) {
+        const isChecked = masterCheckbox.checked;
+        document.getElementById(containerId).querySelectorAll('.item-select').forEach(cb => { 
+            if (containerId === 'dup-list' && isChecked && duplicateOriginals.includes(cb.value)) cb.checked = false; 
+            else cb.checked = isChecked; 
+        });
+        updateSelectedCount();
+    }
+
+    function renderCategories(){
+        const grid = document.getElementById("cat-grid");
+        grid.innerHTML = "";
+        Object.entries(categories).forEach(([name, icon])=>{
+            const div = document.createElement("div"); div.className = "cat-circle";
+            div.innerHTML = `<div class="cat-icon-bg">${icon}</div><div class="cat-label">${t(catToKey(name))}</div>`;
+            div.onclick = () => openCategory(name);
+            grid.appendChild(div);
+        });
+    }
+
+    function openCategory(category){
+        currentOpenCategoryViewId = category;
+        document.getElementById("categories-home").classList.add("hidden");
+        document.getElementById("category-view").classList.remove("hidden");
+        document.getElementById("catViewTitle").innerText = t('cat_name') + t(catToKey(category));
+        document.getElementById("catSearchBar").value = ""; 
+        const filtered = inventoryData.filter(item => detectCategory(item.name) === category);
+        renderInventory(filtered, "category-items", "bulkCat");
+    }
+
+    function filterCategoryInventory(query) {
+        const val = query.toLowerCase();
+        const filtered = inventoryData.filter(item => {
+            const matchesCat = detectCategory(item.name) === currentOpenCategoryViewId;
+            const matchesQuery = item.name.toLowerCase().includes(val);
+            return matchesCat && matchesQuery;
+        });
+        renderInventory(filtered, "category-items", "bulkCat");
+    }
+
+    function closeCategoryView(){
+        currentOpenCategoryViewId = "";
+        document.getElementById("categories-home").classList.remove("hidden");
+        document.getElementById("category-view").classList.add("hidden");
+    }
+
+    function openCategoryModal(itemEncoded){
+        let selectedItem = decodeURIComponent(itemEncoded);
+        const modal = document.getElementById("category-modal");
+        const grid = document.getElementById("modal-grid");
+        grid.innerHTML = "";
+        Object.entries(categories).forEach(([name, icon])=>{
+            const div = document.createElement("div"); div.className = "modal-cat";
+            div.innerHTML = `<span style="font-size: 26px; display: block; margin-bottom: 6px;">${icon}</span>${t(catToKey(name))}`;
+            div.onclick = ()=>{
+                savedCategories[selectedItem] = name;
+                localStorage.setItem("mmc_categories", JSON.stringify(savedCategories));
+                modal.classList.remove("active");
+                if(document.getElementById('tab-inventory').classList.contains('active')) filterInventory(document.getElementById("searchBar").value);
+                else if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") openCategory(currentOpenCategoryViewId);
+                if(!document.getElementById('dupContainer').classList.contains('hidden')) findDuplicatesWeb();
+                toast(t('toast_cat_saved'));
+            };
+            grid.appendChild(div);
+        });
+        modal.classList.add("active");
+    }
+
+    function getBaseName(rawName) {
+        let parsed = formatItemName(rawName);
+        let clean = parsed.clean.replace(/\s+\d+$/, '').trim(); 
+        return clean.toLowerCase();
+    }
+
+    function findDuplicatesWeb() {
+        toast(t('toast_dup_scan'));
+        const groups = {};
+        inventoryData.forEach(item => {
+            const base = getBaseName(item.name);
+            if(!groups[base]) groups[base] = [];
+            groups[base].push(item);
+        });
+        let dups = [];
+        duplicateOriginals = [];
+        Object.values(groups).forEach(group => {
+            if(group.length > 1) {
+                group.sort((a,b) => a.name.localeCompare(b.name)); 
+                duplicateOriginals.push(group[0].name); 
+                dups = dups.concat(group);
+            }
+        });
+        const dupContainer = document.getElementById('dupContainer');
+        if(dups.length === 0) {
+            toast(t('toast_dup_clean'));
+            dupContainer.classList.add('hidden');
+            return;
+        }
+        dupContainer.classList.remove('hidden');
+        renderInventory(dups, 'dup-list', 'bulkDup');
+        toast(`${dups.length} ${t('toast_dup_found')}`);
+    }
+
+    async function renameServer(btn) {
+        const newName = document.getElementById("renameInput").value.trim();
+        if(!newName) { toast(t('toast_rename_req')); return; }
+        const oldText = btn.innerText;
+        btn.innerText = t('btn_wait'); btn.disabled = true;
+        try {
+            await fetch(API, { method: "POST", body: "WEB_RENAME:" + newName });
+            document.getElementById("currentServerName").innerText = "MMC - Inventory Storage [" + newName + "]";
+            document.getElementById("renameInput").value = "";
+            toast(t('toast_rename_ok'));
+        } catch(e) {
+            toast(t('toast_rename_fail'));
+        }
+        btn.innerText = oldText; btn.disabled = false;
+    }
+
+    applyTranslations();
+    document.getElementById("inventory-list").innerHTML = getEmptyStateHTML(t('loading'), t('connecting'));
+    loadInventory();
+</script>
+</body>
+</html>
