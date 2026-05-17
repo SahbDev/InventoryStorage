@@ -60,11 +60,12 @@ header{ text-align:center; padding-bottom:24px; border-bottom:1px solid #1b1b1b;
 .resync-btn:hover { border-color: #555; transform: translateY(-1px); }
 .resync-btn svg { width: 14px; height: 14px; fill: #fff; }
 
-/* ESTILOS DA SOBREPOSIÇÃO DAS BANDEIRAS */
-.flag-group { position: relative; width: 34px; height: 20px; }
+/* ESTILOS DA SOBREPOSIÇÃO DAS BANDEIRAS (AGORA SÃO 3) */
+.flag-group { position: relative; width: 48px; height: 20px; }
 .flag-icon { position: absolute; width: 20px; height: 20px; border-radius: 50%; overflow: hidden; border: 2px solid #0f0f0f; background: #111; }
-.flag-icon.us { right: 0; z-index: 1; }
-.flag-icon.br { left: 0; z-index: 2; }
+.flag-icon.us { left: 0; z-index: 3; }
+.flag-icon.br { left: 14px; z-index: 2; }
+.flag-icon.es { left: 28px; z-index: 1; }
 .flag-icon svg { width: 100%; height: 100%; display: block; }
 
 h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; text-transform:uppercase; }
@@ -225,12 +226,15 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
 <svg style="display:none;">
     <clipPath id="usa-clip"><circle cx="256" cy="256" r="256"/></clipPath>
+    <clipPath id="es-clip"><circle cx="256" cy="256" r="256"/></clipPath>
+    
     <symbol id="flag-br" viewBox="0 0 512 512">
         <circle cx="256" cy="256" r="256" fill="#4caf50"/>
         <polygon points="256,80 432,256 256,432 80,256" fill="#ffeb3b"/>
         <circle cx="256" cy="256" r="100" fill="#1e88e5"/>
         <path d="M 180 256 Q 256 200 332 256" stroke="#fff" stroke-width="12" fill="none"/>
     </symbol>
+    
     <symbol id="flag-us" viewBox="0 0 512 512">
         <circle cx="256" cy="256" r="256" fill="#fff"/>
         <g clip-path="url(#usa-clip)">
@@ -245,6 +249,15 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             <circle cx="96" cy="118" r="12" fill="#fff"/><circle cx="160" cy="118" r="12" fill="#fff"/>
             <circle cx="64" cy="172" r="12" fill="#fff"/><circle cx="128" cy="172" r="12" fill="#fff"/><circle cx="192" cy="172" r="12" fill="#fff"/>
             <circle cx="96" cy="226" r="12" fill="#fff"/><circle cx="160" cy="226" r="12" fill="#fff"/>
+        </g>
+    </symbol>
+    
+    <symbol id="flag-es" viewBox="0 0 512 512">
+        <circle cx="256" cy="256" r="256" fill="#d32f2f"/>
+        <g clip-path="url(#es-clip)">
+            <rect width="512" height="512" fill="#d32f2f"/>
+            <rect y="128" width="512" height="256" fill="#ffeb3b"/>
+            <circle cx="180" cy="256" r="50" fill="#d32f2f"/>
         </g>
     </symbol>
 
@@ -265,6 +278,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                     <div class="flag-group">
                         <div class="flag-icon us"><svg><use href="#flag-us"></use></svg></div>
                         <div class="flag-icon br"><svg><use href="#flag-br"></use></svg></div>
+                        <div class="flag-icon es"><svg><use href="#flag-es"></use></svg></div>
                     </div>
                 </div>
             </div>
@@ -392,11 +406,18 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 </div>
 
 <div class="modal" id="lang-modal">
-    <div class="modal-box" style="max-width: 380px;">
+    <div class="modal-box" style="max-width: 500px;">
         <div class="close-btn" onclick="document.getElementById('lang-modal').classList.remove('active')">✕</div>
         <div class="modal-title" data-i18n="change_lang">CHANGE LANGUAGE</div>
         
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top: 24px;">
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top: 24px;">
+            <div class="lang-card" id="lang-en" onclick="setLanguage('en')">
+                <div class="flag-circle">
+                    <svg><use href="#flag-us"></use></svg>
+                </div>
+                <div>English</div>
+            </div>
+            
             <div class="lang-card" id="lang-pt" onclick="setLanguage('pt')">
                 <div class="flag-circle">
                     <svg><use href="#flag-br"></use></svg>
@@ -404,11 +425,11 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 <div>Português</div>
             </div>
             
-            <div class="lang-card" id="lang-en" onclick="setLanguage('en')">
+            <div class="lang-card" id="lang-es" onclick="setLanguage('es')">
                 <div class="flag-circle">
-                    <svg><use href="#flag-us"></use></svg>
+                    <svg><use href="#flag-es"></use></svg>
                 </div>
-                <div>English</div>
+                <div>Español</div>
             </div>
         </div>
     </div>
@@ -430,7 +451,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             sure_del: "Are you sure you want to permanently delete", this_item: "this item", cannot_undone: "This action cannot be undone.", yes_del: "Yes, Delete",
             footer: "MMC Storage Remote Interface", loading: "Loading", connecting: "Connecting to server...",
             cat_name: "📁 CATEGORY: ", btn_back: "◀ Back", change_lang: "CHANGE LANGUAGE",
-            // JS Dynamic Text
             tooltip_deliv: "DELIVER", tooltip_rezz: "REZZ", tooltip_del: "DELETE", tooltip_create: "CREATED ON: ",
             empty_title: "Nothing Found", empty_sub: "No matching folders.",
             toast_sync: "Syncing...", toast_sync_ok: "Sync Complete", toast_conn_fail: "Connection failed",
@@ -441,13 +461,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             toast_dup_clean: "Inventory perfectly clean!", toast_dup_found: "potential duplicates!",
             toast_rename_req: "Enter a valid name", toast_rename_ok: "Name updated successfully!", toast_rename_fail: "Failed to update name",
             btn_wait: "Wait...", btn_yes_del: "Yes, Delete", no_sel: "Nothing selected",
-            // Categories
             cat_clothing: "CLOTHING", cat_hair: "HAIR", cat_faceskin: "FACE SKIN", cat_bodyskin: "BODY SKIN",
             cat_meshhead: "MESH HEAD", cat_meshbody: "MESH BODY", cat_accessories: "ACCESSORIES", cat_skybox: "SKYBOX",
             cat_houses: "HOUSES", cat_decor: "DECOR", cat_objects: "OBJECTS", cat_textures: "TEXTURES", cat_scripts: "SCRIPTS"
         },
         pt: {
-            live: "AO VIVO", resync: "SINCRONIZAR",
+            live: "LIVE", resync: "SINCRONIZAR",
             title: "✦ INVENTÁRIO PESSOAL ✦", powered: "desenvolvido por",
             folders: "Pastas", selected: "Selecionados",
             tab_inv: "Inventário", tab_cat: "Categorias", tab_tools: "Ferramentas", tab_config: "Config",
@@ -458,7 +477,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             sure_del: "Tem certeza que deseja deletar permanentemente", this_item: "este item", cannot_undone: "Esta ação não pode ser desfeita.", yes_del: "Sim, Deletar",
             footer: "Interface Remota MMC Storage", loading: "Carregando", connecting: "Conectando ao servidor...",
             cat_name: "📁 CATEGORIA: ", btn_back: "◀ Voltar", change_lang: "ALTERAR IDIOMA",
-            // JS Dynamic Text
             tooltip_deliv: "ENTREGAR", tooltip_rezz: "REZZAR", tooltip_del: "DELETAR", tooltip_create: "CRIADO EM: ",
             empty_title: "Nada Encontrado", empty_sub: "Nenhuma pasta correspondente.",
             toast_sync: "Sincronizando...", toast_sync_ok: "Sincronização Concluída", toast_conn_fail: "Falha na conexão",
@@ -469,10 +487,35 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             toast_dup_clean: "Inventário perfeitamente limpo!", toast_dup_found: "possíveis duplicatas!",
             toast_rename_req: "Digite um nome válido", toast_rename_ok: "Nome atualizado com sucesso!", toast_rename_fail: "Falha ao atualizar nome",
             btn_wait: "Aguarde...", btn_yes_del: "Sim, Deletar", no_sel: "Nada selecionado",
-            // Categories
             cat_clothing: "ROUPAS", cat_hair: "CABELOS", cat_faceskin: "PELE ROSTO", cat_bodyskin: "PELE CORPO",
-            cat_meshhead: "CABEÇA MESH", cat_meshbody: "CORPO MESH", cat_accessories: "ACESSÓRIOS", cat_skybox: "CENÁRIOS",
+            cat_meshhead: "CABEÇA MESH", cat_meshbody: "CORPO MESH", cat_accessories: "ACESSÓRIOS", cat_skybox: "SKYBOX",
             cat_houses: "CASAS", cat_decor: "DECORAÇÃO", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS"
+        },
+        es: {
+            live: "LIVE", resync: "SINCRONIZAR",
+            title: "✦ INVENTARIO PERSONAL ✦", powered: "desarrollado por",
+            folders: "Carpetas", selected: "Seleccionados",
+            tab_inv: "Inventario", tab_cat: "Categorías", tab_tools: "Herramientas", tab_config: "Config",
+            search_inv: "Buscar carpetas...", search_cat: "Buscar en categoría...",
+            select_all: "Seleccionar Todo", deliver_sel: "ENTREGAR SELECCIÓN", rezz_sel: "REZZAR SELECCIÓN", del_sel: "ELIMINAR SELECCIÓN",
+            scan_dup: "Buscar Duplicados", server_hash: "Hashtag del Servidor", enter_hash: "Ingrese nuevo hashtag...", update_name: "Actualizar Nombre",
+            assign_cat: "Asignar Categoría", cancel: "Cancelar", caution: "⚠️ ATENCIÓN",
+            sure_del: "¿Estás seguro de que deseas eliminar permanentemente", this_item: "este elemento", cannot_undone: "Esta acción no se puede deshacer.", yes_del: "Sí, Eliminar",
+            footer: "Interfaz Remota MMC Storage", loading: "Cargando", connecting: "Conectando al servidor...",
+            cat_name: "📁 CATEGORÍA: ", btn_back: "◀ Volver", change_lang: "CAMBIAR IDIOMA",
+            tooltip_deliv: "ENTREGAR", tooltip_rezz: "REZZAR", tooltip_del: "ELIMINAR", tooltip_create: "CREADO EN: ",
+            empty_title: "Nada Encontrado", empty_sub: "Ninguna carpeta coincidente.",
+            toast_sync: "Sincronizando...", toast_sync_ok: "Sincronización Completa", toast_conn_fail: "Fallo en la conexión",
+            toast_deliv: "Entregando...", toast_deliv_ok: "Entrega enviada ✔", toast_deliv_fail: "Fallo en la entrega",
+            toast_rezz: "Rezzando...", toast_rezz_ok: "Rezz enviado ✔", toast_rezz_fail: "Fallo al rezzar",
+            toast_del_ok: "Eliminado con éxito", toast_del_fail: "Fallo al eliminar",
+            toast_cat_saved: "Categoría Guardada", toast_dup_scan: "Buscando duplicados...",
+            toast_dup_clean: "¡Inventario perfectamente limpio!", toast_dup_found: "posibles duplicados!",
+            toast_rename_req: "Ingrese un nombre válido", toast_rename_ok: "¡Nombre actualizado con éxito!", toast_rename_fail: "Fallo al actualizar nombre",
+            btn_wait: "Espere...", btn_yes_del: "Sí, Eliminar", no_sel: "Nada seleccionado",
+            cat_clothing: "ROPA", cat_hair: "CABELLO", cat_faceskin: "PIEL ROSTRO", cat_bodyskin: "PIEL CUERPO",
+            cat_meshhead: "CABEZA MESH", cat_meshbody: "CUERPO MESH", cat_accessories: "ACCESORIOS", cat_skybox: "SKYBOX",
+            cat_houses: "CASAS", cat_decor: "DECORACIÓN", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS"
         }
     };
 
@@ -490,6 +533,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         document.getElementById('lang-modal').classList.add('active');
         document.getElementById('lang-pt').classList.remove('active');
         document.getElementById('lang-en').classList.remove('active');
+        document.getElementById('lang-es').classList.remove('active');
         document.getElementById('lang-' + currentLang).classList.add('active');
     }
 
@@ -526,9 +570,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         }
 
         let delName = document.getElementById("delete-item-name").innerText;
-        if(delName.includes("selected folders") || delName.includes("pastas selecionadas")) {
+        if(delName.includes("selected folders") || delName.includes("pastas selecionadas") || delName.includes("carpetas seleccionadas")) {
             let num = delName.split(" ")[0];
-            document.getElementById("delete-item-name").innerText = num + (currentLang === 'pt' ? " pastas selecionadas" : " selected folders");
+            let suffix = " selected folders";
+            if (currentLang === 'pt') suffix = " pastas selecionadas";
+            if (currentLang === 'es') suffix = " carpetas seleccionadas";
+            document.getElementById("delete-item-name").innerText = num + suffix;
         }
     }
 
@@ -780,7 +827,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         if(!checked.length){ toast(t('no_sel')); return; }
         deleteMode = "bulk";
         deleteTarget = checked.map(c => c.value);
-        document.getElementById("delete-item-name").innerText = `${checked.length} ${currentLang === 'pt' ? 'pastas selecionadas' : 'selected folders'}`;
+        
+        let suffix = " selected folders";
+        if (currentLang === 'pt') suffix = " pastas selecionadas";
+        if (currentLang === 'es') suffix = " carpetas seleccionadas";
+        document.getElementById("delete-item-name").innerText = checked.length + suffix;
+        
         document.getElementById("delete-modal").classList.add("active");
     }
 
