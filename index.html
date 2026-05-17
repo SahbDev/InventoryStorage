@@ -60,8 +60,6 @@ header{ text-align:center; padding-bottom:24px; border-bottom:1px solid #1b1b1b;
 .resync-btn:hover { border-color: #555; transform: translateY(-1px); }
 .resync-btn svg { width: 14px; height: 14px; fill: #fff; }
 
-.resync-btn svg.standard-circle-icon { width: 18px; height: 18px; margin-left: -2px; }
-
 .flag-group { position: relative; width: 48px; height: 20px; }
 .flag-icon { position: absolute; width: 20px; height: 20px; border-radius: 50%; overflow: hidden; border: 2px solid #0f0f0f; background: #111; }
 .flag-icon.us { left: 0; z-index: 3; }
@@ -312,10 +310,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         </g>
     </symbol>
 
-    <symbol id="icon-gyazo-circle" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="11" fill="none" stroke="#2a2a2a" stroke-width="1"/>
-        <circle cx="12" cy="12" r="8" fill="#111" />
-        <path d="M11.5 15.5H8V8.5H16V10H11.5V11.5H14.5V13H11.5V15.5Z" fill="#fff"/>
+    <symbol id="icon-camera" viewBox="0 0 24 24">
+        <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3z"/>
     </symbol>
 
     <symbol id="icon-photo" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></symbol>
@@ -344,7 +340,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             
             <div style="display:flex; gap:10px;">
                 <div class="resync-btn" onclick="openGyazoModal()">
-                    <svg class="standard-circle-icon"><use href="#icon-gyazo-circle"></use></svg> GYAZO
+                    <svg><use href="#icon-camera"></use></svg> GYAZO
                 </div>
                 <div class="resync-btn" onclick="loadInventory()">
                     <svg><use href="#icon-sync"></use></svg> <span data-i18n="resync">RESYNC</span>
