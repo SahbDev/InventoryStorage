@@ -151,7 +151,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .item-name{ font-size:.88rem; font-weight:500; word-break:break-word; line-height: 1.4; transition: color 0.2s;}
 .item:has(.item-select:checked) .item-name { color: var(--accent-purple); text-shadow: 0 0 8px rgba(207, 163, 255, 0.2); }
 
-/* ESTILOS DO HOVER E TOOLTIP DA DATA LOCAL */
 .date-tooltip { 
     background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); 
     left: 0 !important; transform: none !important; transition: opacity 0.2s;
@@ -161,7 +160,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .photo-icon { font-size: 14px; cursor: help; opacity: 0.8; transition: .2s; }
 .photo-icon:hover { opacity: 1; filter: drop-shadow(0 0 5px rgba(207,163,255,0.8)); }
 
-/* ESTRUTURA GLOBAL DA FOTO + DATA FLUTUANTE */
 .global-preview {
     position: fixed;
     width: 320px;
@@ -317,6 +315,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     </symbol>
 
     <symbol id="icon-photo" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></symbol>
+    <symbol id="icon-edit" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 11.18l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></symbol>
     <symbol id="icon-objects" viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44c-.32-.17-.53-.5-.53-.88V7.5c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.19v6.72zm14 0v-6.72l-6 3.39v6.71l6-3.38z"/></symbol>
     <symbol id="icon-send" viewBox="0 0 24 24"><path d="M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z"/></symbol>
     <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></symbol>
@@ -635,24 +634,14 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         }
     }
 
-    // --- LÓGICA DO BALÃO FLUTUANTE GLOBAL DA FOTO (COM SUPORTE A LINKS EXTERNOS) ---
     const globalPreview = document.getElementById('global-photo-preview');
     const globalPreviewImg = document.getElementById('global-preview-img');
     const globalPreviewDate = document.getElementById('global-preview-date');
 
     function showPhotoPreview(e, photoData, dateStr) {
         let finalUrl = photoData;
-        
-        // Auto-corretor Mágico do Gyazo
-        if(finalUrl.includes("gyazo.com") && !finalUrl.includes("i.gyazo.com")) {
-            finalUrl = finalUrl.replace("gyazo.com", "i.gyazo.com") + ".png";
-        }
-        
-        // Se NÃO tiver HTTP, assumimos que é um UUID do SL
-        if(!finalUrl.startsWith("http")) {
-            finalUrl = `https://picture-service.secondlife.com/${photoData}/320x240.jpg`;
-        }
-
+        if(finalUrl.includes("gyazo.com") && !finalUrl.includes("i.gyazo.com")) finalUrl = finalUrl.replace("gyazo.com", "i.gyazo.com") + ".png";
+        if(!finalUrl.startsWith("http")) finalUrl = `https://picture-service.secondlife.com/${photoData}/320x240.jpg`;
         globalPreviewImg.src = finalUrl;
         
         if(dateStr && dateStr !== 'undefined' && dateStr.trim() !== '') {
@@ -661,7 +650,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         } else {
             globalPreviewDate.style.display = 'none';
         }
-        
         globalPreview.classList.add('show');
         movePreview(e);
         document.addEventListener('mousemove', movePreview);
@@ -673,15 +661,11 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     }
 
     function movePreview(e) {
-        let x = e.clientX + 20; 
-        let y = e.clientY - 120;
-        
+        let x = e.clientX + 20; let y = e.clientY - 120;
         if (x + 320 > window.innerWidth) x = e.clientX - 340;
         if (y + 240 > window.innerHeight) y = window.innerHeight - 260;
         if (y < 0) y = 20;
-
-        globalPreview.style.left = x + 'px';
-        globalPreview.style.top = y + 'px';
+        globalPreview.style.left = x + 'px'; globalPreview.style.top = y + 'px';
     }
 
     const API = new URLSearchParams(window.location.search).get("api");
@@ -723,8 +707,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
     function formatItemName(rawName) {
         const dateMatch = rawName.match(/(\[\d{4}-\d{2}-\d{2}[^\]]*\])/i);
-        let dateStr = "";
-        let cleanStr = rawName;
+        let dateStr = ""; let cleanStr = rawName;
         if (dateMatch) {
             dateStr = dateMatch[1].trim();
             cleanStr = rawName.replace(dateStr, '').replace(/\s{2,}/g, ' ').trim();
@@ -830,7 +813,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 
                 <div class="item-actions">
                     <button class="action-btn photo-btn" onclick="openPhotoModal('${encodeURIComponent(itemObj.name)}', '${itemObj.photo}')">
-                        <svg><use href="#icon-photo"></use></svg>
+                        <svg><use href="${itemObj.photo ? '#icon-edit' : '#icon-photo'}"></use></svg>
                         <div class="cat-tooltip">${t('tooltip_photo')}</div>
                     </button>
                     <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(itemObj.name)}', this)">
