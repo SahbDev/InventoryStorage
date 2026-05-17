@@ -60,10 +60,7 @@ header{ text-align:center; padding-bottom:24px; border-bottom:1px solid #1b1b1b;
 .resync-btn:hover { border-color: #555; transform: translateY(-1px); }
 .resync-btn svg { width: 14px; height: 14px; fill: #fff; }
 
-/* AJUSTE PADRÃO: ÍCONES CIRCULARES EM BOTÕES DE AÇÃO */
-.resync-btn svg.standard-circle-icon { 
-    width: 18px; height: 18px; margin-left: -2px; /* Espaçamento interno negativo para compensar a borda do círculo */
-}
+.resync-btn svg.standard-circle-icon { width: 18px; height: 18px; margin-left: -2px; }
 
 .flag-group { position: relative; width: 48px; height: 20px; }
 .flag-icon { position: absolute; width: 20px; height: 20px; border-radius: 50%; overflow: hidden; border: 2px solid #0f0f0f; background: #111; }
@@ -465,6 +462,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         <div class="close-btn" onclick="document.getElementById('photo-modal').classList.remove('active')">✕</div>
         <div class="modal-title" data-i18n="assign_photo">LINK PHOTO</div>
         
+        <div style="font-size: 0.8rem; color: #888; margin-bottom: 8px;" id="photo-item-name">Item Name</div>
+        
         <div style="font-size: 0.75rem; color: #aaa; margin-bottom: 20px;">
             <span data-i18n="photo_desc1">Link a photo to this product</span><br>
             <span data-i18n="photo_desc2">Drop a Texture UUID or Gyazo link below.</span>
@@ -528,4 +527,666 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 <div>Português</div>
             </div>
             
-            <div class="lang-card" id="lang-es" onclick="setLanguage
+            <div class="lang-card" id="lang-es" onclick="setLanguage('es')">
+                <div class="flag-circle"><svg><use href="#flag-es"></use></svg></div>
+                <div>Español</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const i18n = {
+        en: {
+            live: "LIVE", resync: "RESYNC", title: "✦ PERSONAL INVENTORY ✦", powered: "powered by",
+            folders: "Folders", selected: "Selected", tab_inv: "Inventory", tab_cat: "Categories", tab_tools: "Tools", tab_config: "Config",
+            search_inv: "Search folders...", search_cat: "Search inside category...", select_all: "Select All", 
+            deliver_sel: "DELIVER", rezz_sel: "REZZ", del_sel: "DELETE",
+            scan_dup: "Scan Duplicates", server_hash: "Server Hashtag", enter_hash: "Enter new hashtag...", update_name: "Update Server Name",
+            assign_cat: "Assign Category", cancel: "CANCEL", caution: "⚠️ CAUTION", sure_del: "Are you sure you want to permanently delete", 
+            this_item: "this item", cannot_undone: "This action cannot be undone.", yes_del: "YES, DELETE",
+            footer: "MMC Storage Remote Interface", loading: "Loading", connecting: "Connecting to server...",
+            cat_name: "📁 CATEGORY: ", btn_back: "◀", change_lang: "CHANGE LANGUAGE",
+            tooltip_deliv: "DELIVER", tooltip_rezz: "REZZ", tooltip_del: "DELETE", tooltip_create: "CREATED ON: ",
+            empty_title: "Nothing Found", empty_sub: "No matching folders.", toast_sync: "Syncing...", toast_sync_ok: "Sync Complete", toast_conn_fail: "Connection failed",
+            toast_deliv: "Delivering...", toast_deliv_ok: "Bulk delivery sent ✔", toast_deliv_fail: "Delivery failed",
+            toast_rezz: "Rezzing...", toast_rezz_ok: "Bulk rezz sent ✔", toast_rezz_fail: "Rezz failed",
+            toast_del_ok: "Deleted successfully", toast_del_fail: "Delete failed", toast_cat_saved: "Category Saved", toast_dup_scan: "Scanning for duplicates...",
+            toast_dup_clean: "No duplicates found", toast_dup_found: "potential duplicates!",
+            toast_rename_req: "Enter a valid name", toast_rename_ok: "Name updated successfully!", toast_rename_fail: "Failed to update name",
+            btn_wait: "WAIT...", btn_yes_del: "YES, DELETE", no_sel: "Nothing selected",
+            tooltip_photo: "PHOTO", toast_photo_ok: "Photo saved!", toast_photo_fail: "Failed to save photo", 
+            assign_photo: "LINK PHOTO", enter_uuid: "Enter Texture UUID or Link...", save: "SAVE", remove: "REMOVE",
+            photo_desc1: "Link a photo to this product", photo_desc2: "Drop a Texture UUID or Gyazo link below.",
+            gyazo_desc1: "Use Gyazo to add Prints/Photos to your products.", gyazo_desc2: "Download Gyazo", here: "HERE",
+            cat_clothing: "CLOTHING", cat_hair: "HAIR", cat_faceskin: "FACE SKIN", cat_bodyskin: "BODY SKIN", cat_meshhead: "MESH HEAD", cat_meshbody: "MESH BODY", cat_accessories: "ACCESSORIES", cat_skybox: "SKYBOX", cat_houses: "HOUSES", cat_decor: "DECOR", cat_objects: "OBJECTS", cat_textures: "TEXTURES", cat_scripts: "SCRIPTS"
+        },
+        pt: {
+            live: "LIVE", resync: "SINCRONIZAR", title: "✦ INVENTÁRIO PESSOAL ✦", powered: "desenvolvido por",
+            folders: "Pastas", selected: "Selecionados", tab_inv: "Inventário", tab_cat: "Categorias", tab_tools: "Ferramentas", tab_config: "Config",
+            search_inv: "Buscar pastas...", search_cat: "Buscar na categoria...", select_all: "Selecionar Tudo", 
+            deliver_sel: "ENTREGAR", rezz_sel: "REZZAR", del_sel: "DELETAR",
+            scan_dup: "Buscar Duplicatas", server_hash: "Hashtag do Servidor", enter_hash: "Digite a nova hashtag...", update_name: "Atualizar Nome do Servidor",
+            assign_cat: "Atribuir Categoria", cancel: "CANCELAR", caution: "⚠️ ATENÇÃO", sure_del: "Tem certeza que deseja deletar permanentemente", 
+            this_item: "este item", cannot_undone: "Esta ação não pode ser desfeita.", yes_del: "SIM, DELETAR",
+            footer: "Interface Remota MMC Storage", loading: "Carregando", connecting: "Conectando ao servidor...",
+            cat_name: "📁 CATEGORIA: ", btn_back: "◀", change_lang: "ALTERAR IDIOMA",
+            tooltip_deliv: "ENTREGAR", tooltip_rezz: "REZZAR", tooltip_del: "DELETAR", tooltip_create: "CRIADO EM: ",
+            empty_title: "Nada Encontrado", empty_sub: "Nenhuma pasta correspondente.", toast_sync: "Sincronizando...", toast_sync_ok: "Sincronização Concluída", toast_conn_fail: "Falha na conexão",
+            toast_deliv: "Entregando...", toast_deliv_ok: "Entrega enviada ✔", toast_deliv_fail: "Falha na entrega",
+            toast_rezz: "Rezzando...", toast_rezz_ok: "Rezz enviado ✔", toast_rezz_fail: "Falha ao rezzar",
+            toast_del_ok: "Deletado com sucesso", toast_del_fail: "Falha ao deletar", toast_cat_saved: "Categoria Salva", toast_dup_scan: "Buscando duplicatas...",
+            toast_dup_clean: "Nenhum duplicado encontrado", toast_dup_found: "possíveis duplicatas!",
+            toast_rename_req: "Digite um nome válido", toast_rename_ok: "Nome atualizado com sucesso!", toast_rename_fail: "Falha ao atualizar nome",
+            btn_wait: "AGUARDE...", btn_yes_del: "SIM, DELETAR", no_sel: "Nada selecionado",
+            tooltip_photo: "FOTO", toast_photo_ok: "Foto salva!", toast_photo_fail: "Falha ao salvar foto", 
+            assign_photo: "VINCULAR FOTO", enter_uuid: "Digite o UUID da Textura ou Link...", save: "SALVAR", remove: "REMOVER",
+            photo_desc1: "Vincule uma foto a este produto", photo_desc2: "Solte um UUID de Textura ou link do Gyazo abaixo.",
+            gyazo_desc1: "Use o Gyazo para adicionar Prints/Fotos aos seus produtos.", gyazo_desc2: "Baixar Gyazo", here: "AQUI",
+            cat_clothing: "ROUPAS", cat_hair: "CABELOS", cat_faceskin: "PELE ROSTO", cat_bodyskin: "PELE CORPO", cat_meshhead: "CABEÇA MESH", cat_meshbody: "CORPO MESH", cat_accessories: "ACESSÓRIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORAÇÃO", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS"
+        },
+        es: {
+            live: "LIVE", resync: "SINCRONIZAR", title: "✦ INVENTARIO PERSONAL ✦", powered: "desarrollado por",
+            folders: "Carpetas", selected: "Seleccionados", tab_inv: "Inventario", tab_cat: "Categorías", tab_tools: "Herramientas", tab_config: "Config",
+            search_inv: "Buscar carpetas...", search_cat: "Buscar en categoría...", select_all: "Seleccionar Todo", 
+            deliver_sel: "ENTREGAR", rezz_sel: "REZZAR", del_sel: "ELIMINAR",
+            scan_dup: "Buscar Duplicados", server_hash: "Hashtag del Servidor", enter_hash: "Ingrese nuevo hashtag...", update_name: "Actualizar Nombre",
+            assign_cat: "Asignar Categoría", cancel: "CANCELAR", caution: "⚠️ ATENCIÓN", sure_del: "¿Estás seguro de que deseas eliminar", 
+            this_item: "este elemento?", cannot_undone: "Esta acción no se puede deshacer.", yes_del: "SÍ, ELIMINAR",
+            footer: "Interfaz Remota MMC Storage", loading: "Cargando", connecting: "Conectando al servidor...",
+            cat_name: "📁 CATEGORÍA: ", btn_back: "◀", change_lang: "CAMBIAR IDIOMA",
+            tooltip_deliv: "ENTREGAR", tooltip_rezz: "REZZAR", tooltip_del: "ELIMINAR", tooltip_create: "CREADO EN: ",
+            empty_title: "Nada Encontrado", empty_sub: "Ninguna carpeta coincidente.", toast_sync: "Sincronizando...", toast_sync_ok: "Sincronización Completa", toast_conn_fail: "Fallo en la conexión",
+            toast_deliv: "Entregando...", toast_deliv_ok: "Entrega enviada ✔", toast_deliv_fail: "Fallo en la entrega",
+            toast_rezz: "Rezzando...", toast_rezz_ok: "Rezz enviado ✔", toast_rezz_fail: "Fallo al rezzar",
+            toast_del_ok: "Eliminado con éxito", toast_del_fail: "Fallo al eliminar", toast_cat_saved: "Categoría Guardada", toast_dup_scan: "Buscando duplicados...",
+            toast_dup_clean: "Ningún duplicado encontrado", toast_dup_found: "posibles duplicados!",
+            toast_rename_req: "Ingrese un nombre válido", toast_rename_ok: "¡Nombre actualizado con éxito!", toast_rename_fail: "Fallo al actualizar nombre",
+            btn_wait: "ESPERE...", btn_yes_del: "SÍ, ELIMINAR", no_sel: "Nada seleccionado",
+            tooltip_photo: "FOTO", toast_photo_ok: "¡Foto guardada!", toast_photo_fail: "Error al guardar foto", 
+            assign_photo: "VINCULAR FOTO", enter_uuid: "Ingrese el UUID de Textura o Link...", save: "GUARDAR", remove: "ELIMINAR",
+            photo_desc1: "Vincule una foto a este producto", photo_desc2: "Suelte un UUID de Textura o link de Gyazo a continuación.",
+            gyazo_desc1: "Usa Gyazo para agregar Prints/Fotos a tus productos.", gyazo_desc2: "Descargar Gyazo", here: "AQUÍ",
+            cat_clothing: "ROPA", cat_hair: "CABELLO", cat_faceskin: "PIEL ROSTRO", cat_bodyskin: "PIEL CUERPO", cat_meshhead: "CABEZA MESH", cat_meshbody: "CUERPO MESH", cat_accessories: "ACCESORIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORACIÓN", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS"
+        }
+    };
+
+    let currentLang = localStorage.getItem('mmc_lang') || 'en';
+
+    function t(key) { return i18n[currentLang][key] || key; }
+    function catToKey(categoryName) { return "cat_" + categoryName.toLowerCase().replace(" ", ""); }
+
+    function openLangModal() {
+        document.getElementById('lang-modal').classList.add('active');
+        document.getElementById('lang-pt').classList.remove('active');
+        document.getElementById('lang-en').classList.remove('active');
+        document.getElementById('lang-es').classList.remove('active');
+        document.getElementById('lang-' + currentLang).classList.add('active');
+    }
+    
+    function openGyazoModal() {
+        document.getElementById('gyazo-modal').classList.add('active');
+    }
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('mmc_lang', currentLang);
+        applyTranslations();
+        document.getElementById('lang-modal').classList.remove('active');
+    }
+
+    function applyTranslations() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
+                el.setAttribute('placeholder', t(key));
+            } else {
+                el.innerText = t(key);
+            }
+        });
+        renderCategories();
+        if (inventoryData.length > 0) {
+            const searchVal = document.getElementById("searchBar").value;
+            if (document.getElementById('tab-inventory').classList.contains('active')) filterInventory(searchVal);
+            else if (document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") openCategory(currentOpenCategoryViewId);
+            else if (document.getElementById('tab-tools').classList.contains('active') && !document.getElementById('dupContainer').classList.contains('hidden')) findDuplicatesWeb();
+        } else {
+            document.getElementById("inventory-list").innerHTML = getEmptyStateHTML(t('loading'), t('connecting'));
+        }
+
+        let delName = document.getElementById("delete-item-name").innerText;
+        if(delName.includes("selected folders") || delName.includes("pastas selecionadas") || delName.includes("carpetas seleccionadas")) {
+            let num = delName.split(" ")[0];
+            let suffix = " selected folders";
+            if (currentLang === 'pt') suffix = " pastas selecionadas";
+            if (currentLang === 'es') suffix = " carpetas seleccionadas";
+            document.getElementById("delete-item-name").innerText = num + suffix;
+        }
+    }
+
+    const globalPreview = document.getElementById('global-photo-preview');
+    const globalPreviewImg = document.getElementById('global-preview-img');
+    const globalPreviewDate = document.getElementById('global-preview-date');
+    const placeholderUrl = "https://i.gyazo.com/def20df3a5f451ad996cd535be6adf2f.png";
+
+    function getFinalUrl(photoData) {
+        if (!photoData || photoData === "NONE") return placeholderUrl;
+        let finalUrl = photoData;
+        if(finalUrl.includes("gyazo.com") && !finalUrl.includes("i.gyazo.com")) finalUrl = finalUrl.replace("gyazo.com", "i.gyazo.com") + ".png";
+        if(!finalUrl.startsWith("http")) finalUrl = `https://picture-service.secondlife.com/${photoData}/320x240.jpg`;
+        return finalUrl;
+    }
+
+    function showPhotoPreview(e, photoData, dateStr) {
+        globalPreviewImg.src = getFinalUrl(photoData);
+        
+        if(dateStr && dateStr !== 'undefined' && dateStr.trim() !== '') {
+            globalPreviewDate.innerText = t('tooltip_create') + " " + dateStr;
+            globalPreviewDate.style.display = 'block';
+        } else {
+            globalPreviewDate.style.display = 'none';
+        }
+        globalPreview.classList.add('show');
+        movePreview(e);
+        document.addEventListener('mousemove', movePreview);
+    }
+
+    function hidePhotoPreview() {
+        globalPreview.classList.remove('show');
+        document.removeEventListener('mousemove', movePreview);
+    }
+
+    function movePreview(e) {
+        let x = e.clientX + 20; let y = e.clientY - 120;
+        if (x + 320 > window.innerWidth) x = e.clientX - 340;
+        if (y + 240 > window.innerHeight) y = window.innerHeight - 260;
+        if (y < 0) y = 20;
+        globalPreview.style.left = x + 'px'; globalPreview.style.top = y + 'px';
+    }
+
+    const API = new URLSearchParams(window.location.search).get("api");
+    let inventoryData = []; 
+    let savedCategories = JSON.parse(localStorage.getItem('mmc_categories')) || {};
+    let currentOpenCategoryViewId = "";
+    let deleteMode = "";
+    let deleteTarget = null;
+    let duplicateOriginals = []; 
+    let currentPhotoTarget = "";
+
+    const categories = {
+        "Clothing": "👗", "Hair": "💇", "Face Skin": "🙂", "Body Skin": "🧍",
+        "Mesh Head": "👤", "Mesh Body": "🧍‍♀️", "Accessories": "🕶️", "Skybox": "☁️",
+        "Houses": "🏠", "Decor": "🪴", "Objects": "📦", "Textures": "🖼️", "Scripts": "🖥️"
+    };
+
+    const keywords = {
+        'Clothing': ['shirt', 'pants', 'dress', 'jacket', 'top', 'skirt', 'jeans', 'apparel', 'outfit', 'suit', 'hoodie', 'shorts', 'bra', 'lingerie', 'sweater'],
+        'Hair': ['hair', 'bangs', 'ponytail', 'braid', 'curls', 'updo', 'wig'],
+        'Face Skin': ['makeup', 'face', 'lipstick', 'eyeshadow', 'blush', 'eyebrows', 'lip', 'eye'],
+        'Body Skin': ['body skin', 'skin', 'tattoo', 'freckles', 'bom'],
+        'Mesh Head': ['head', 'lelutka', 'catwa', 'genus'],
+        'Mesh Body': ['body', 'maitreya', 'legacy', 'ebody', 'kupra', 'reborn'],
+        'Accessories': ['shoes', 'boots', 'sneakers', 'heels', 'necklace', 'ring', 'piercing', 'bag', 'glasses', 'hat', 'earrings', 'choker'],
+        'Skybox': ['skybox', 'backdrop', 'studio', 'surround'],
+        'Houses': ['house', 'cabin', 'mansion', 'cottage', 'building'],
+        'Decor': ['decor', 'furniture', 'couch', 'bed', 'lamp', 'rug', 'plant', 'chair', 'table', 'sofa'],
+        'Objects': ['object', 'prop', 'mesh'],
+        'Textures': ['texture', 'map', 'specular', 'normal', 'seamless'],
+        'Scripts': ['script', 'lsl', 'hud', 'tool', 'animation', 'pose', 'ao']
+    };
+
+    function toast(msg){
+        const t_element = document.getElementById("toast");
+        t_element.innerText = msg; t_element.classList.add("show");
+        setTimeout(() => t_element.classList.remove("show"), 2500);
+    }
+
+    function formatItemName(rawName) {
+        const dateMatch = rawName.match(/(\[\d{4}-\d{2}-\d{2}[^\]]*\])/i);
+        let dateStr = ""; let cleanStr = rawName;
+        if (dateMatch) {
+            dateStr = dateMatch[1].trim();
+            cleanStr = rawName.replace(dateStr, '').replace(/\s{2,}/g, ' ').trim();
+        }
+        return { clean: cleanStr, date: dateStr };
+    }
+
+    function detectCategory(name) {
+        if (savedCategories[name]) return savedCategories[name];
+        const lowerName = name.toLowerCase();
+        for (const [cat, words] of Object.entries(keywords)) {
+            if (words.some(word => lowerName.includes(word))) return cat;
+        }
+        return 'Objects';
+    }
+
+    function getEmptyStateHTML(title, sub) { return `<div class="empty-watermark"><div class="empty-watermark-title">${title}</div><div class="empty-watermark-sub">${sub}</div></div>`; }
+
+    function switchTab(tabId, btnElement){
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+        btnElement.classList.add('active');
+        if(tabId === 'categories') closeCategoryView(); 
+        document.getElementById('dupContainer').classList.add('hidden');
+        clearAllMasterCheckboxes();
+    }
+
+    function clearAllMasterCheckboxes() {
+        ['select-all', 'selectAllCat', 'selectAllDup'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.checked = false;
+        });
+    }
+
+    async function loadInventory(){
+        if(!API){ toast("Missing SL API URL"); document.getElementById("inventory-list").innerHTML = getEmptyStateHTML(t('empty_title'), "Access via SL Menu."); return; }
+        toast(t('toast_sync'));
+        try{
+            const res = await fetch(API);
+            const data = await res.json();
+            
+            inventoryData = data.map(i => {
+                let decoded = decodeURIComponent(i);
+                let parts = decoded.split("||");
+                return { name: parts[0], photo: parts[1] || "", raw: decoded };
+            });
+            
+            clearAllMasterCheckboxes();
+
+            if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") openCategory(currentOpenCategoryViewId);
+            else document.getElementById("category-items").innerHTML = "";
+
+            if(!document.getElementById('dupContainer').classList.contains('hidden')) findDuplicatesWeb();
+            else document.getElementById("dup-list").innerHTML = "";
+            
+            const searchVal = document.getElementById("searchBar").value;
+            if(searchVal) filterInventory(searchVal);
+            else renderInventory(inventoryData, "inventory-list", "bulkInv");
+            
+            updateSelectedCount(); 
+            toast(t('toast_sync_ok'));
+        }catch(e){
+            toast(t('toast_conn_fail'));
+        }
+    }
+
+    function renderInventory(items, targetId, bulkId = null){
+        const list = document.getElementById(targetId);
+        const bulkEl = bulkId ? document.getElementById(bulkId) : null;
+        list.innerHTML = "";
+        
+        const isGallery = (targetId === "category-items");
+        list.className = isGallery ? "gallery-grid" : "item-list";
+        
+        if(items.length === 0){
+            if(bulkEl) bulkEl.style.display = 'none';
+            list.innerHTML = getEmptyStateHTML(t('empty_title'), t('empty_sub'));
+            if(targetId === "inventory-list") updateCounts(0);
+            updateSelectedCount();
+            return;
+        }
+
+        if(bulkEl) bulkEl.style.display = 'flex';
+
+        items.forEach(itemObj => {
+            const category = detectCategory(itemObj.name);
+            const icon = categories[category] || "📦";
+            const parsed = formatItemName(itemObj.name);
+            const categoryTranslated = t(catToKey(category));
+
+            let hasPhoto = false;
+            let validPhotoData = "";
+            if (itemObj.photo && itemObj.photo !== "NONE" && itemObj.photo !== "undefined") {
+                if (itemObj.photo !== itemObj.name && !itemObj.photo.includes("[")) {
+                    hasPhoto = true;
+                    validPhotoData = itemObj.photo;
+                }
+            }
+
+            const li = document.createElement("li");
+
+            if (isGallery) {
+                li.className = "gallery-card";
+                
+                let photoHtml = `<img src="${hasPhoto ? getFinalUrl(validPhotoData) : placeholderUrl}" alt="preview">`;
+                const hoverEvents = hasPhoto ? `onmouseenter="showPhotoPreview(event, '${validPhotoData}', '${parsed.date ? parsed.date : ''}')" onmouseleave="hidePhotoPreview()"` : '';
+
+                li.innerHTML = `
+                    <div class="gallery-img-box" ${hoverEvents}>
+                        <input type="checkbox" class="item-cb item-select gallery-checkbox" value="${itemObj.name}">
+                        ${photoHtml}
+                    </div>
+                    <div class="gallery-info">
+                        <div class="gallery-title" title="${parsed.clean}">${parsed.clean}</div>
+                        <div class="gallery-actions">
+                            <button class="action-btn photo-btn" onclick="openPhotoModal('${encodeURIComponent(itemObj.name)}', '${validPhotoData}')">
+                                <svg><use href="${hasPhoto ? '#icon-edit' : '#icon-photo'}"></use></svg>
+                                <div class="cat-tooltip">${t('tooltip_photo')}</div>
+                            </button>
+                            <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(itemObj.name)}', this)">
+                                <svg><use href="#icon-send"></use></svg>
+                                <div class="cat-tooltip">${t('tooltip_deliv')}</div>
+                            </button>
+                            <button class="action-btn rezz-btn" onclick="rezzItem('${encodeURIComponent(itemObj.name)}', this)">
+                                <svg><use href="#icon-objects"></use></svg>
+                                <div class="cat-tooltip">${t('tooltip_rezz')}</div>
+                            </button>
+                            <button class="action-btn delete-btn" onclick="confirmDelete('${encodeURIComponent(itemObj.name)}')">
+                                <svg><use href="#icon-trash"></use></svg>
+                                <div class="cat-tooltip">${t('tooltip_del')}</div>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                li.className = "item";
+                li.innerHTML = `
+                    <div class="cat-badge" style="font-size:18px;" onclick="openCategoryModal('${encodeURIComponent(itemObj.name)}')">
+                        ${icon}
+                        <div class="cat-tooltip">${categoryTranslated}</div>
+                    </div>
+                    <input type="checkbox" class="item-cb item-select" value="${itemObj.name}">
+                    
+                    <div class="item-name-wrapper">
+                        ${hasPhoto ? `<span class="photo-icon" style="color:var(--accent-purple);" onmouseenter="showPhotoPreview(event, '${validPhotoData}', '${parsed.date ? parsed.date : ''}')" onmouseleave="hidePhotoPreview()">🖼️</span>` : ''}
+                        <div class="item-name">${parsed.clean}</div>
+                        ${(!hasPhoto && parsed.date) ? `<div class="cat-tooltip date-tooltip">${t('tooltip_create')} ${parsed.date}</div>` : ''}
+                    </div>
+                    
+                    <div class="item-actions">
+                        <button class="action-btn photo-btn" onclick="openPhotoModal('${encodeURIComponent(itemObj.name)}', '${validPhotoData}')">
+                            <svg><use href="${hasPhoto ? '#icon-edit' : '#icon-photo'}"></use></svg>
+                            <div class="cat-tooltip">${t('tooltip_photo')}</div>
+                        </button>
+                        <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(itemObj.name)}', this)">
+                            <svg><use href="#icon-send"></use></svg>
+                            <div class="cat-tooltip">${t('tooltip_deliv')}</div>
+                        </button>
+                        <button class="action-btn rezz-btn" onclick="rezzItem('${encodeURIComponent(itemObj.name)}', this)">
+                            <svg><use href="#icon-objects"></use></svg>
+                            <div class="cat-tooltip">${t('tooltip_rezz')}</div>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="confirmDelete('${encodeURIComponent(itemObj.name)}')">
+                            <svg><use href="#icon-trash"></use></svg>
+                            <div class="cat-tooltip">${t('tooltip_del')}</div>
+                        </button>
+                    </div>
+                `;
+            }
+            list.appendChild(li);
+        });
+
+        if(targetId === "inventory-list") updateCounts(items.length);
+        
+        document.querySelectorAll(`#${targetId} .item-select`).forEach(cb => {
+            cb.addEventListener('change', updateSelectedCount);
+        });
+        updateSelectedCount();
+    }
+
+    function updateCounts(total) { document.getElementById("folderCount").innerText = total; }
+    function updateSelectedCount() { 
+        const total = document.querySelectorAll(".item-select:checked").length;
+        document.getElementById("selectedCount").innerText = total;
+    }
+
+    function openPhotoModal(nameEncoded, currentPhoto) {
+        currentPhotoTarget = decodeURIComponent(nameEncoded);
+        document.getElementById('photo-uuid-input').value = (!currentPhoto || currentPhoto === "NONE") ? "" : currentPhoto;
+        document.getElementById('photo-modal').classList.add('active');
+    }
+
+    async function savePhoto() {
+        const uuid = document.getElementById('photo-uuid-input').value.trim();
+        const btn = document.getElementById('save-photo-btn');
+        btn.innerText = t('btn_wait'); btn.disabled = true;
+        try {
+            await fetch(API, { method: "POST", body: "WEB_PHOTO:" + currentPhotoTarget + "||" + uuid });
+            toast(t('toast_photo_ok'));
+            document.getElementById('photo-modal').classList.remove('active');
+            loadInventory();
+        } catch(e) {
+            toast(t('toast_photo_fail'));
+        }
+        btn.innerText = t('save'); btn.disabled = false;
+    }
+
+    async function removePhoto() {
+        const btn = document.querySelector('#photo-modal .btn-dark');
+        btn.innerText = t('btn_wait'); btn.disabled = true;
+        try {
+            await fetch(API, { method: "POST", body: "WEB_PHOTO:" + currentPhotoTarget + "||NONE" });
+            toast(t('toast_photo_ok'));
+            document.getElementById('photo-modal').classList.remove('active');
+            loadInventory();
+        } catch(e) {
+            toast(t('toast_photo_fail'));
+        }
+        btn.innerText = t('remove'); btn.disabled = false;
+    }
+
+    async function deliverItem(itemEncoded, btn){
+        const item = decodeURIComponent(itemEncoded);
+        btn.innerHTML = "..."; btn.disabled = true;
+        try{
+            const res = await fetch(API, { method:"POST", body:item });
+            if(res.ok) { btn.innerHTML = "✔"; toast(t('toast_deliv_ok').split(" ")[0]); } else { btn.innerHTML = "X"; }
+        }catch{ btn.innerHTML = "X"; }
+        setTimeout(()=>{ 
+            btn.innerHTML = `<svg><use href="#icon-send"></use></svg><div class="cat-tooltip">${t('tooltip_deliv')}</div>`; 
+            btn.disabled = false; 
+        }, 1800);
+    }
+
+    async function deliverSelected(containerId = "inventory-list"){
+        const checked = [...document.getElementById(containerId).querySelectorAll(".item-select:checked")];
+        if(!checked.length){ toast(t('no_sel')); return; }
+        const items = checked.map(c => c.value).join("\n");
+        toast(t('toast_deliv'));
+        try {
+            await fetch(API, { method:"POST", body:items });
+            toast(t('toast_deliv_ok'));
+        } catch { toast(t('toast_deliv_fail')); }
+        clearAllMasterCheckboxes();
+        checked.forEach(c => c.checked = false);
+        updateSelectedCount();
+    }
+
+    async function rezzItem(itemEncoded, btn){
+        const item = decodeURIComponent(itemEncoded);
+        btn.innerHTML = "..."; btn.disabled = true;
+        try{
+            const res = await fetch(API, { method:"POST", body:"WEB_REZZ:" + item });
+            if(res.ok) { btn.innerHTML = "✔"; toast(t('toast_rezz_ok').split(" ")[0]); } else { btn.innerHTML = "X"; }
+        }catch{ btn.innerHTML = "X"; }
+        setTimeout(()=>{ 
+            btn.innerHTML = `<svg><use href="#icon-objects"></use></svg><div class="cat-tooltip">${t('tooltip_rezz')}</div>`; 
+            btn.disabled = false; 
+        }, 1800);
+    }
+
+    async function rezzSelected(containerId = "inventory-list"){
+        const checked = [...document.getElementById(containerId).querySelectorAll(".item-select:checked")];
+        if(!checked.length){ toast(t('no_sel')); return; }
+        const items = checked.map(c => c.value).join("\n");
+        toast(t('toast_rezz'));
+        try {
+            await fetch(API, { method:"POST", body:"WEB_BULK_REZZ:" + items });
+            toast(t('toast_rezz_ok'));
+        } catch { toast(t('toast_rezz_fail')); }
+        clearAllMasterCheckboxes();
+        checked.forEach(c => c.checked = false);
+        updateSelectedCount();
+    }
+
+    function confirmDelete(itemEncoded) {
+        deleteMode = "single";
+        deleteTarget = decodeURIComponent(itemEncoded);
+        document.getElementById("delete-item-name").innerText = formatItemName(deleteTarget).clean;
+        document.getElementById("delete-modal").classList.add("active");
+    }
+
+    function confirmBulkDelete(containerId = "inventory-list") {
+        const checked = [...document.getElementById(containerId).querySelectorAll(".item-select:checked")];
+        if(!checked.length){ toast(t('no_sel')); return; }
+        deleteMode = "bulk";
+        deleteTarget = checked.map(c => c.value);
+        let suffix = " selected folders";
+        if (currentLang === 'pt') suffix = " pastas selecionadas";
+        if (currentLang === 'es') suffix = " carpetas seleccionadas";
+        document.getElementById("delete-item-name").innerText = checked.length + suffix;
+        document.getElementById("delete-modal").classList.add("active");
+    }
+
+    function closeDeleteModal() { document.getElementById("delete-modal").classList.remove("active"); }
+
+    async function executeDelete() {
+        const btn = document.getElementById("confirm-delete-btn");
+        btn.innerText = t('btn_wait'); btn.disabled = true;
+        try {
+            if(deleteMode === "single") {
+                await fetch(API, { method: "POST", body: "WEB_DEL:" + deleteTarget });
+            } else {
+                await fetch(API, { method: "POST", body: "WEB_BULK_DEL:" + deleteTarget.join('\n') });
+            }
+            toast(t('toast_del_ok'));
+            closeDeleteModal();
+            loadInventory(); 
+        } catch(e) {
+            toast(t('toast_del_fail'));
+        }
+        btn.innerText = t('btn_yes_del'); btn.disabled = false;
+    }
+
+    function filterInventory(query){
+        const val = query.toLowerCase();
+        if(!val) { renderInventory(inventoryData, "inventory-list", "bulkInv"); return; }
+        const filtered = inventoryData.filter(x => x.name.toLowerCase().includes(val));
+        renderInventory(filtered, "inventory-list", "bulkInv");
+    }
+
+    function toggleSelectAll(containerId, masterCheckbox) {
+        const isChecked = masterCheckbox.checked;
+        document.getElementById(containerId).querySelectorAll('.item-select').forEach(cb => { 
+            if (containerId === 'dup-list' && isChecked && duplicateOriginals.includes(cb.value)) cb.checked = false; 
+            else cb.checked = isChecked; 
+        });
+        updateSelectedCount();
+    }
+
+    function renderCategories(){
+        const grid = document.getElementById("cat-grid");
+        grid.innerHTML = "";
+        Object.entries(categories).forEach(([name, icon])=>{
+            const div = document.createElement("div"); div.className = "cat-circle";
+            div.innerHTML = `<div class="cat-icon-bg">${icon}</div><div class="cat-label">${t(catToKey(name))}</div>`;
+            div.onclick = () => openCategory(name);
+            grid.appendChild(div);
+        });
+    }
+
+    function openCategory(category){
+        currentOpenCategoryViewId = category;
+        document.getElementById("categories-home").classList.add("hidden");
+        document.getElementById("category-view").classList.remove("hidden");
+        document.getElementById("catViewTitle").innerText = t('cat_name') + t(catToKey(category));
+        document.getElementById("catSearchBar").value = ""; 
+        const filtered = inventoryData.filter(item => detectCategory(item.name) === category);
+        renderInventory(filtered, "category-items", "bulkCat");
+    }
+
+    function filterCategoryInventory(query) {
+        const val = query.toLowerCase();
+        const filtered = inventoryData.filter(item => {
+            const matchesCat = detectCategory(item.name) === currentOpenCategoryViewId;
+            const matchesQuery = item.name.toLowerCase().includes(val);
+            return matchesCat && matchesQuery;
+        });
+        renderInventory(filtered, "category-items", "bulkCat");
+    }
+
+    function closeCategoryView(){
+        currentOpenCategoryViewId = "";
+        document.getElementById("categories-home").classList.remove("hidden");
+        document.getElementById("category-view").classList.add("hidden");
+    }
+
+    function openCategoryModal(itemEncoded){
+        let selectedItem = decodeURIComponent(itemEncoded);
+        const modal = document.getElementById("category-modal");
+        const grid = document.getElementById("modal-grid");
+        grid.innerHTML = "";
+        Object.entries(categories).forEach(([name, icon])=>{
+            const div = document.createElement("div"); div.className = "modal-cat";
+            div.innerHTML = `<span style="font-size: 26px; display: block; margin-bottom: 6px;">${icon}</span>${t(catToKey(name))}`;
+            div.onclick = ()=>{
+                savedCategories[selectedItem] = name;
+                localStorage.setItem("mmc_categories", JSON.stringify(savedCategories));
+                modal.classList.remove("active");
+                if(document.getElementById('tab-inventory').classList.contains('active')) filterInventory(document.getElementById("searchBar").value);
+                else if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") openCategory(currentOpenCategoryViewId);
+                if(!document.getElementById('dupContainer').classList.contains('hidden')) findDuplicatesWeb();
+                toast(t('toast_cat_saved'));
+            };
+            grid.appendChild(div);
+        });
+        modal.classList.add("active");
+    }
+
+    function getBaseName(rawName) {
+        let parsed = formatItemName(rawName);
+        let clean = parsed.clean.replace(/\s+\d+$/, '').trim(); 
+        return clean.toLowerCase();
+    }
+
+    function findDuplicatesWeb() {
+        toast(t('toast_dup_scan'));
+        const groups = {};
+        inventoryData.forEach(item => {
+            const base = getBaseName(item.name);
+            if(!groups[base]) groups[base] = [];
+            groups[base].push(item);
+        });
+        let dups = [];
+        duplicateOriginals = [];
+        Object.values(groups).forEach(group => {
+            if(group.length > 1) {
+                group.sort((a,b) => a.name.localeCompare(b.name)); 
+                duplicateOriginals.push(group[0].name); 
+                dups = dups.concat(group);
+            }
+        });
+        const dupContainer = document.getElementById('dupContainer');
+        if(dups.length === 0) {
+            toast(t('toast_dup_clean'));
+            dupContainer.classList.add('hidden');
+            return;
+        }
+        dupContainer.classList.remove('hidden');
+        renderInventory(dups, 'dup-list', 'bulkDup');
+        toast(`${dups.length} ${t('toast_dup_found')}`);
+    }
+
+    async function renameServer(btn) {
+        const newName = document.getElementById("renameInput").value.trim();
+        if(!newName) { toast(t('toast_rename_req')); return; }
+        const oldText = btn.innerText;
+        btn.innerText = t('btn_wait'); btn.disabled = true;
+        try {
+            await fetch(API, { method: "POST", body: "WEB_RENAME:" + newName });
+            document.getElementById("currentServerName").innerText = "MMC - Inventory Storage [" + newName + "]";
+            document.getElementById("renameInput").value = "";
+            toast(t('toast_rename_ok'));
+        } catch(e) {
+            toast(t('toast_rename_fail'));
+        }
+        btn.innerText = oldText; btn.disabled = false;
+    }
+
+    applyTranslations();
+    document.getElementById("inventory-list").innerHTML = getEmptyStateHTML(t('loading'), t('connecting'));
+    loadInventory();
+</script>
+</body>
+</html>
