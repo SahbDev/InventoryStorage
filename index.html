@@ -155,6 +155,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); 
     left: 0 !important; transform: none !important; transition: opacity 0.2s;
 }
+.item-name-wrapper:has(.photo-icon:hover) .date-tooltip { opacity: 0 !important; }
 
 .photo-icon { font-size: 14px; cursor: help; opacity: 0.8; transition: .2s; }
 .photo-icon:hover { opacity: 1; filter: drop-shadow(0 0 5px rgba(207,163,255,0.8)); }
@@ -365,7 +366,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
     <div id="tab-inventory" class="tab-content active">
         <div class="search-box">
-            <input type="text" class="search-input" id="searchBar" data-i18n="search_inv" placeholder="Search folders..." oninput="filterInventory(this.value)">
+            <input type="text" class="search-input" id="searchBar" data-i18n="search_inv" placeholder="Search folders..." autocomplete="off" oninput="filterInventory(this.value)">
         </div>
         <div class="bulk-actions" id="bulkInv" style="display: none;">
             <label class="checkbox-label"><input type="checkbox" class="item-cb" id="select-all" onchange="toggleSelectAll('inventory-list', this)"><span data-i18n="select_all">Select All</span></label>
@@ -388,7 +389,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 <button class="btn-back" onclick="closeCategoryView()" data-i18n="btn_back">◀ Back</button>
             </div>
             <div class="search-box">
-                <input type="text" class="search-input" id="catSearchBar" data-i18n="search_cat" placeholder="Search inside category..." oninput="filterCategoryInventory(this.value)">
+                <input type="text" class="search-input" id="catSearchBar" data-i18n="search_cat" placeholder="Search inside category..." autocomplete="off" oninput="filterCategoryInventory(this.value)">
             </div>
             <div class="bulk-actions" id="bulkCat" style="display: none;">
                 <label class="checkbox-label"><input type="checkbox" id="selectAllCat" class="item-cb" onclick="toggleSelectAll('category-items', this)"> <span data-i18n="select_all">Select All</span></label>
@@ -426,7 +427,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             <div id="currentServerName" style="font-size: 1.05rem; font-weight: 800; color: #fff; margin-bottom: 24px; letter-spacing: 0.5px;">MMC - Inventory Storage [YOURNAMEHERE]</div>
             
             <div class="search-box" style="margin-bottom: 16px;">
-                <input type="text" class="search-input" id="renameInput" data-i18n="enter_hash" placeholder="Enter new hashtag..." style="background: #111;">
+                <input type="text" class="search-input" id="renameInput" data-i18n="enter_hash" placeholder="Enter new hashtag..." autocomplete="off" style="background: #111;">
             </div>
             
             <button class="btn btn-white" style="width: 100%; padding: 14px; border-radius: 16px; font-size: 0.75rem;" onclick="renameServer(this)" data-i18n="update_name">Update Server Name</button>
@@ -457,7 +458,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             <span data-i18n="photo_desc2">Drop a Texture UUID or Gyazo link below.</span>
         </div>
         
-        <input type="text" class="search-input" id="photo-uuid-input" data-i18n="enter_uuid" placeholder="Enter Texture UUID or Link..." style="margin-bottom: 20px;">
+        <input type="text" class="search-input" id="photo-uuid-input" data-i18n="enter_uuid" placeholder="Enter Texture UUID or Link..." autocomplete="off" style="margin-bottom: 20px;">
         
         <div style="display: flex; gap: 10px;">
             <button class="btn btn-dark" style="flex: 1; border-radius: 14px;" onclick="removePhoto()" data-i18n="remove">REMOVE</button>
