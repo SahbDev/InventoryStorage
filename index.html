@@ -171,7 +171,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 }
 .gallery-img-box img { width: 100%; height: 100%; object-fit: cover; transition: .3s; }
 .gallery-card:hover .gallery-img-box img { transform: scale(1.08); }
-.gallery-no-photo { font-size: 2.2rem; opacity: 0.2; filter: grayscale(1); }
 
 .gallery-checkbox {
     position: absolute; top: 8px; left: 8px; z-index: 5; accent-color: var(--accent-purple); width: 16px; height: 16px; cursor: pointer; opacity: 0; transition: .2s;
@@ -267,6 +266,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 }
 .lang-card:hover { background: #111; border-color: #444; }
 .lang-card.active { border-color: var(--green); box-shadow: inset 0 0 20px rgba(82, 255, 156, 0.05); }
+.flag-circle { width: 56px; height: 56px; border-radius: 50%; border: 3px solid #1a1a1a; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #111; }
+.flag-circle svg { width: 100%; height: 100%; display: block; }
 </style>
 </head>
 <body>
@@ -655,12 +656,18 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     const globalPreview = document.getElementById('global-photo-preview');
     const globalPreviewImg = document.getElementById('global-preview-img');
     const globalPreviewDate = document.getElementById('global-preview-date');
+    const placeholderUrl = "https://i.gyazo.com/def20df3a5f451ad996cd535be6adf2f.png";
 
-    function showPhotoPreview(e, photoData, dateStr) {
+    function getFinalUrl(photoData) {
+        if (!photoData || photoData === "NONE") return placeholderUrl;
         let finalUrl = photoData;
         if(finalUrl.includes("gyazo.com") && !finalUrl.includes("i.gyazo.com")) finalUrl = finalUrl.replace("gyazo.com", "i.gyazo.com") + ".png";
         if(!finalUrl.startsWith("http")) finalUrl = `https://picture-service.secondlife.com/${photoData}/320x240.jpg`;
-        globalPreviewImg.src = finalUrl;
+        return finalUrl;
+    }
+
+    function showPhotoPreview(e, photoData, dateStr) {
+        globalPreviewImg.src = getFinalUrl(photoData);
         
         if(dateStr && dateStr !== 'undefined' && dateStr.trim() !== '') {
             globalPreviewDate.innerText = t('tooltip_create') + " " + dateStr;
@@ -817,22 +824,23 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             const parsed = formatItemName(itemObj.name);
             const categoryTranslated = t(catToKey(category));
 
+            // Defesa avançada contra o bug de wrap-around do LSL
+            let hasPhoto = false;
+            let validPhotoData = "";
+            if (itemObj.photo && itemObj.photo !== "NONE" && itemObj.photo !== "undefined") {
+                if (itemObj.photo !== itemObj.name && !itemObj.photo.includes("[")) {
+                    hasPhoto = true;
+                    validPhotoData = itemObj.photo;
+                }
+            }
+
             const li = document.createElement("li");
 
             if (isGallery) {
                 li.className = "gallery-card";
                 
-                let photoHtml = '';
-                if(itemObj.photo) {
-                    let finalUrl = itemObj.photo;
-                    if(finalUrl.includes("gyazo.com") && !finalUrl.includes("i.gyazo.com")) finalUrl = finalUrl.replace("gyazo.com", "i.gyazo.com") + ".png";
-                    if(!finalUrl.startsWith("http")) finalUrl = `https://picture-service.secondlife.com/${itemObj.photo}/320x240.jpg`;
-                    photoHtml = `<img src="${finalUrl}" alt="preview">`;
-                } else {
-                    photoHtml = `<div class="gallery-no-photo">${icon}</div>`;
-                }
-                
-                const hoverEvents = itemObj.photo ? `onmouseenter="showPhotoPreview(event, '${itemObj.photo}', '${parsed.date ? parsed.date : ''}')" onmouseleave="hidePhotoPreview()"` : '';
+                let photoHtml = `<img src="${hasPhoto ? getFinalUrl(validPhotoData) : placeholderUrl}" alt="preview">`;
+                const hoverEvents = hasPhoto ? `onmouseenter="showPhotoPreview(event, '${validPhotoData}', '${parsed.date ? parsed.date : ''}')" onmouseleave="hidePhotoPreview()"` : '';
 
                 li.innerHTML = `
                     <div class="gallery-img-box" ${hoverEvents}>
@@ -842,8 +850,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                     <div class="gallery-info">
                         <div class="gallery-title" title="${parsed.clean}">${parsed.clean}</div>
                         <div class="gallery-actions">
-                            <button class="action-btn photo-btn" onclick="openPhotoModal('${encodeURIComponent(itemObj.name)}', '${itemObj.photo}')">
-                                <svg><use href="${itemObj.photo ? '#icon-edit' : '#icon-photo'}"></use></svg>
+                            <button class="action-btn photo-btn" onclick="openPhotoModal('${encodeURIComponent(itemObj.name)}', '${validPhotoData}')">
+                                <svg><use href="${hasPhoto ? '#icon-edit' : '#icon-photo'}"></use></svg>
                                 <div class="cat-tooltip">${t('tooltip_photo')}</div>
                             </button>
                             <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(itemObj.name)}', this)">
@@ -871,14 +879,14 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                     <input type="checkbox" class="item-cb item-select" value="${itemObj.name}">
                     
                     <div class="item-name-wrapper">
-                        ${itemObj.photo ? `<span class="photo-icon" style="color:var(--accent-purple);" onmouseenter="showPhotoPreview(event, '${itemObj.photo}', '${parsed.date ? parsed.date : ''}')" onmouseleave="hidePhotoPreview()">🖼️</span>` : ''}
+                        ${hasPhoto ? `<span class="photo-icon" style="color:var(--accent-purple);" onmouseenter="showPhotoPreview(event, '${validPhotoData}', '${parsed.date ? parsed.date : ''}')" onmouseleave="hidePhotoPreview()">🖼️</span>` : ''}
                         <div class="item-name">${parsed.clean}</div>
-                        ${(!itemObj.photo && parsed.date) ? `<div class="cat-tooltip date-tooltip">${t('tooltip_create')} ${parsed.date}</div>` : ''}
+                        ${(!hasPhoto && parsed.date) ? `<div class="cat-tooltip date-tooltip">${t('tooltip_create')} ${parsed.date}</div>` : ''}
                     </div>
                     
                     <div class="item-actions">
-                        <button class="action-btn photo-btn" onclick="openPhotoModal('${encodeURIComponent(itemObj.name)}', '${itemObj.photo}')">
-                            <svg><use href="${itemObj.photo ? '#icon-edit' : '#icon-photo'}"></use></svg>
+                        <button class="action-btn photo-btn" onclick="openPhotoModal('${encodeURIComponent(itemObj.name)}', '${validPhotoData}')">
+                            <svg><use href="${hasPhoto ? '#icon-edit' : '#icon-photo'}"></use></svg>
                             <div class="cat-tooltip">${t('tooltip_photo')}</div>
                         </button>
                         <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(itemObj.name)}', this)">
@@ -915,7 +923,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
     function openPhotoModal(nameEncoded, currentPhoto) {
         currentPhotoTarget = decodeURIComponent(nameEncoded);
-        document.getElementById('photo-uuid-input').value = currentPhoto || "";
+        document.getElementById('photo-uuid-input').value = (!currentPhoto || currentPhoto === "NONE") ? "" : currentPhoto;
         document.getElementById('photo-modal').classList.add('active');
     }
 
@@ -938,7 +946,8 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         const btn = document.querySelector('#photo-modal .btn-dark');
         btn.innerText = t('btn_wait'); btn.disabled = true;
         try {
-            await fetch(API, { method: "POST", body: "WEB_PHOTO:" + currentPhotoTarget + "||" });
+            // Em vez de enviar vazio (que causa o bug do LSL), enviamos "NONE" para limpar de forma segura
+            await fetch(API, { method: "POST", body: "WEB_PHOTO:" + currentPhotoTarget + "||NONE" });
             toast(t('toast_photo_ok'));
             document.getElementById('photo-modal').classList.remove('active');
             loadInventory();
