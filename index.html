@@ -60,6 +60,8 @@ header{ text-align:center; padding-bottom:24px; border-bottom:1px solid #1b1b1b;
 .resync-btn:hover { border-color: #555; transform: translateY(-1px); }
 .resync-btn svg { width: 14px; height: 14px; fill: #fff; }
 
+.resync-btn svg.standard-circle-icon { width: 18px; height: 18px; margin-left: -2px; }
+
 .flag-group { position: relative; width: 48px; height: 20px; }
 .flag-icon { position: absolute; width: 20px; height: 20px; border-radius: 50%; overflow: hidden; border: 2px solid #0f0f0f; background: #111; }
 .flag-icon.us { left: 0; z-index: 3; }
@@ -171,7 +173,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 }
 .gallery-img-box img { width: 100%; height: 100%; object-fit: cover; transition: .3s; }
 .gallery-card:hover .gallery-img-box img { transform: scale(1.08); }
-.gallery-no-photo { font-size: 2.2rem; opacity: 0.2; filter: grayscale(1); }
 
 .gallery-checkbox {
     position: absolute; top: 8px; left: 8px; z-index: 5; accent-color: var(--accent-purple); width: 16px; height: 16px; cursor: pointer; opacity: 0; transition: .2s;
@@ -310,10 +311,14 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         </g>
     </symbol>
 
-    <symbol id="icon-camera" viewBox="0 0 24 24">
-        <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3z"/>
+    <symbol id="icon-gyazo-circle" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="11" fill="none" stroke="#2a2a2a" stroke-width="1"/>
+        <circle cx="12" cy="12" r="8" fill="#111" />
+        <path d="M11.5 15.5H8V8.5H16V10H11.5V11.5H14.5V13H11.5V15.5Z" fill="#fff"/>
     </symbol>
 
+    <symbol id="icon-camera" viewBox="0 0 24 24"><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3z"/></symbol>
+    <symbol id="icon-lock" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></symbol>
     <symbol id="icon-photo" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></symbol>
     <symbol id="icon-edit" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 11.18l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></symbol>
     <symbol id="icon-objects" viewBox="0 0 24 24"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18l-7.9-4.44c-.32-.17-.53-.5-.53-.88V7.5c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18s.41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.19v6.72zm14 0v-6.72l-6 3.39v6.71l6-3.38z"/></symbol>
@@ -340,7 +345,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             
             <div style="display:flex; gap:10px;">
                 <div class="resync-btn" onclick="openGyazoModal()">
-                    <svg><use href="#icon-camera"></use></svg> GYAZO
+                    <svg class="standard-circle-icon"><use href="#icon-gyazo-circle"></use></svg> GYAZO
                 </div>
                 <div class="resync-btn" onclick="loadInventory()">
                     <svg><use href="#icon-sync"></use></svg> <span data-i18n="resync">RESYNC</span>
@@ -457,8 +462,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     <div class="modal-box" style="max-width: 400px; text-align: center;">
         <div class="close-btn" onclick="document.getElementById('photo-modal').classList.remove('active')">✕</div>
         <div class="modal-title" data-i18n="assign_photo">LINK PHOTO</div>
-        
-        <div style="font-size: 0.8rem; color: #888; margin-bottom: 8px;" id="photo-item-name">Item Name</div>
         
         <div style="font-size: 0.75rem; color: #aaa; margin-bottom: 20px;">
             <span data-i18n="photo_desc1">Link a photo to this product</span><br>
@@ -640,14 +643,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                 el.innerText = t(key);
             }
         });
-        renderCategories();
         if (inventoryData.length > 0) {
+            renderCategories();
             const searchVal = document.getElementById("searchBar").value;
             if (document.getElementById('tab-inventory').classList.contains('active')) filterInventory(searchVal);
             else if (document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") openCategory(currentOpenCategoryViewId);
             else if (document.getElementById('tab-tools').classList.contains('active') && !document.getElementById('dupContainer').classList.contains('hidden')) findDuplicatesWeb();
-        } else {
-            document.getElementById("inventory-list").innerHTML = getEmptyStateHTML(t('loading'), t('connecting'));
         }
 
         let delName = document.getElementById("delete-item-name").innerText;
@@ -700,9 +701,11 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         globalPreview.style.left = x + 'px'; globalPreview.style.top = y + 'px';
     }
 
-    const API = new URLSearchParams(window.location.search).get("api");
+    const urlParams = new URLSearchParams(window.location.search);
+    const API = urlParams.get("api");
+    const TOKEN = urlParams.get("t");
+    
     let inventoryData = []; 
-    let savedCategories = JSON.parse(localStorage.getItem('mmc_categories')) || {};
     let currentOpenCategoryViewId = "";
     let deleteMode = "";
     let deleteTarget = null;
@@ -748,7 +751,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     }
 
     function detectCategory(name) {
-        if (savedCategories[name]) return savedCategories[name];
         const lowerName = name.toLowerCase();
         for (const [cat, words] of Object.entries(keywords)) {
             if (words.some(word => lowerName.includes(word))) return cat;
@@ -757,6 +759,14 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     }
 
     function getEmptyStateHTML(title, sub) { return `<div class="empty-watermark"><div class="empty-watermark-title">${title}</div><div class="empty-watermark-sub">${sub}</div></div>`; }
+    
+    function getAuthErrorHTML() {
+        return `<div class="empty-watermark">
+            <svg style="width:64px; height:64px; fill:var(--danger); margin-bottom:20px;"><use href="#icon-lock"></use></svg>
+            <div class="empty-watermark-title" style="color:var(--danger);">ACCESS EXPIRED / UNAUTHORIZED</div>
+            <div class="empty-watermark-sub">For your security, this session has been invalidated.<br>Please generate a new link from your Second Life server.</div>
+        </div>`;
+    }
 
     function switchTab(tabId, btnElement){
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -775,17 +785,42 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         });
     }
 
+    // NOVO: Função de comunicação blindada
+    async function apiCall(method, bodyData = null) {
+        if(!API || !TOKEN) throw new Error("Unauthorized");
+        const options = {
+            method: method,
+            headers: { "x-auth-token": TOKEN }
+        };
+        if (bodyData) options.body = bodyData;
+        const res = await fetch(API, options);
+        if (res.status === 401) throw new Error("Unauthorized");
+        return res;
+    }
+
     async function loadInventory(){
-        if(!API){ toast("Missing SL API URL"); document.getElementById("inventory-list").innerHTML = getEmptyStateHTML(t('empty_title'), "Access via SL Menu."); return; }
+        if(!API || !TOKEN){ 
+            document.getElementById("inventory-list").innerHTML = getAuthErrorHTML(); 
+            return; 
+        }
         toast(t('toast_sync'));
         try{
-            const res = await fetch(API);
+            const res = await apiCall("GET");
             const data = await res.json();
             
             inventoryData = data.map(i => {
                 let decoded = decodeURIComponent(i);
                 let parts = decoded.split("||");
-                return { name: parts[0], photo: parts[1] || "", raw: decoded };
+                // Agora puxa a categoria salva no LSL, ou detecta se for vazio
+                let savedCat = parts[2];
+                if (!savedCat || savedCat === "undefined" || savedCat === "") savedCat = detectCategory(parts[0]);
+                
+                return { 
+                    name: parts[0], 
+                    photo: parts[1] || "", 
+                    category: savedCat,
+                    raw: decoded 
+                };
             });
             
             clearAllMasterCheckboxes();
@@ -801,9 +836,15 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             else renderInventory(inventoryData, "inventory-list", "bulkInv");
             
             updateSelectedCount(); 
+            renderCategories();
             toast(t('toast_sync_ok'));
         }catch(e){
-            toast(t('toast_conn_fail'));
+            if (e.message === "Unauthorized") {
+                document.getElementById("inventory-list").innerHTML = getAuthErrorHTML();
+                document.getElementById("bulkInv").style.display = 'none';
+            } else {
+                toast(t('toast_conn_fail'));
+            }
         }
     }
 
@@ -826,7 +867,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         if(bulkEl) bulkEl.style.display = 'flex';
 
         items.forEach(itemObj => {
-            const category = detectCategory(itemObj.name);
+            const category = itemObj.category;
             const icon = categories[category] || "📦";
             const parsed = formatItemName(itemObj.name);
             const categoryTranslated = t(catToKey(category));
@@ -857,7 +898,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                         <div class="gallery-title" title="${parsed.clean}">${parsed.clean}</div>
                         <div class="gallery-actions">
                             <button class="action-btn photo-btn" onclick="openPhotoModal('${encodeURIComponent(itemObj.name)}', '${validPhotoData}')">
-                                <svg><use href="${hasPhoto ? '#icon-edit' : '#icon-photo'}"></use></svg>
+                                <svg><use href="${hasPhoto ? '#icon-edit' : '#icon-camera'}"></use></svg>
                                 <div class="cat-tooltip">${t('tooltip_photo')}</div>
                             </button>
                             <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(itemObj.name)}', this)">
@@ -892,7 +933,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
                     
                     <div class="item-actions">
                         <button class="action-btn photo-btn" onclick="openPhotoModal('${encodeURIComponent(itemObj.name)}', '${validPhotoData}')">
-                            <svg><use href="${hasPhoto ? '#icon-edit' : '#icon-photo'}"></use></svg>
+                            <svg><use href="${hasPhoto ? '#icon-edit' : '#icon-camera'}"></use></svg>
                             <div class="cat-tooltip">${t('tooltip_photo')}</div>
                         </button>
                         <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(itemObj.name)}', this)">
@@ -938,12 +979,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         const btn = document.getElementById('save-photo-btn');
         btn.innerText = t('btn_wait'); btn.disabled = true;
         try {
-            await fetch(API, { method: "POST", body: "WEB_PHOTO:" + currentPhotoTarget + "||" + uuid });
+            await apiCall("POST", "WEB_PHOTO:" + currentPhotoTarget + "||" + uuid);
             toast(t('toast_photo_ok'));
             document.getElementById('photo-modal').classList.remove('active');
             loadInventory();
         } catch(e) {
-            toast(t('toast_photo_fail'));
+            toast(e.message === "Unauthorized" ? "Access Expired/Unauthorized" : t('toast_photo_fail'));
         }
         btn.innerText = t('save'); btn.disabled = false;
     }
@@ -952,12 +993,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         const btn = document.querySelector('#photo-modal .btn-dark');
         btn.innerText = t('btn_wait'); btn.disabled = true;
         try {
-            await fetch(API, { method: "POST", body: "WEB_PHOTO:" + currentPhotoTarget + "||NONE" });
+            await apiCall("POST", "WEB_PHOTO:" + currentPhotoTarget + "||NONE");
             toast(t('toast_photo_ok'));
             document.getElementById('photo-modal').classList.remove('active');
             loadInventory();
         } catch(e) {
-            toast(t('toast_photo_fail'));
+            toast(e.message === "Unauthorized" ? "Access Expired/Unauthorized" : t('toast_photo_fail'));
         }
         btn.innerText = t('remove'); btn.disabled = false;
     }
@@ -966,7 +1007,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         const item = decodeURIComponent(itemEncoded);
         btn.innerHTML = "..."; btn.disabled = true;
         try{
-            const res = await fetch(API, { method:"POST", body:item });
+            const res = await apiCall("POST", item);
             if(res.ok) { btn.innerHTML = "✔"; toast(t('toast_deliv_ok').split(" ")[0]); } else { btn.innerHTML = "X"; }
         }catch{ btn.innerHTML = "X"; }
         setTimeout(()=>{ 
@@ -981,9 +1022,9 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         const items = checked.map(c => c.value).join("\n");
         toast(t('toast_deliv'));
         try {
-            await fetch(API, { method:"POST", body:items });
+            await apiCall("POST", items);
             toast(t('toast_deliv_ok'));
-        } catch { toast(t('toast_deliv_fail')); }
+        } catch (e) { toast(e.message === "Unauthorized" ? "Access Expired/Unauthorized" : t('toast_deliv_fail')); }
         clearAllMasterCheckboxes();
         checked.forEach(c => c.checked = false);
         updateSelectedCount();
@@ -993,7 +1034,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         const item = decodeURIComponent(itemEncoded);
         btn.innerHTML = "..."; btn.disabled = true;
         try{
-            const res = await fetch(API, { method:"POST", body:"WEB_REZZ:" + item });
+            const res = await apiCall("POST", "WEB_REZZ:" + item);
             if(res.ok) { btn.innerHTML = "✔"; toast(t('toast_rezz_ok').split(" ")[0]); } else { btn.innerHTML = "X"; }
         }catch{ btn.innerHTML = "X"; }
         setTimeout(()=>{ 
@@ -1008,9 +1049,9 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         const items = checked.map(c => c.value).join("\n");
         toast(t('toast_rezz'));
         try {
-            await fetch(API, { method:"POST", body:"WEB_BULK_REZZ:" + items });
+            await apiCall("POST", "WEB_BULK_REZZ:" + items);
             toast(t('toast_rezz_ok'));
-        } catch { toast(t('toast_rezz_fail')); }
+        } catch (e) { toast(e.message === "Unauthorized" ? "Access Expired/Unauthorized" : t('toast_rezz_fail')); }
         clearAllMasterCheckboxes();
         checked.forEach(c => c.checked = false);
         updateSelectedCount();
@@ -1042,15 +1083,15 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         btn.innerText = t('btn_wait'); btn.disabled = true;
         try {
             if(deleteMode === "single") {
-                await fetch(API, { method: "POST", body: "WEB_DEL:" + deleteTarget });
+                await apiCall("POST", "WEB_DEL:" + deleteTarget);
             } else {
-                await fetch(API, { method: "POST", body: "WEB_BULK_DEL:" + deleteTarget.join('\n') });
+                await apiCall("POST", "WEB_BULK_DEL:" + deleteTarget.join('\n'));
             }
             toast(t('toast_del_ok'));
             closeDeleteModal();
             loadInventory(); 
         } catch(e) {
-            toast(t('toast_del_fail'));
+            toast(e.message === "Unauthorized" ? "Access Expired/Unauthorized" : t('toast_del_fail'));
         }
         btn.innerText = t('btn_yes_del'); btn.disabled = false;
     }
@@ -1088,14 +1129,14 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         document.getElementById("category-view").classList.remove("hidden");
         document.getElementById("catViewTitle").innerText = t('cat_name') + t(catToKey(category));
         document.getElementById("catSearchBar").value = ""; 
-        const filtered = inventoryData.filter(item => detectCategory(item.name) === category);
+        const filtered = inventoryData.filter(item => item.category === category);
         renderInventory(filtered, "category-items", "bulkCat");
     }
 
     function filterCategoryInventory(query) {
         const val = query.toLowerCase();
         const filtered = inventoryData.filter(item => {
-            const matchesCat = detectCategory(item.name) === currentOpenCategoryViewId;
+            const matchesCat = item.category === currentOpenCategoryViewId;
             const matchesQuery = item.name.toLowerCase().includes(val);
             return matchesCat && matchesQuery;
         });
@@ -1116,14 +1157,17 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         Object.entries(categories).forEach(([name, icon])=>{
             const div = document.createElement("div"); div.className = "modal-cat";
             div.innerHTML = `<span style="font-size: 26px; display: block; margin-bottom: 6px;">${icon}</span>${t(catToKey(name))}`;
-            div.onclick = ()=>{
-                savedCategories[selectedItem] = name;
-                localStorage.setItem("mmc_categories", JSON.stringify(savedCategories));
+            div.onclick = async ()=>{
+                // AGORA SALVA A CATEGORIA DIRETAMENTE NO SECOND LIFE!
                 modal.classList.remove("active");
-                if(document.getElementById('tab-inventory').classList.contains('active')) filterInventory(document.getElementById("searchBar").value);
-                else if(document.getElementById('tab-categories').classList.contains('active') && currentOpenCategoryViewId !== "") openCategory(currentOpenCategoryViewId);
-                if(!document.getElementById('dupContainer').classList.contains('hidden')) findDuplicatesWeb();
-                toast(t('toast_cat_saved'));
+                toast(t('btn_wait'));
+                try {
+                    await apiCall("POST", "WEB_CAT:" + selectedItem + "||" + name);
+                    toast(t('toast_cat_saved'));
+                    loadInventory(); // Recarrega para puxar os dados frescos
+                } catch(e) {
+                    toast(e.message === "Unauthorized" ? "Access Expired/Unauthorized" : "Failed to save category");
+                }
             };
             grid.appendChild(div);
         });
@@ -1170,12 +1214,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         const oldText = btn.innerText;
         btn.innerText = t('btn_wait'); btn.disabled = true;
         try {
-            await fetch(API, { method: "POST", body: "WEB_RENAME:" + newName });
+            await apiCall("POST", "WEB_RENAME:" + newName);
             document.getElementById("currentServerName").innerText = "MMC - Inventory Storage [" + newName + "]";
             document.getElementById("renameInput").value = "";
             toast(t('toast_rename_ok'));
         } catch(e) {
-            toast(t('toast_rename_fail'));
+            toast(e.message === "Unauthorized" ? "Access Expired/Unauthorized" : t('toast_rename_fail'));
         }
         btn.innerText = oldText; btn.disabled = false;
     }
