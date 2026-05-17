@@ -36,9 +36,7 @@ body{
 }
 
 .container{
-    width:100%; 
-    max-width:1280px; /* <--- EXPANDIDO AQUI DE 760 PARA 1280px */
-    min-height: 85vh;
+    width:100%; max-width:1280px; min-height: 85vh;
     background:linear-gradient(180deg,#111111,#0a0a0a);
     border:1px solid var(--line); border-radius:34px; padding:34px;
     box-shadow:0 30px 80px rgba(0,0,0,.65); display: flex; flex-direction: column;
@@ -138,29 +136,68 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 #catGridView { display: block; }
 #catListViewContainer { display: none; }
 
-/* <--- SISTEMA DE LISTA NOVO: FORMATO GRID RESPONSIVO ---> */
+/* LAYOUT DE LISTA PADRÃO (INVENTÁRIO E TOOLS) */
 .item-list{
     list-style:none; margin:0; padding:4px 4px 40px 4px; border-radius:24px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
-    gap: 16px;
-    max-height: 68vh; /* Altura Dinâmica Crescida */
-    overflow-y:auto; overflow-x:hidden;
-    align-content: start;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: 16px;
+    max-height: 68vh; overflow-y:auto; overflow-x:hidden; align-content: start;
 }
 .item-list::-webkit-scrollbar { width: 8px; }
 .item-list::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 4px; }
-
-/* O item virou um "Card" flutuante lindo com sombras */
 .item{ 
     display:grid; grid-template-columns:auto auto 1fr auto; gap:14px; align-items:center; 
     padding:18px 20px; background:#0c0c0c; border:1px solid #202020; border-radius:20px; transition:.2s; 
 }
 .item:hover{ background:#111; border-color:#333; transform:translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-
 .item-name-wrapper { position: relative; width: max-content; display: flex; align-items: center; gap: 8px; cursor: default; }
 .item-name{ font-size:.88rem; font-weight:500; word-break:break-word; line-height: 1.4; transition: color 0.2s;}
 .item:has(.item-select:checked) .item-name { color: var(--accent-purple); text-shadow: 0 0 8px rgba(207, 163, 255, 0.2); }
+
+/* LAYOUT DE GALERIA QUADRADA (CATEGORIAS) */
+.gallery-grid {
+    list-style: none; margin: 0; padding: 4px 4px 40px 4px; border-radius: 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+    gap: 16px;
+    max-height: 68vh;
+    overflow-y: auto; overflow-x: hidden;
+    align-content: start;
+}
+.gallery-grid::-webkit-scrollbar { width: 8px; }
+.gallery-grid::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 4px; }
+
+.gallery-card {
+    background: #0c0c0c; border: 1px solid #202020; border-radius: 16px;
+    overflow: hidden; display: flex; flex-direction: column; transition: .2s; position: relative;
+}
+.gallery-card:hover { border-color: #333; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+.gallery-card:has(.item-select:checked) { border-color: var(--accent-purple); box-shadow: 0 0 15px rgba(207, 163, 255, 0.15); }
+
+.gallery-img-box {
+    width: 100%; aspect-ratio: 1/1; background: #111;
+    position: relative; display: flex; align-items: center; justify-content: center;
+    overflow: hidden; cursor: help; border-bottom: 1px solid #1a1a1a;
+}
+.gallery-img-box img { width: 100%; height: 100%; object-fit: cover; transition: .3s; }
+.gallery-card:hover .gallery-img-box img { transform: scale(1.08); }
+.gallery-no-photo { font-size: 2.2rem; opacity: 0.2; filter: grayscale(1); }
+
+.gallery-checkbox {
+    position: absolute; top: 8px; left: 8px; z-index: 5;
+    accent-color: var(--accent-purple); width: 16px; height: 16px; cursor: pointer;
+    opacity: 0; transition: .2s;
+}
+.gallery-card:hover .gallery-checkbox, .gallery-checkbox:checked { opacity: 1; }
+
+.gallery-info { padding: 10px 6px; display: flex; flex-direction: column; gap: 10px; }
+.gallery-title { font-size: 0.6rem; font-weight: 700; color: #a1a1a1; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 0.5px;}
+.gallery-card:has(.item-select:checked) .gallery-title { color: var(--accent-purple); }
+
+.gallery-actions { display: flex; justify-content: center; gap: 4px; }
+.gallery-actions .action-btn { width: 24px; height: 24px; border-radius: 8px; border: 1px solid #222; background: #080808;}
+.gallery-actions .action-btn svg { width: 11px; height: 11px; }
+.gallery-actions .cat-tooltip { bottom: -28px; font-size: .5rem; padding: 4px 6px; }
+
 
 .date-tooltip { 
     background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); 
@@ -172,54 +209,23 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .photo-icon:hover { opacity: 1; filter: drop-shadow(0 0 5px rgba(207,163,255,0.8)); }
 
 .global-preview {
-    position: fixed;
-    width: 320px;
-    height: 240px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    transform: scale(0.95);
-    z-index: 99999;
+    position: fixed; width: 320px; height: 240px; pointer-events: none; opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease; transform: scale(0.95); z-index: 99999;
 }
-.global-preview.show {
-    opacity: 1;
-    transform: scale(1);
-}
+.global-preview.show { opacity: 1; transform: scale(1); }
 .global-preview-img-wrapper {
-    width: 100%;
-    height: 100%;
-    border: 1px solid #2a2a2a;
-    border-radius: 16px;
+    width: 100%; height: 100%; border: 1px solid #2a2a2a; border-radius: 16px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.05);
-    overflow: hidden;
-    position: relative;
+    overflow: hidden; position: relative;
     background: #0d0d0d url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="%23333"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>') no-repeat center center;
 }
-.global-preview-img-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0; left: 0;
-}
+.global-preview-img-wrapper img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
 .global-preview-date {
-    position: absolute;
-    bottom: -16px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(4px);
-    color: #000;
-    font-size: .6rem;
-    font-weight: 800;
-    padding: 6px 12px;
-    border-radius: 8px;
-    letter-spacing: 1px;
-    white-space: nowrap;
-    text-transform: uppercase;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-    z-index: 10;
-    display: none;
+    position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px); color: #000;
+    font-size: .6rem; font-weight: 800; padding: 6px 12px; border-radius: 8px;
+    letter-spacing: 1px; white-space: nowrap; text-transform: uppercase;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4); z-index: 10; display: none;
 }
 
 .item-actions{ display:flex; align-items:center; gap:8px; }
@@ -249,12 +255,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .action-btn.delete-btn { color: var(--danger); border-color: #381818; background: #110505;}
 .action-btn.delete-btn:hover { border-color: var(--danger); background: var(--danger); color: #fff; }
 
-/* Ajuste da marca d'água vazia para abraçar todo o grid */
-.empty-watermark{ 
-    grid-column: 1 / -1; 
-    background: #0c0c0c; border: 1px solid #202020; border-radius: 24px;
-    padding:80px 20px; text-align:center; 
-}
+.empty-watermark{ grid-column: 1 / -1; padding:80px 20px; text-align:center; }
 .empty-watermark-title{ font-size:1rem; font-weight:700; letter-spacing:2px; margin-bottom:10px; text-transform: uppercase; }
 .empty-watermark-sub{ color:#666; font-size: 0.85rem; line-height: 1.5;}
 
@@ -796,6 +797,9 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         const bulkEl = bulkId ? document.getElementById(bulkId) : null;
         list.innerHTML = "";
         
+        const isGallery = (targetId === "category-items");
+        list.className = isGallery ? "gallery-grid" : "item-list";
+        
         if(items.length === 0){
             if(bulkEl) bulkEl.style.display = 'none';
             list.innerHTML = getEmptyStateHTML(t('empty_title'), t('empty_sub'));
@@ -813,39 +817,84 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             const categoryTranslated = t(catToKey(category));
 
             const li = document.createElement("li");
-            li.className = "item";
-            li.innerHTML = `
-                <div class="cat-badge" style="font-size:18px;" onclick="openCategoryModal('${encodeURIComponent(itemObj.name)}')">
-                    ${icon}
-                    <div class="cat-tooltip">${categoryTranslated}</div>
-                </div>
-                <input type="checkbox" class="item-cb item-select" value="${itemObj.name}">
+
+            if (isGallery) {
+                li.className = "gallery-card";
                 
-                <div class="item-name-wrapper">
-                    ${itemObj.photo ? `<span class="photo-icon" style="color:var(--accent-purple);" onmouseenter="showPhotoPreview(event, '${itemObj.photo}', '${parsed.date ? parsed.date : ''}')" onmouseleave="hidePhotoPreview()">🖼️</span>` : ''}
-                    <div class="item-name">${parsed.clean}</div>
-                    ${(!itemObj.photo && parsed.date) ? `<div class="cat-tooltip date-tooltip">${t('tooltip_create')} ${parsed.date}</div>` : ''}
-                </div>
+                let photoHtml = '';
+                if(itemObj.photo) {
+                    let finalUrl = itemObj.photo;
+                    if(finalUrl.includes("gyazo.com") && !finalUrl.includes("i.gyazo.com")) finalUrl = finalUrl.replace("gyazo.com", "i.gyazo.com") + ".png";
+                    if(!finalUrl.startsWith("http")) finalUrl = `https://picture-service.secondlife.com/${itemObj.photo}/320x240.jpg`;
+                    photoHtml = `<img src="${finalUrl}" alt="preview">`;
+                } else {
+                    photoHtml = `<div class="gallery-no-photo">${icon}</div>`;
+                }
                 
-                <div class="item-actions">
-                    <button class="action-btn photo-btn" onclick="openPhotoModal('${encodeURIComponent(itemObj.name)}', '${itemObj.photo}')">
-                        <svg><use href="${itemObj.photo ? '#icon-edit' : '#icon-photo'}"></use></svg>
-                        <div class="cat-tooltip">${t('tooltip_photo')}</div>
-                    </button>
-                    <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(itemObj.name)}', this)">
-                        <svg><use href="#icon-send"></use></svg>
-                        <div class="cat-tooltip">${t('tooltip_deliv')}</div>
-                    </button>
-                    <button class="action-btn rezz-btn" onclick="rezzItem('${encodeURIComponent(itemObj.name)}', this)">
-                        <svg><use href="#icon-objects"></use></svg>
-                        <div class="cat-tooltip">${t('tooltip_rezz')}</div>
-                    </button>
-                    <button class="action-btn delete-btn" onclick="confirmDelete('${encodeURIComponent(itemObj.name)}')">
-                        <svg><use href="#icon-trash"></use></svg>
-                        <div class="cat-tooltip">${t('tooltip_del')}</div>
-                    </button>
-                </div>
-            `;
+                const hoverEvents = itemObj.photo ? `onmouseenter="showPhotoPreview(event, '${itemObj.photo}', '${parsed.date ? parsed.date : ''}')" onmouseleave="hidePhotoPreview()"` : '';
+
+                li.innerHTML = `
+                    <div class="gallery-img-box" ${hoverEvents}>
+                        <input type="checkbox" class="item-cb item-select gallery-checkbox" value="${itemObj.name}">
+                        ${photoHtml}
+                    </div>
+                    <div class="gallery-info">
+                        <div class="gallery-title" title="${parsed.clean}">${parsed.clean}</div>
+                        <div class="gallery-actions">
+                            <button class="action-btn photo-btn" onclick="openPhotoModal('${encodeURIComponent(itemObj.name)}', '${itemObj.photo}')">
+                                <svg><use href="${itemObj.photo ? '#icon-edit' : '#icon-photo'}"></use></svg>
+                                <div class="cat-tooltip">${t('tooltip_photo')}</div>
+                            </button>
+                            <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(itemObj.name)}', this)">
+                                <svg><use href="#icon-send"></use></svg>
+                                <div class="cat-tooltip">${t('tooltip_deliv')}</div>
+                            </button>
+                            <button class="action-btn rezz-btn" onclick="rezzItem('${encodeURIComponent(itemObj.name)}', this)">
+                                <svg><use href="#icon-objects"></use></svg>
+                                <div class="cat-tooltip">${t('tooltip_rezz')}</div>
+                            </button>
+                            <button class="action-btn delete-btn" onclick="confirmDelete('${encodeURIComponent(itemObj.name)}')">
+                                <svg><use href="#icon-trash"></use></svg>
+                                <div class="cat-tooltip">${t('tooltip_del')}</div>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                li.className = "item";
+                li.innerHTML = `
+                    <div class="cat-badge" style="font-size:18px;" onclick="openCategoryModal('${encodeURIComponent(itemObj.name)}')">
+                        ${icon}
+                        <div class="cat-tooltip">${categoryTranslated}</div>
+                    </div>
+                    <input type="checkbox" class="item-cb item-select" value="${itemObj.name}">
+                    
+                    <div class="item-name-wrapper">
+                        ${itemObj.photo ? `<span class="photo-icon" style="color:var(--accent-purple);" onmouseenter="showPhotoPreview(event, '${itemObj.photo}', '${parsed.date ? parsed.date : ''}')" onmouseleave="hidePhotoPreview()">🖼️</span>` : ''}
+                        <div class="item-name">${parsed.clean}</div>
+                        ${(!itemObj.photo && parsed.date) ? `<div class="cat-tooltip date-tooltip">${t('tooltip_create')} ${parsed.date}</div>` : ''}
+                    </div>
+                    
+                    <div class="item-actions">
+                        <button class="action-btn photo-btn" onclick="openPhotoModal('${encodeURIComponent(itemObj.name)}', '${itemObj.photo}')">
+                            <svg><use href="${itemObj.photo ? '#icon-edit' : '#icon-photo'}"></use></svg>
+                            <div class="cat-tooltip">${t('tooltip_photo')}</div>
+                        </button>
+                        <button class="action-btn deliver-btn" onclick="deliverItem('${encodeURIComponent(itemObj.name)}', this)">
+                            <svg><use href="#icon-send"></use></svg>
+                            <div class="cat-tooltip">${t('tooltip_deliv')}</div>
+                        </button>
+                        <button class="action-btn rezz-btn" onclick="rezzItem('${encodeURIComponent(itemObj.name)}', this)">
+                            <svg><use href="#icon-objects"></use></svg>
+                            <div class="cat-tooltip">${t('tooltip_rezz')}</div>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="confirmDelete('${encodeURIComponent(itemObj.name)}')">
+                            <svg><use href="#icon-trash"></use></svg>
+                            <div class="cat-tooltip">${t('tooltip_del')}</div>
+                        </button>
+                    </div>
+                `;
+            }
             list.appendChild(li);
         });
 
