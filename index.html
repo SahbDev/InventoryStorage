@@ -301,6 +301,13 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     opacity: 0; transform: translateY(10px); display: none;
 }
 .tour-dialog.show { opacity: 1; transform: translateY(0); }
+.tour-dialog.centered {
+    position: fixed; top: 50% !important; left: 50% !important;
+    transform: translate(-50%, -40%) !important;
+}
+.tour-dialog.centered.show { transform: translate(-50%, -50%) !important; }
+.tour-dialog.wide { width: 480px; max-width: 90vw; }
+
 .tour-title { font-size: .75rem; font-weight: 800; color: var(--accent-purple); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
 .tour-text { font-size: .85rem; color: #aaa; line-height: 1.6; margin-bottom: 24px; }
 .tour-footer { display: flex; justify-content: space-between; align-items: center; }
@@ -497,16 +504,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     <div class="modal-box" style="max-width: 400px; text-align: center;">
         <div class="close-btn" onclick="document.getElementById('photo-modal').classList.remove('active')">✕</div>
         <div class="modal-title" data-i18n="assign_photo">LINK PHOTO</div>
-        
         <div style="font-size: 0.8rem; color: #888; margin-bottom: 8px;" id="photo-item-name">Item Name</div>
-        
         <div style="font-size: 0.75rem; color: #aaa; margin-bottom: 20px;">
             <span data-i18n="photo_desc1">Link a photo to this product</span><br>
             <span data-i18n="photo_desc2">Drop a Texture UUID or Gyazo link below.</span>
         </div>
-        
         <input type="text" class="search-input" id="photo-uuid-input" data-i18n="enter_uuid" placeholder="Enter Texture UUID or Link..." autocomplete="off" style="margin-bottom: 20px;">
-        
         <div style="display: flex; gap: 10px;">
             <button class="btn btn-dark" style="flex: 1; border-radius: 14px;" onclick="removePhoto()" data-i18n="remove">REMOVE</button>
             <button class="btn btn-white" style="flex: 1; border-radius: 14px;" id="save-photo-btn" onclick="savePhoto()" data-i18n="save">SAVE</button>
@@ -551,7 +554,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     <div class="modal-box" style="max-width: 500px;">
         <div class="close-btn" onclick="document.getElementById('lang-modal').classList.remove('active')">✕</div>
         <div class="modal-title" data-i18n="change_lang">CHANGE LANGUAGE</div>
-        
         <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top: 24px;">
             <div class="lang-card" id="lang-en" onclick="setLanguage('en')"><div class="flag-circle"><svg><use href="#flag-us"></use></svg></div><div>English</div></div>
             <div class="lang-card" id="lang-pt" onclick="setLanguage('pt')"><div class="flag-circle"><svg><use href="#flag-br"></use></svg></div><div>Português</div></div>
@@ -566,7 +568,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             live: "LIVE", resync: "RESYNC", title: "✦ PERSONAL INVENTORY ✦", powered: "powered by",
             folders: "Folders", selected: "Selected", tab_inv: "Inventory", tab_cat: "Categories", tab_tools: "Tools", tab_config: "Config",
             search_inv: "Search folders...", search_cat: "Search inside category...", select_all: "Select All", 
-            deliver_sel: "DELIVER", rezz_sel: "REZZ", del_sel: "DELETE",
+            deliver_sel: "DELIVER SELECTED", rezz_sel: "REZZ SELECTED", del_sel: "DELETE SELECTED",
             scan_dup: "Scan Duplicates", server_hash: "Server Hashtag", enter_hash: "Enter new hashtag...", update_name: "Update Server Name",
             assign_cat: "Assign Category", cancel: "CANCEL", caution: "⚠️ CAUTION", sure_del: "Are you sure you want to permanently delete", 
             this_item: "this item", cannot_undone: "This action cannot be undone.", yes_del: "YES, DELETE",
@@ -586,15 +588,18 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             gyazo_desc1: "Use Gyazo to add Prints/Photos to your products.", gyazo_desc2: "Download Gyazo", here: "HERE",
             auth_err_title: "ACCESS EXPIRED / UNAUTHORIZED", auth_err_sub: "This session has been invalidated / expired.<br>Please generate a new link from your Second Life server.",
             cat_clothing: "CLOTHING", cat_hair: "HAIR", cat_faceskin: "FACE SKIN", cat_bodyskin: "BODY SKIN", cat_meshhead: "MESH HEAD", cat_meshbody: "MESH BODY", cat_accessories: "ACCESSORIES", cat_skybox: "SKYBOX", cat_houses: "HOUSES", cat_decor: "DECOR", cat_objects: "OBJECTS", cat_textures: "TEXTURES", cat_scripts: "SCRIPTS",
+            
             tour_start_title: "START TUTORIAL", tour_start_sub: "Choose your language",
             tour_next: "NEXT", tour_skip: "SKIP", tour_done: "DONE",
-            tour_t1: "DATA SYNCHRONIZATION", tour_d1: "Click here whenever you add or remove folders inside Second Life to keep your panel updated.",
-            tour_t2: "GYAZO", tour_d2: "Upload prints directly using Gyazo links. It's the fastest way to build your visual inventory.",
-            tour_t3: "SMART SEARCH", tour_d3: "Instantly filter your storage to find exact items in milliseconds.",
-            tour_t4: "ITEM ACTIONS", tour_d4: "Use these buttons on any item to Link Photos, Deliver to your avatar, Rezz in-world, or Delete permanently.",
+            tour_intro_title: "IN-WORLD MENU", tour_intro_desc: "Before using this panel, use the menu in Second Life:<br><br><b style='color:#fff;'>+ New Folder:</b> Creates a new folder in-world. Rename it and add your product inside.<br><b style='color:#fff;'>Web Painel:</b> Opens this page to manage your box.",
+            tour_t1: "DATA SYNCHRONIZATION", tour_d1: "Click here after adding or removing folders inside your in-world Inventário Box to update this panel.",
+            tour_t2: "GYAZO", tour_d2: "Upload prints directly using Gyazo links. Fastest way to build your visual Inventário Box.",
+            tour_t3: "SMART SEARCH", tour_d3: "Instantly filter your Inventário Box to find exact items in milliseconds.",
+            tour_t4: "ITEM ACTIONS", tour_d4: "Every folder has 4 controls:<br><br><div style='display:flex;flex-direction:column;gap:6px;'><div style='display:flex;align-items:center;gap:8px;'><div class='action-btn' style='width:24px;height:24px;pointer-events:none;'><svg><use href='#icon-camera'></use></svg></div> <span><b>Link Photo:</b> Add an image.</span></div><div style='display:flex;align-items:center;gap:8px;'><div class='action-btn' style='width:24px;height:24px;pointer-events:none;'><svg><use href='#icon-send'></use></svg></div> <span><b>Deliver:</b> Send to your avatar.</span></div><div style='display:flex;align-items:center;gap:8px;'><div class='action-btn' style='width:24px;height:24px;pointer-events:none;'><svg><use href='#icon-objects'></use></svg></div> <span><b>Rezz:</b> Materialize in-world.</span></div><div style='display:flex;align-items:center;gap:8px;'><div class='action-btn delete-btn' style='width:24px;height:24px;pointer-events:none;'><svg><use href='#icon-trash'></use></svg></div> <span><b>Delete:</b> Remove permanently.</span></div></div>",
             tour_t5: "VISUAL GALLERY", tour_d5: "Here your folders transform into a visual catalog. Perfect for quick browsing by category.",
-            tour_t6: "SMART TOOLS", tour_d6: "Use the duplicate scanner to keep your inventory perfectly clean and organized.",
-            tour_t7: "SYSTEM CONFIG", tour_d7: "Rename your server hashtag anytime to keep your main database linked."
+            tour_t6: "SMART TOOLS", tour_d6: "Use the duplicate scanner to keep your Inventário Box perfectly clean and organized.",
+            tour_t7: "SYSTEM CONFIG", tour_d7: "Rename your server hashtag anytime to keep your main database linked.",
+            tour_outro_title: "IMPORTANT NOTICES", tour_outro_desc: "<ul style='text-align:left; margin:0; padding-left:16px; display:flex; flex-direction:column; gap:8px;'><li>Do not add <b>TRANSFER ONLY</b> items to the Inventário Box. Use only Copy or Copy-Mod items.</li><li>All memory is saved locally in your specific Box. Always keep it in your inventory and rename it.</li><li>You can create an Inventário Box for specific things (e.g., My Houses, My Decor).</li><li><b>DELETING</b> an Inventário Box in-world will erase all its contents and saved data. Always keep a copy in your inventory if rezzing it!</li></ul>"
         },
         pt: {
             live: "LIVE", resync: "SINCRONIZAR", title: "✦ INVENTÁRIO PESSOAL ✦", powered: "desenvolvido por",
@@ -620,15 +625,18 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             gyazo_desc1: "Use o Gyazo para adicionar Prints/Fotos aos seus produtos.", gyazo_desc2: "Baixar Gyazo", here: "AQUI",
             auth_err_title: "ACESSO EXPIRADO / NÃO AUTORIZADO", auth_err_sub: "Esta sessão foi invalidada / expirada.<br>Por favor, gere um novo link no seu servidor do Second Life.",
             cat_clothing: "ROUPAS", cat_hair: "CABELOS", cat_faceskin: "PELE ROSTO", cat_bodyskin: "PELE CORPO", cat_meshhead: "CABEÇA MESH", cat_meshbody: "CORPO MESH", cat_accessories: "ACESSÓRIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORAÇÃO", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS",
+            
             tour_start_title: "INICIAR TUTORIAL", tour_start_sub: "Escolha sua linguagem",
             tour_next: "PRÓXIMO", tour_skip: "PULAR", tour_done: "CONCLUIR",
-            tour_t1: "SINCRONIZAÇÃO DE DADOS", tour_d1: "Clique aqui após adicionar ou remover pastas no Second Life para manter seu painel atualizado.",
-            tour_t2: "GYAZO", tour_d2: "Envie prints diretamente usando links do Gyazo. É a forma mais rápida de criar seu inventário visual.",
-            tour_t3: "BUSCA INTELIGENTE", tour_d3: "Filtre seu inventário instantaneamente para encontrar itens exatos em milissegundos.",
-            tour_t4: "AÇÕES DO ITEM", tour_d4: "Use estes botões em qualquer item para Vincular Fotos, Entregar para seu avatar, Rezzar no mundo, ou Deletar permanentemente.",
+            tour_intro_title: "MENU IN-WORLD", tour_intro_desc: "Antes de usar o painel, lembre-se do menu no Second Life:<br><br><b style='color:#fff;'>+ New Folder:</b> Crie uma nova pasta in-world, renomeie como quiser e adicione seu produto dentro.<br><b style='color:#fff;'>Web Painel:</b> Abra o painel web para gerenciar.",
+            tour_t1: "SINCRONIZAÇÃO", tour_d1: "Clique aqui após adicionar ou remover pastas na sua Inventário Box in-world para manter este painel atualizado.",
+            tour_t2: "GYAZO", tour_d2: "Envie prints diretamente usando links do Gyazo. É a forma mais rápida de criar sua Inventário Box visual.",
+            tour_t3: "BUSCA INTELIGENTE", tour_d3: "Filtre sua Inventário Box instantaneamente para encontrar itens exatos em milissegundos.",
+            tour_t4: "AÇÕES DO ITEM", tour_d4: "Cada pasta possui 4 controles:<br><br><div style='display:flex;flex-direction:column;gap:6px;'><div style='display:flex;align-items:center;gap:8px;'><div class='action-btn' style='width:24px;height:24px;pointer-events:none;'><svg><use href='#icon-camera'></use></svg></div> <span><b>Vincular Foto:</b> Adiciona uma imagem.</span></div><div style='display:flex;align-items:center;gap:8px;'><div class='action-btn' style='width:24px;height:24px;pointer-events:none;'><svg><use href='#icon-send'></use></svg></div> <span><b>Entregar:</b> Envia para o avatar.</span></div><div style='display:flex;align-items:center;gap:8px;'><div class='action-btn' style='width:24px;height:24px;pointer-events:none;'><svg><use href='#icon-objects'></use></svg></div> <span><b>Rezzar:</b> Materializa no mundo.</span></div><div style='display:flex;align-items:center;gap:8px;'><div class='action-btn delete-btn' style='width:24px;height:24px;pointer-events:none;'><svg><use href='#icon-trash'></use></svg></div> <span><b>Deletar:</b> Remove permanentemente.</span></div></div>",
             tour_t5: "GALERIA VISUAL", tour_d5: "Aqui suas pastas se transformam em um catálogo visual. Perfeito para navegação rápida por categoria.",
-            tour_t6: "FERRAMENTAS", tour_d6: "Use o scanner de duplicatas para manter seu inventário perfeitamente limpo e organizado.",
-            tour_t7: "CONFIGURAÇÕES", tour_d7: "Renomeie a hashtag do seu servidor a qualquer momento para manter seu banco de dados vinculado."
+            tour_t6: "FERRAMENTAS", tour_d6: "Use o scanner de duplicatas para manter sua Inventário Box perfeitamente limpa e organizada.",
+            tour_t7: "CONFIGURAÇÕES", tour_d7: "Renomeie a hashtag do seu servidor a qualquer momento para manter seu banco de dados vinculado.",
+            tour_outro_title: "INFORMAÇÕES OBRIGATÓRIAS", tour_outro_desc: "<ul style='text-align:left; margin:0; padding-left:16px; display:flex; flex-direction:column; gap:8px;'><li>Não adicione itens <b>TRANSFER ONLY</b> na Inventário Box. Use apenas Copy ou Copy-Mod.</li><li>A memória é salva localmente na sua Box específica. Sempre guarde-a no seu inventário e renomeie.</li><li>Você pode criar uma Inventário Box para cada coisa específica (ex: Minhas Casas, Minhas Decorações).</li><li><b>DELETAR</b> uma Inventário Box in-world apagará todo o seu conteúdo e dados. Guarde sempre uma cópia no inventário ao rezzar!</li></ul>"
         },
         es: {
             live: "LIVE", resync: "SINCRONIZAR", title: "✦ INVENTARIO PERSONAL ✦", powered: "desarrollado por",
@@ -654,15 +662,18 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             gyazo_desc1: "Usa Gyazo para agregar Prints/Fotos a tus productos.", gyazo_desc2: "Descargar Gyazo", here: "AQUÍ",
             auth_err_title: "ACCESO EXPIRADO / NO AUTORIZADO", auth_err_sub: "Esta sesión ha sido invalidada / expirada.<br>Por favor, genera un nuevo enlace en tu servidor de Second Life.",
             cat_clothing: "ROPA", cat_hair: "CABELLO", cat_faceskin: "PIEL ROSTRO", cat_bodyskin: "PIEL CUERPO", cat_meshhead: "CABEZA MESH", cat_meshbody: "CUERPO MESH", cat_accessories: "ACCESORIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORACIÓN", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS",
+            
             tour_start_title: "INICIAR TUTORIAL", tour_start_sub: "Elige tu idioma",
             tour_next: "SIGUIENTE", tour_skip: "OMITIR", tour_done: "LISTO",
-            tour_t1: "SINCRONIZACIÓN DE DATOS", tour_d1: "Haz clic aquí después de agregar o eliminar carpetas en Second Life para actualizar tu panel.",
-            tour_t2: "GYAZO", tour_d2: "Sube imágenes directamente usando enlaces de Gyazo. Es la forma más rápida de construir tu inventario visual.",
-            tour_t3: "BÚSQUEDA INTELIGENTE", tour_d3: "Filtra tu inventario al instante para encontrar artículos exactos en milisegundos.",
-            tour_t4: "ACCIONES DEL ARTÍCULO", tour_d4: "Usa estos botones en cualquier artículo para Vincular Fotos, Entregar a tu avatar, Rezzear en el mundo, o Eliminar permanentemente.",
-            tour_t5: "GALERÍA VISUAL", tour_d5: "Aquí tus carpetas se transforman en un catálogo visual. Perfecto para una navegación rápida por categoría.",
-            tour_t6: "HERRAMIENTAS", tour_d6: "Usa el escáner de duplicados para mantener tu inventario perfectamente limpio y organizado.",
-            tour_t7: "CONFIGURACIÓN", tour_d7: "Cambia el nombre del hashtag de tu servidor en cualquier momento para mantener tu base de datos vinculada."
+            tour_intro_title: "MENÚ IN-WORLD", tour_intro_desc: "Antes de usar el panel, recuerda el menú en Second Life:<br><br><b style='color:#fff;'>+ New Folder:</b> Crea una nueva carpeta in-world, renómbrala y añade tu producto dentro.<br><b style='color:#fff;'>Web Painel:</b> Abre el panel web para gestionar.",
+            tour_t1: "SINCRONIZACIÓN", tour_d1: "Haz clic aquí después de agregar o eliminar carpetas en tu Inventário Box in-world para actualizar este panel.",
+            tour_t2: "GYAZO", tour_d2: "Sube imágenes directamente usando enlaces de Gyazo. La forma más rápida de construir tu Inventário Box visual.",
+            tour_t3: "BÚSQUEDA INTELIGENTE", tour_d3: "Filtra tu Inventário Box al instante para encontrar artículos exactos en milisegundos.",
+            tour_t4: "ACCIONES DEL ARTÍCULO", tour_d4: "Cada carpeta tiene 4 controles:<br><br><div style='display:flex;flex-direction:column;gap:6px;'><div style='display:flex;align-items:center;gap:8px;'><div class='action-btn' style='width:24px;height:24px;pointer-events:none;'><svg><use href='#icon-camera'></use></svg></div> <span><b>Vincular Foto:</b> Añade una imagen.</span></div><div style='display:flex;align-items:center;gap:8px;'><div class='action-btn' style='width:24px;height:24px;pointer-events:none;'><svg><use href='#icon-send'></use></svg></div> <span><b>Entregar:</b> Envía a tu avatar.</span></div><div style='display:flex;align-items:center;gap:8px;'><div class='action-btn' style='width:24px;height:24px;pointer-events:none;'><svg><use href='#icon-objects'></use></svg></div> <span><b>Rezzear:</b> Materializa en el mundo.</span></div><div style='display:flex;align-items:center;gap:8px;'><div class='action-btn delete-btn' style='width:24px;height:24px;pointer-events:none;'><svg><use href='#icon-trash'></use></svg></div> <span><b>Eliminar:</b> Borra permanentemente.</span></div></div>",
+            tour_t5: "GALERÍA VISUAL", tour_d5: "Aquí tus carpetas se transforman en un catálogo visual. Perfecto para navegación rápida por categoría.",
+            tour_t6: "HERRAMIENTAS", tour_d6: "Usa el escáner de duplicados para mantener tu Inventário Box perfectamente limpia y organizada.",
+            tour_t7: "CONFIGURACIÓN", tour_d7: "Cambia el nombre del hashtag de tu servidor en cualquier momento para mantener tu base de datos vinculada.",
+            tour_outro_title: "AVISOS IMPORTANTES", tour_outro_desc: "<ul style='text-align:left; margin:0; padding-left:16px; display:flex; flex-direction:column; gap:8px;'><li>No añadas artículos <b>TRANSFER ONLY</b> en la Inventário Box. Usa solo Copy o Copy-Mod.</li><li>Toda la memoria se guarda localmente en tu Box específica. Guárdala siempre en tu inventario y renómbrala.</li><li>Puedes crear una Inventário Box para cada cosa (ej: Mis Casas, Mis Decoraciones).</li><li><b>ELIMINAR</b> una Inventário Box in-world borrará todo su contenido y datos. ¡Guarda siempre una copia en tu inventario al rezzear!</li></ul>"
         }
     };
 
@@ -685,13 +696,15 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 
     /* === LÓGICA DO TOUR E MODAL DE START === */
     const tourSteps = [
+        { center: true, title: 'tour_intro_title', text: 'tour_intro_desc', tab: 'inventory' },
         { target: 'btn-tour-sync', title: 'tour_t1', text: 'tour_d1', tab: 'inventory' },
         { target: 'btn-tour-gyazo', title: 'tour_t2', text: 'tour_d2', tab: 'inventory' },
         { target: 'btn-tour-search', title: 'tour_t3', text: 'tour_d3', tab: 'inventory' },
-        { target: 'inventory-list', title: 'tour_t4', text: 'tour_d4', tab: 'inventory' },
+        { center: true, title: 'tour_t4', text: 'tour_d4', tab: 'inventory' },
         { target: 'btn-tab-categories', title: 'tour_t5', text: 'tour_d5', tab: 'categories' },
         { target: 'btn-tab-tools', title: 'tour_t6', text: 'tour_d6', tab: 'tools' },
-        { target: 'btn-tab-config', title: 'tour_t7', text: 'tour_d7', tab: 'config' }
+        { target: 'btn-tab-config', title: 'tour_t7', text: 'tour_d7', tab: 'config' },
+        { center: true, wide: true, title: 'tour_outro_title', text: 'tour_outro_desc', tab: 'config' }
     ];
     let currentStep = 0;
 
@@ -730,11 +743,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             }
         }
 
-        const targetEl = document.getElementById(step.target);
-        if(!targetEl) { currentStep++; showTourStep(); return; }
-
-        targetEl.classList.add('tour-highlight');
-
         const dialog = document.getElementById('tour-dialog');
         dialog.style.display = 'block';
         
@@ -745,16 +753,30 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         const nextBtn = document.getElementById('tour-next-btn');
         nextBtn.innerText = (currentStep === tourSteps.length - 1) ? t('tour_done') : t('tour_next');
 
-        const rect = targetEl.getBoundingClientRect();
-        let top = rect.bottom + 20;
-        let left = rect.left + (rect.width / 2) - 160; 
+        if (step.center) {
+            dialog.classList.add('centered');
+            if (step.wide) dialog.classList.add('wide');
+            else dialog.classList.remove('wide');
+            
+            dialog.style.top = '';
+            dialog.style.left = '';
+        } else {
+            dialog.classList.remove('centered', 'wide');
+            const targetEl = document.getElementById(step.target);
+            if(targetEl) {
+                targetEl.classList.add('tour-highlight');
+                const rect = targetEl.getBoundingClientRect();
+                let top = rect.bottom + 20;
+                let left = rect.left + (rect.width / 2) - 160; 
 
-        if(left < 20) left = 20;
-        if(left + 320 > window.innerWidth) left = window.innerWidth - 340;
-        if(top + 200 > window.innerHeight) top = rect.top - 220; // Previne corte embaixo
-        
-        dialog.style.top = top + 'px';
-        dialog.style.left = left + 'px';
+                if(left < 20) left = 20;
+                if(left + 320 > window.innerWidth) left = window.innerWidth - 340;
+                if(top + 200 > window.innerHeight) top = rect.top - 220; 
+                
+                dialog.style.top = top + 'px';
+                dialog.style.left = left + 'px';
+            }
+        }
         
         setTimeout(() => dialog.classList.add('show'), 10);
     }
@@ -999,7 +1021,6 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             renderCategories();
             toast(t('toast_sync_ok'));
 
-            // NOVO: INICIA O TOUR GUIADO APENAS NO PRIMEIRO ACESSO (PERGUNTA O IDIOMA)
             if (!localStorage.getItem('mmc_tour_done')) {
                 setTimeout(openTourLangModal, 1000);
             }
