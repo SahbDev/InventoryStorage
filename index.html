@@ -173,6 +173,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 }
 .gallery-img-box img { width: 100%; height: 100%; object-fit: cover; transition: .3s; }
 .gallery-card:hover .gallery-img-box img { transform: scale(1.08); }
+.gallery-no-photo { font-size: 2.2rem; opacity: 0.2; filter: grayscale(1); }
 
 .gallery-checkbox {
     position: absolute; top: 8px; left: 8px; z-index: 5; accent-color: var(--accent-purple); width: 16px; height: 16px; cursor: pointer; opacity: 0; transition: .2s;
@@ -271,22 +272,39 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 .flag-circle { width: 56px; height: 56px; border-radius: 50%; border: 3px solid #1a1a1a; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #111; }
 .flag-circle svg { width: 100%; height: 100%; display: block; }
 
+/* =========================================
+   SISTEMA DE TOUR / TUTORIAL PROFISSIONAL
+========================================== */
+.tour-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(3px);
+    z-index: 99990; display: none; opacity: 0; transition: opacity 0.3s ease;
+}
+.tour-highlight {
+    position: relative; z-index: 99991 !important;
+    box-shadow: 0 0 0 4px rgba(207, 163, 255, 0.4), 0 0 20px rgba(207, 163, 255, 0.2);
+    border-radius: inherit; pointer-events: none !important;
+}
+.tour-dialog {
+    position: absolute; z-index: 99992;
+    background: #0d0d0d; border: 1px solid #2a2a2a; border-radius: 16px;
+    padding: 24px; width: 320px; color: #fff;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.05);
+    transition: opacity 0.3s ease, transform 0.3s ease, left 0.4s ease, top 0.4s ease;
+    opacity: 0; transform: translateY(10px); display: none;
+}
+.tour-dialog.show { opacity: 1; transform: translateY(0); }
+.tour-title { font-size: .75rem; font-weight: 800; color: var(--accent-purple); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+.tour-text { font-size: .85rem; color: #aaa; line-height: 1.6; margin-bottom: 24px; }
+.tour-footer { display: flex; justify-content: space-between; align-items: center; }
+.tour-counter { font-size: .7rem; font-weight: 700; color: #555; letter-spacing: 1px; }
+
 /* TELA DE ERRO DE SEGURANÇA FULLSCREEN */
 #auth-error-screen {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background: #050505;
-    z-index: 999999;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: #fff;
+    display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: #050505; z-index: 999999; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: #fff;
 }
-#auth-error-screen.active {
-    display: flex;
-}
+#auth-error-screen.active { display: flex; }
 .auth-error-icon { width: 64px; height: 64px; fill: var(--danger); margin-bottom: 24px; }
 .auth-error-title { font-size: 1.5rem; font-weight: 800; color: var(--danger); letter-spacing: 2px; margin-bottom: 12px; text-transform: uppercase; }
 .auth-error-sub { color: #888; font-size: 0.95rem; line-height: 1.6; max-width: 400px; }
@@ -297,41 +315,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
 <svg style="display:none;">
     <clipPath id="usa-clip"><circle cx="256" cy="256" r="256"/></clipPath>
     <clipPath id="es-clip"><circle cx="256" cy="256" r="256"/></clipPath>
-    <symbol id="flag-br" viewBox="0 0 512 512">
-        <circle cx="256" cy="256" r="256" fill="#4caf50"/>
-        <polygon points="256,80 432,256 256,432 80,256" fill="#ffeb3b"/>
-        <circle cx="256" cy="256" r="100" fill="#1e88e5"/>
-        <path d="M 180 256 Q 256 200 332 256" stroke="#fff" stroke-width="12" fill="none"/>
-    </symbol>
-    <symbol id="flag-us" viewBox="0 0 512 512">
-        <circle cx="256" cy="256" r="256" fill="#fff"/>
-        <g clip-path="url(#usa-clip)">
-            <rect width="512" height="512" fill="#fff"/>
-            <rect y="51" width="512" height="41" fill="#d32f2f"/>
-            <rect y="153" width="512" height="41" fill="#d32f2f"/>
-            <rect y="256" width="512" height="41" fill="#d32f2f"/>
-            <rect y="358" width="512" height="41" fill="#d32f2f"/>
-            <rect y="460" width="512" height="41" fill="#d32f2f"/>
-            <rect width="256" height="270" fill="#1e88e5"/>
-            <circle cx="64" cy="64" r="12" fill="#fff"/><circle cx="128" cy="64" r="12" fill="#fff"/><circle cx="192" cy="64" r="12" fill="#fff"/>
-            <circle cx="96" cy="118" r="12" fill="#fff"/><circle cx="160" cy="118" r="12" fill="#fff"/>
-            <circle cx="64" cy="172" r="12" fill="#fff"/><circle cx="128" cy="172" r="12" fill="#fff"/><circle cx="192" cy="172" r="12" fill="#fff"/>
-            <circle cx="96" cy="226" r="12" fill="#fff"/><circle cx="160" cy="226" r="12" fill="#fff"/>
-        </g>
-    </symbol>
-    <symbol id="flag-es" viewBox="0 0 512 512">
-        <circle cx="256" cy="256" r="256" fill="#d32f2f"/>
-        <g clip-path="url(#es-clip)">
-            <rect width="512" height="512" fill="#d32f2f"/>
-            <rect y="128" width="512" height="256" fill="#ffeb3b"/>
-            <circle cx="180" cy="256" r="50" fill="#d32f2f"/>
-        </g>
-    </symbol>
-    <symbol id="icon-gyazo-circle" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="11" fill="none" stroke="#2a2a2a" stroke-width="1"/>
-        <circle cx="12" cy="12" r="8" fill="#111" />
-        <path d="M11.5 15.5H8V8.5H16V10H11.5V11.5H14.5V13H11.5V15.5Z" fill="#fff"/>
-    </symbol>
+    <symbol id="flag-br" viewBox="0 0 512 512"><circle cx="256" cy="256" r="256" fill="#4caf50"/><polygon points="256,80 432,256 256,432 80,256" fill="#ffeb3b"/><circle cx="256" cy="256" r="100" fill="#1e88e5"/><path d="M 180 256 Q 256 200 332 256" stroke="#fff" stroke-width="12" fill="none"/></symbol>
+    <symbol id="flag-us" viewBox="0 0 512 512"><circle cx="256" cy="256" r="256" fill="#fff"/><g clip-path="url(#usa-clip)"><rect width="512" height="512" fill="#fff"/><rect y="51" width="512" height="41" fill="#d32f2f"/><rect y="153" width="512" height="41" fill="#d32f2f"/><rect y="256" width="512" height="41" fill="#d32f2f"/><rect y="358" width="512" height="41" fill="#d32f2f"/><rect y="460" width="512" height="41" fill="#d32f2f"/><rect width="256" height="270" fill="#1e88e5"/><circle cx="64" cy="64" r="12" fill="#fff"/><circle cx="128" cy="64" r="12" fill="#fff"/><circle cx="192" cy="64" r="12" fill="#fff"/><circle cx="96" cy="118" r="12" fill="#fff"/><circle cx="160" cy="118" r="12" fill="#fff"/><circle cx="64" cy="172" r="12" fill="#fff"/><circle cx="128" cy="172" r="12" fill="#fff"/><circle cx="192" cy="172" r="12" fill="#fff"/><circle cx="96" cy="226" r="12" fill="#fff"/><circle cx="160" cy="226" r="12" fill="#fff"/></g></symbol>
+    <symbol id="flag-es" viewBox="0 0 512 512"><circle cx="256" cy="256" r="256" fill="#d32f2f"/><g clip-path="url(#es-clip)"><rect width="512" height="512" fill="#d32f2f"/><rect y="128" width="512" height="256" fill="#ffeb3b"/><circle cx="180" cy="256" r="50" fill="#d32f2f"/></g></symbol>
+    
+    <symbol id="icon-help" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></symbol>
+    <symbol id="icon-gyazo-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="none" stroke="#2a2a2a" stroke-width="1"/><circle cx="12" cy="12" r="8" fill="#111" /><path d="M11.5 15.5H8V8.5H16V10H11.5V11.5H14.5V13H11.5V15.5Z" fill="#fff"/></symbol>
     <symbol id="icon-camera" viewBox="0 0 24 24"><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3z"/></symbol>
     <symbol id="icon-lock" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></symbol>
     <symbol id="icon-photo" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></symbol>
@@ -365,10 +354,13 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             </div>
             
             <div style="display:flex; gap:10px;">
-                <div class="resync-btn" onclick="openGyazoModal()">
+                <div class="resync-btn" onclick="startTour()" title="Quick Guide">
+                    <svg><use href="#icon-help"></use></svg>
+                </div>
+                <div class="resync-btn" id="btn-tour-gyazo" onclick="openGyazoModal()">
                     <svg class="standard-circle-icon"><use href="#icon-gyazo-circle"></use></svg> GYAZO
                 </div>
-                <div class="resync-btn" onclick="loadInventory()">
+                <div class="resync-btn" id="btn-tour-sync" onclick="loadInventory()">
                     <svg><use href="#icon-sync"></use></svg> <span data-i18n="resync">RESYNC</span>
                 </div>
             </div>
@@ -388,7 +380,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
         </div>
     </header>
 
-    <div class="tabs">
+    <div class="tabs" id="btn-tour-tabs">
         <button class="tab-btn active" onclick="switchTab('inventory', this)" data-i18n="tab_inv">Inventory</button>
         <button class="tab-btn" onclick="switchTab('categories', this)" data-i18n="tab_cat">Categories</button>
         <button class="tab-btn" onclick="switchTab('tools', this)" data-i18n="tab_tools">Tools</button>
@@ -396,7 +388,7 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     </div>
 
     <div id="tab-inventory" class="tab-content active">
-        <div class="search-box">
+        <div class="search-box" id="btn-tour-search">
             <input type="text" class="search-input" id="searchBar" data-i18n="search_inv" placeholder="Search folders..." autocomplete="off" oninput="filterInventory(this.value)">
         </div>
         <div class="bulk-actions" id="bulkInv" style="display: none;">
@@ -470,6 +462,19 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     <div class="footer-status" data-i18n="footer">MMC Storage Remote Interface</div>
 </div>
 
+<div class="tour-overlay" id="tour-overlay"></div>
+<div class="tour-dialog" id="tour-dialog">
+    <div class="tour-title" id="tour-title">Title</div>
+    <div class="tour-text" id="tour-text">Description goes here</div>
+    <div class="tour-footer">
+        <div class="tour-counter" id="tour-counter">1 / 4</div>
+        <div style="display:flex; gap:10px; align-items:center;">
+            <button class="btn" style="background:transparent; color:#888; padding: 6px;" onclick="endTour()" data-i18n="tour_skip">SKIP</button>
+            <button class="btn btn-white" id="tour-next-btn" onclick="nextTourStep()" data-i18n="tour_next">NEXT</button>
+        </div>
+    </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <div id="global-photo-preview" class="global-preview">
@@ -483,16 +488,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     <div class="modal-box" style="max-width: 400px; text-align: center;">
         <div class="close-btn" onclick="document.getElementById('photo-modal').classList.remove('active')">✕</div>
         <div class="modal-title" data-i18n="assign_photo">LINK PHOTO</div>
-        
         <div style="font-size: 0.8rem; color: #888; margin-bottom: 8px;" id="photo-item-name">Item Name</div>
-        
         <div style="font-size: 0.75rem; color: #aaa; margin-bottom: 20px;">
             <span data-i18n="photo_desc1">Link a photo to this product</span><br>
             <span data-i18n="photo_desc2">Drop a Texture UUID or Gyazo link below.</span>
         </div>
-        
         <input type="text" class="search-input" id="photo-uuid-input" data-i18n="enter_uuid" placeholder="Enter Texture UUID or Link..." autocomplete="off" style="margin-bottom: 20px;">
-        
         <div style="display: flex; gap: 10px;">
             <button class="btn btn-dark" style="flex: 1; border-radius: 14px;" onclick="removePhoto()" data-i18n="remove">REMOVE</button>
             <button class="btn btn-white" style="flex: 1; border-radius: 14px;" id="save-photo-btn" onclick="savePhoto()" data-i18n="save">SAVE</button>
@@ -537,22 +538,10 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
     <div class="modal-box" style="max-width: 500px;">
         <div class="close-btn" onclick="document.getElementById('lang-modal').classList.remove('active')">✕</div>
         <div class="modal-title" data-i18n="change_lang">CHANGE LANGUAGE</div>
-        
         <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top: 24px;">
-            <div class="lang-card" id="lang-en" onclick="setLanguage('en')">
-                <div class="flag-circle"><svg><use href="#flag-us"></use></svg></div>
-                <div>English</div>
-            </div>
-            
-            <div class="lang-card" id="lang-pt" onclick="setLanguage('pt')">
-                <div class="flag-circle"><svg><use href="#flag-br"></use></svg></div>
-                <div>Português</div>
-            </div>
-            
-            <div class="lang-card" id="lang-es" onclick="setLanguage('es')">
-                <div class="flag-circle"><svg><use href="#flag-es"></use></svg></div>
-                <div>Español</div>
-            </div>
+            <div class="lang-card" id="lang-en" onclick="setLanguage('en')"><div class="flag-circle"><svg><use href="#flag-us"></use></svg></div><div>English</div></div>
+            <div class="lang-card" id="lang-pt" onclick="setLanguage('pt')"><div class="flag-circle"><svg><use href="#flag-br"></use></svg></div><div>Português</div></div>
+            <div class="lang-card" id="lang-es" onclick="setLanguage('es')"><div class="flag-circle"><svg><use href="#flag-es"></use></svg></div><div>Español</div></div>
         </div>
     </div>
 </div>
@@ -582,7 +571,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             photo_desc1: "Link a photo to this product", photo_desc2: "Drop a Texture UUID or Gyazo link below.",
             gyazo_desc1: "Use Gyazo to add Prints/Photos to your products.", gyazo_desc2: "Download Gyazo", here: "HERE",
             auth_err_title: "ACCESS EXPIRED / UNAUTHORIZED", auth_err_sub: "This session has been invalidated / expired.<br>Please generate a new link from your Second Life server.",
-            cat_clothing: "CLOTHING", cat_hair: "HAIR", cat_faceskin: "FACE SKIN", cat_bodyskin: "BODY SKIN", cat_meshhead: "MESH HEAD", cat_meshbody: "MESH BODY", cat_accessories: "ACCESSORIES", cat_skybox: "SKYBOX", cat_houses: "HOUSES", cat_decor: "DECOR", cat_objects: "OBJECTS", cat_textures: "TEXTURES", cat_scripts: "SCRIPTS"
+            cat_clothing: "CLOTHING", cat_hair: "HAIR", cat_faceskin: "FACE SKIN", cat_bodyskin: "BODY SKIN", cat_meshhead: "MESH HEAD", cat_meshbody: "MESH BODY", cat_accessories: "ACCESSORIES", cat_skybox: "SKYBOX", cat_houses: "HOUSES", cat_decor: "DECOR", cat_objects: "OBJECTS", cat_textures: "TEXTURES", cat_scripts: "SCRIPTS",
+            tour_next: "NEXT", tour_skip: "SKIP", tour_done: "DONE",
+            tour_t1: "DATA SYNCHRONIZATION", tour_d1: "Click here whenever you add or remove folders inside Second Life to keep your panel updated.",
+            tour_t2: "VISUAL CATALOG", tour_d2: "Upload prints directly using Gyazo links. It's the fastest way to build your visual inventory.",
+            tour_t3: "WORKSPACE NAVIGATION", tour_d3: "Switch smoothly between your raw list, visual gallery, duplicate scanner, and settings.",
+            tour_t4: "SMART SEARCH", tour_d4: "Instantly filter your storage to find exact items in milliseconds."
         },
         pt: {
             live: "LIVE", resync: "SINCRONIZAR", title: "✦ INVENTÁRIO PESSOAL ✦", powered: "desenvolvido por",
@@ -607,7 +601,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             photo_desc1: "Vincule uma foto a este produto", photo_desc2: "Solte um UUID de Textura ou link do Gyazo abaixo.",
             gyazo_desc1: "Use o Gyazo para adicionar Prints/Fotos aos seus produtos.", gyazo_desc2: "Baixar Gyazo", here: "AQUI",
             auth_err_title: "ACESSO EXPIRADO / NÃO AUTORIZADO", auth_err_sub: "Esta sessão foi invalidada / expirada.<br>Por favor, gere um novo link no seu servidor do Second Life.",
-            cat_clothing: "ROUPAS", cat_hair: "CABELOS", cat_faceskin: "PELE ROSTO", cat_bodyskin: "PELE CORPO", cat_meshhead: "CABEÇA MESH", cat_meshbody: "CORPO MESH", cat_accessories: "ACESSÓRIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORAÇÃO", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS"
+            cat_clothing: "ROUPAS", cat_hair: "CABELOS", cat_faceskin: "PELE ROSTO", cat_bodyskin: "PELE CORPO", cat_meshhead: "CABEÇA MESH", cat_meshbody: "CORPO MESH", cat_accessories: "ACESSÓRIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORAÇÃO", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS",
+            tour_next: "PRÓXIMO", tour_skip: "PULAR", tour_done: "CONCLUIR",
+            tour_t1: "SINCRONIZAÇÃO DE DADOS", tour_d1: "Clique aqui após adicionar novas pastas no Second Life para buscar seus itens mais recentes.",
+            tour_t2: "CATÁLOGO VISUAL", tour_d2: "Envie prints diretamente usando links do Gyazo. É a forma mais rápida de criar seu inventário visual.",
+            tour_t3: "NAVEGAÇÃO DO PAINEL", tour_d3: "Alterne fluidamente entre sua lista, galeria visual, scanner de duplicatas e configurações.",
+            tour_t4: "BUSCA INTELIGENTE", tour_d4: "Filtre seu inventário instantaneamente para encontrar itens exatos em milissegundos."
         },
         es: {
             live: "LIVE", resync: "SINCRONIZAR", title: "✦ INVENTARIO PERSONAL ✦", powered: "desarrollado por",
@@ -632,7 +631,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             photo_desc1: "Vincule una foto a este producto", photo_desc2: "Suelte un UUID de Textura o link de Gyazo a continuación.",
             gyazo_desc1: "Usa Gyazo para agregar Prints/Fotos a tus productos.", gyazo_desc2: "Descargar Gyazo", here: "AQUÍ",
             auth_err_title: "ACCESO EXPIRADO / NO AUTORIZADO", auth_err_sub: "Esta sesión ha sido invalidada / expirada.<br>Por favor, genera un nuevo enlace en tu servidor de Second Life.",
-            cat_clothing: "ROPA", cat_hair: "CABELLO", cat_faceskin: "PIEL ROSTRO", cat_bodyskin: "PIEL CUERPO", cat_meshhead: "CABEZA MESH", cat_meshbody: "CUERPO MESH", cat_accessories: "ACCESORIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORACIÓN", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS"
+            cat_clothing: "ROPA", cat_hair: "CABELLO", cat_faceskin: "PIEL ROSTRO", cat_bodyskin: "PIEL CUERPO", cat_meshhead: "CABEZA MESH", cat_meshbody: "CUERPO MESH", cat_accessories: "ACCESORIOS", cat_skybox: "SKYBOX", cat_houses: "CASAS", cat_decor: "DECORACIÓN", cat_objects: "OBJETOS", cat_textures: "TEXTURAS", cat_scripts: "SCRIPTS",
+            tour_next: "SIGUIENTE", tour_skip: "OMITIR", tour_done: "LISTO",
+            tour_t1: "SINCRONIZACIÓN DE DATOS", tour_d1: "Haz clic aquí después de agregar nuevas carpetas en Second Life para actualizar tus artículos.",
+            tour_t2: "CATÁLOGO VISUAL", tour_d2: "Sube imágenes directamente usando enlaces de Gyazo. Es la forma más rápida de construir tu inventario visual.",
+            tour_t3: "NAVEGACIÓN", tour_d3: "Cambia suavemente entre tu lista, galería visual, escáner de duplicados y configuración.",
+            tour_t4: "BÚSQUEDA INTELIGENTE", tour_d4: "Filtra tu inventario al instante para encontrar artículos exactos en milisegundos."
         }
     };
 
@@ -685,7 +689,88 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             if (currentLang === 'es') suffix = " carpetas seleccionadas";
             document.getElementById("delete-item-name").innerText = num + suffix;
         }
+        
+        // Atualiza textos do tour se estiver ativo
+        if (document.getElementById('tour-dialog').style.display === 'block') {
+            document.getElementById('tour-title').innerText = t(tourSteps[currentStep].title);
+            document.getElementById('tour-text').innerHTML = t(tourSteps[currentStep].text);
+            document.getElementById('tour-next-btn').innerText = (currentStep === tourSteps.length - 1) ? t('tour_done') : t('tour_next');
+        }
     }
+
+    /* === SISTEMA DE TOUR GUIADO === */
+    const tourSteps = [
+        { target: 'btn-tour-sync', title: 'tour_t1', text: 'tour_d1' },
+        { target: 'btn-tour-gyazo', title: 'tour_t2', text: 'tour_d2' },
+        { target: 'btn-tour-tabs', title: 'tour_t3', text: 'tour_d3' },
+        { target: 'btn-tour-search', title: 'tour_t4', text: 'tour_d4' }
+    ];
+    let currentStep = 0;
+
+    function startTour() {
+        currentStep = 0;
+        document.getElementById('tour-overlay').style.display = 'block';
+        setTimeout(() => document.getElementById('tour-overlay').style.opacity = '1', 10);
+        showTourStep();
+    }
+
+    function showTourStep() {
+        document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
+
+        if(currentStep >= tourSteps.length) {
+            endTour();
+            return;
+        }
+
+        const step = tourSteps[currentStep];
+        const targetEl = document.getElementById(step.target);
+        if(!targetEl) { currentStep++; showTourStep(); return; }
+
+        targetEl.classList.add('tour-highlight');
+
+        const dialog = document.getElementById('tour-dialog');
+        dialog.style.display = 'block';
+        
+        document.getElementById('tour-title').innerText = t(step.title);
+        document.getElementById('tour-text').innerHTML = t(step.text);
+        document.getElementById('tour-counter').innerText = `${currentStep + 1} / ${tourSteps.length}`;
+        
+        const nextBtn = document.getElementById('tour-next-btn');
+        nextBtn.innerText = (currentStep === tourSteps.length - 1) ? t('tour_done') : t('tour_next');
+
+        const rect = targetEl.getBoundingClientRect();
+        let top = rect.bottom + 20;
+        let left = rect.left + (rect.width / 2) - 160; 
+
+        if(left < 20) left = 20;
+        if(left + 320 > window.innerWidth) left = window.innerWidth - 340;
+        
+        dialog.style.top = top + 'px';
+        dialog.style.left = left + 'px';
+        
+        setTimeout(() => dialog.classList.add('show'), 10);
+    }
+
+    function nextTourStep() {
+        currentStep++;
+        showTourStep();
+    }
+
+    function endTour() {
+        document.getElementById('tour-overlay').style.opacity = '0';
+        document.getElementById('tour-dialog').classList.remove('show');
+        document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
+        setTimeout(() => {
+            document.getElementById('tour-overlay').style.display = 'none';
+            document.getElementById('tour-dialog').style.display = 'none';
+        }, 300);
+        localStorage.setItem('mmc_tour_done', 'true');
+    }
+
+    window.addEventListener('resize', () => {
+        if(document.getElementById('tour-dialog').style.display === 'block') showTourStep();
+    });
+    /* =============================== */
 
     const globalPreview = document.getElementById('global-photo-preview');
     const globalPreviewImg = document.getElementById('global-preview-img');
@@ -860,6 +945,12 @@ h1{ margin:30px 0 0 0; font-size:1.05rem; letter-spacing:4px; font-weight:800; t
             updateSelectedCount(); 
             renderCategories();
             toast(t('toast_sync_ok'));
+            
+            // Inicia o Tour apenas se for a primeira vez
+            if (!localStorage.getItem('mmc_tour_done')) {
+                setTimeout(startTour, 1000);
+            }
+
         }catch(e){
             if (e.message === "Unauthorized") {
                 showAuthError();
